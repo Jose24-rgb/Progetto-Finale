@@ -52,7 +52,7 @@ backend/
 
 > Assicurati di avere **Node.js** e **MongoDB Atlas URI** validi.
 
-### 1. Clona il repository
+1. Clona il repository
 ```bash
 git clone https://github.com/tuo-username/backend-gamedev.git
 cd backend-gamedev
