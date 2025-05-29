@@ -15,7 +15,7 @@ GameDev Shop permette agli utenti di:
 - Usare pannelli Admin per la gestione dei giochi
 - Vedere gli ordini effettuati
 
-Tutto questo con un'architettura sicura, moderna e testata.
+Il backend è costruito con un'architettura **sicura**, **scalabile** e completamente **testata**.
 
 ---
 
@@ -25,10 +25,10 @@ Tutto questo con un'architettura sicura, moderna e testata.
 - **MongoDB** + **Mongoose**
 - **JWT** & **bcrypt.js** per autenticazione
 - **Stripe API** per i pagamenti
-- **Nodemailer** per email
+- **Nodemailer** per le email
 - **Cloudinary** per l'upload immagini
 - **Swagger** per la documentazione API
-- **Jest** + **Supertest** per i test.
+- **Jest** + **Supertest** per i test automatici
 
 ## 📁 Struttura delle Cartelle
 backend/
@@ -91,4 +91,4 @@ http://localhost:5000/api-docs
 
 Sviluppato da José Bueso
 📧 josephbueso1997al@gmail.com
-    jose_R_licona12@hotmail.com
+📧 jose_R_licona12@hotmail.com
