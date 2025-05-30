@@ -6,18 +6,15 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (game) => {
-    setCart(prev => {
-      const exists = prev.find(g => g._id === game._id);
-      if (exists) {
-        return prev.map(g => g._id === game._id ? { ...g, quantity: g.quantity + 1 } : g);
-      } else {
-        return [...prev, { ...game, quantity: 1 }];
-      }
-    });
+    setCart(prev =>
+      prev.some(g => g._id === game._id)
+        ? prev.map(g => g._id === game._id ? { ...g, quantity: g.quantity + 1 } : g)
+        : [...prev, { ...game, quantity: 1 }]
+    );
   };
 
   const removeFromCart = (id) => {
-    setCart(prev => prev.filter(g => g._id !== id));
+    setCart(prev => prev.filter(game => game._id !== id));
   };
 
   const clearCart = () => setCart([]);
@@ -30,3 +27,5 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
+
+

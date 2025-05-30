@@ -1,10 +1,32 @@
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import axios from '../services/apis';
+import { useAuth } from '../context/AuthContext';
 
 function Cart() {
   const { cart, removeFromCart } = useCart();
+  const { user } = useAuth();
 
   const total = cart.reduce((acc, game) => acc + game.price * game.quantity, 0);
+
+  const handleCheckout = async () => {
+    if (!user) {
+      alert('Devi effettuare il login per procedere.');
+      return;
+    }
+
+    try {
+      const res = await axios.post('/checkout/create-checkout-session', {
+        userId: user.user.id,
+        games: cart,
+      });
+
+      window.location.href = res.data.url;
+    } catch (err) {
+      console.error('❌ Errore nel checkout:', err);
+      alert('Errore nel processo di pagamento.');
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -29,7 +51,9 @@ function Cart() {
             ))}
           </ul>
           <h4>Totale: € {total.toFixed(2)}</h4>
-          <button className="btn btn-success">Procedi al pagamento</button>
+          <button className="btn btn-success w-100 mt-3" onClick={handleCheckout}>
+            Procedi al pagamento con Stripe
+          </button>
         </>
       )}
     </div>
@@ -37,3 +61,5 @@ function Cart() {
 }
 
 export default Cart;
+
+
