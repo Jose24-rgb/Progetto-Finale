@@ -9,6 +9,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Success from './pages/Success';
 import Cancel from './pages/Cancel';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -17,15 +18,43 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/cancel" element={<Cancel />} />
-        </Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <PrivateRoute>
+                  <Checkout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/success"
+              element={
+                <PrivateRoute>
+                  <Success />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/cancel"
+              element={
+                <PrivateRoute>
+                  <Cancel />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>
@@ -33,6 +62,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
