@@ -53,7 +53,8 @@ router.post('/', createOrder);
  *       - name: userId
  *         in: path
  *         required: true
- *         schema: { type: string }
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Lista degli ordini
@@ -67,15 +68,21 @@ router.post('/', createOrder);
  *         description: Accesso negato
  */
 router.get('/:userId', verifyToken, async (req, res, next) => {
-  const { userId } = req.params;
+  try {
+    const { userId } = req.params;
 
-  if (req.user.id !== userId && !req.user.isAdmin) {
-    return res.status(403).json({ error: 'Accesso negato: non autorizzato' });
+    if (req.user.id !== userId && !req.user.isAdmin) {
+      return res.status(403).json({ error: 'Accesso negato: non autorizzato' });
+    }
+
+    return getUserOrders(req, res, next);
+  } catch (err) {
+    console.error('Errore nella route GET /orders/:userId:', err);
+    return res.status(500).json({ error: 'Errore interno del server' });
   }
-
-  return getUserOrders(req, res, next);
 });
 
 module.exports = router;
+
 
 

@@ -10,7 +10,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`/orders/${user.user.id}`);
+        const res = await axios.get(`/orders/${user.id}`);
         setOrders(res.data);
       } catch (err) {
         console.error('Errore nel recupero degli ordini:', err);
@@ -19,8 +19,8 @@ const Orders = () => {
       }
     };
 
-    fetchOrders();
-  }, [user.user.id]);
+    if (user?.id) fetchOrders();
+  }, [user?.id]);
 
   if (loading) return <p>Caricamento ordini...</p>;
 
@@ -58,4 +58,5 @@ const Orders = () => {
 };
 
 export default Orders;
+
 

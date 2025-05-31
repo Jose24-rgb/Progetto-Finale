@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from '../services/apis';
 import { useCart } from '../context/CartContext';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -18,9 +20,9 @@ const Home = () => {
         setLoading(false);
       }
     };
-
+  
     fetchGames();
-  }, []);
+  }, [location.key]);
 
   if (loading) return <p>Caricamento giochi...</p>;
 

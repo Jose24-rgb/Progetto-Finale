@@ -4,6 +4,7 @@ const { createCheckoutSession } = require('../controllers/stripeController');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Order = require('../models/Order');
 const transporter = require('../utils/mailer');
+const mongoose = require('mongoose');
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -106,10 +107,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
       await Order.create({
         _id: orderId,
-        userId,
-        games,
+        userId: new mongoose.Types.ObjectId(userId), // 👈 forzato ObjectId corretto
+        games: games.map(g => ({ gameId: g._id, quantity: g.quantity })),
         total: session.amount_total / 100,
-        date: new Date()
+        date: new Date(),
+        status: 'pagato'
       });
 
       console.log('✅ Ordine salvato con successo');

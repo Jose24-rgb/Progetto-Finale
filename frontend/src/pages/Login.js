@@ -17,7 +17,7 @@ function Login() {
         password,
       });
 
-      login(res.data);
+      login({ token: res.data.token, ...res.data.user });
       navigate('/');
     } catch (err) {
       alert(err.response?.data?.error || 'Login failed');

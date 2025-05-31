@@ -15,8 +15,10 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-
 exports.getUserOrders = async (req, res) => {
+  console.log('🔍 Recupero ordini per utente:', req.params.userId);
   const orders = await Order.find({ userId: req.params.userId });
   res.json(orders);
 };
+
+

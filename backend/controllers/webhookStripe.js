@@ -2,10 +2,10 @@ require('dotenv').config();
 const Order = require('../models/Order');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const mongoose = require('mongoose');
 
 exports.stripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
-
   let event;
 
   try {
@@ -20,20 +20,19 @@ exports.stripeWebhook = async (req, res) => {
     const { orderId, userId, games } = session.metadata;
 
     try {
-      const parsedGames = JSON.parse(games);
-      const total = parsedGames.reduce((acc, game) => acc + game.price * game.quantity, 0);
+      const parsedGames = JSON.parse(games); // ✅ parsing corretto
+      const exists = await Order.findOne({ _id: orderId });
 
-      const exists = await Order.findOne({ orderId });
       if (exists) {
         console.log('⚠️ Ordine già salvato');
         return res.status(200).json({ received: true });
       }
 
       await Order.create({
-        orderId,
-        userId,
-        games: parsedGames.map(g => ({ gameId: g._id, quantity: g.quantity })),
-        total,
+        _id: orderId,
+        userId: new mongoose.Types.ObjectId(userId),
+        games: parsedGames.map(g => ({ gameId: g._id, quantity: g.quantity })), // ✅ uso corretto
+        total: session.amount_total / 100,
         status: 'pagato',
         date: new Date()
       });
@@ -46,5 +45,6 @@ exports.stripeWebhook = async (req, res) => {
 
   res.status(200).json({ received: true });
 };
+
 
 

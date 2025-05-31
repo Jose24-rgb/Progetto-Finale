@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  orderId: { type: String, required: true, unique: true }, // 🔥 Aggiunto
-  user:    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // 👈 rinominato per coerenza
-  games:   [{ gameId: mongoose.Schema.Types.ObjectId, quantity: Number }],
-  total:   Number,
-  date:    { type: Date, default: Date.now },
-  status:  { type: String, default: 'pagato' } // 🔥 Aggiunto se vuoi tenere traccia
+  _id:      { type: String, required: true }, // orderId da Stripe
+  userId:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  games:    [{ gameId: mongoose.Schema.Types.ObjectId, quantity: Number }],
+  total:    { type: Number, required: true },
+  date:     { type: Date, default: Date.now },
+  status:   { type: String, default: 'pagato' }
 });
 
 module.exports = mongoose.model('Order', orderSchema);
+
+
+
 
