@@ -11,12 +11,13 @@ dotenv.config({
 });
 
 const app = express();
+app.set('trust proxy', 1); // <--- ✅ AGGIUNTA PER EVITARE WARNING CON NGROK
 connectDB();
 
 // Sicurezza
 app.use(helmet());
 
-// Limitazione richieste
+// Limite richieste
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -24,18 +25,21 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Body parser (dopo eventuali webhook raw)
+// ⚠️ Importante: RAW BODY PRIMA DI express.json()
+app.use('/api/checkout/webhook', require('./routes/stripeWebhookRoute'));
+
+// Ora JSON e CORS per il resto
 app.use(express.json());
 app.use(cors());
 
-// Swagger UI
+// Swagger
 setupSwagger(app);
 
-// Rotte API
+// Altre API
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/games', require('./routes/gameRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
-app.use('/api/checkout', require('./routes/stripeRoutes')); // contiene anche il webhook corretto
+app.use('/api/checkout', require('./routes/stripeRoutes'));
 
 module.exports = app;
 
@@ -45,6 +49,10 @@ if (require.main === module) {
     console.log(`🚀 Server running on port ${PORT}`);
   });
 }
+
+
+
+
 
 
 
