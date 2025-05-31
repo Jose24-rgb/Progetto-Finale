@@ -9,6 +9,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Success from './pages/Success';
 import Cancel from './pages/Cancel';
+import Orders from './pages/Orders';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -54,6 +55,14 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/orders"
+              element={
+                <PrivateRoute>
+                  <Orders />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </CartProvider>
@@ -62,6 +71,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
