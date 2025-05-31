@@ -10,7 +10,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get('/orders');
+        const res = await axios.get(`/orders/${user.user.id}`);
         setOrders(res.data);
       } catch (err) {
         console.error('Errore nel recupero degli ordini:', err);
@@ -20,7 +20,7 @@ const Orders = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [user.user.id]);
 
   if (loading) return <p>Caricamento ordini...</p>;
 
@@ -34,19 +34,19 @@ const Orders = () => {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Ordine</th>
+                <th>ID Ordine</th>
                 <th>Data</th>
                 <th>Totale</th>
                 <th>Stato</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map(order => (
-                <tr key={order.orderId}>
-                  <td>{order.orderId}</td>
-                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{new Date(order.date).toLocaleDateString()}</td>
                   <td>€ {order.total.toFixed(2)}</td>
-                  <td>{order.status}</td>
+                  <td>{order.status || 'pagato'}</td>
                 </tr>
               ))}
             </tbody>
@@ -58,3 +58,4 @@ const Orders = () => {
 };
 
 export default Orders;
+
