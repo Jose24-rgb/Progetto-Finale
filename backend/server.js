@@ -40,6 +40,8 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/games', require('./routes/gameRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/checkout', require('./routes/stripeRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
+
 
 module.exports = app;
 

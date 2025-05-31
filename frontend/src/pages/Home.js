@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from '../services/apis';
 import { useCart } from '../context/CartContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom'; // ✅ Link importato
 
 const Home = () => {
   const [games, setGames] = useState([]);
@@ -39,7 +39,11 @@ const Home = () => {
                 alt={game.title}
               />
               <div className="card-body">
-                <h5 className="card-title">{game.title}</h5>
+                <h5 className="card-title">
+                  <Link to={`/games/${game._id}`} className="text-decoration-none">
+                    {game.title}
+                  </Link>
+                </h5>
                 <p className="card-text">{game.genre}</p>
                 {game.discount > 0 ? (
                   <>
@@ -69,4 +73,5 @@ const Home = () => {
 };
 
 export default Home;
+
 

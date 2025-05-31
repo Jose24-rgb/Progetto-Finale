@@ -11,6 +11,8 @@ import Success from './pages/Success';
 import Cancel from './pages/Cancel';
 import Orders from './pages/Orders';
 import PrivateRoute from './components/PrivateRoute';
+import GameDetail from './pages/GameDetail';
+
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/games/:id" element={<GameDetail />} />
 
             <Route
               path="/cart"
