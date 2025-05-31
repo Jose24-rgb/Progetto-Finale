@@ -12,14 +12,20 @@ exports.createCheckoutSession = async (req, res) => {
 
     const orderId = crypto.randomUUID();
 
-    const lineItems = games.map(game => ({
-      price_data: {
-        currency: 'eur',
-        product_data: { name: game.title },
-        unit_amount: Math.round(game.price * 100)
-      },
-      quantity: game.quantity
-    }));
+    const lineItems = games.map(game => {
+      const discountedPrice = game.discount > 0
+        ? game.price * (1 - game.discount / 100)
+        : game.price;
+
+      return {
+        price_data: {
+          currency: 'eur',
+          product_data: { name: game.title },
+          unit_amount: Math.round(discountedPrice * 100)
+        },
+        quantity: game.quantity
+      };
+    });
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -35,6 +41,7 @@ exports.createCheckoutSession = async (req, res) => {
           _id: g._id,
           title: g.title,
           price: g.price,
+          discount: g.discount,
           quantity: g.quantity
         })))
       }
@@ -46,6 +53,7 @@ exports.createCheckoutSession = async (req, res) => {
     res.status(500).json({ error: 'Errore durante la creazione della sessione di pagamento' });
   }
 };
+
 
 
 

@@ -47,12 +47,30 @@ const GameDetail = () => {
 
   if (!game) return <p>Caricamento...</p>;
 
+  const finalPrice = game.discount > 0
+    ? game.price * (1 - game.discount / 100)
+    : game.price;
+
   return (
     <div className="container mt-5">
       <h2>{game.title}</h2>
       <img src={game.imageUrl} alt={game.title} className="img-fluid my-3" />
       <p><strong>Genere:</strong> {game.genre}</p>
-      <p><strong>Prezzo:</strong> € {game.price.toFixed(2)}</p>
+      <p>
+        <strong>Prezzo:</strong>{' '}
+        {game.discount > 0 ? (
+          <>
+            <span className="text-muted text-decoration-line-through">
+              € {game.price.toFixed(2)}
+            </span>{' '}
+            <span className="text-success fw-bold">
+              € {finalPrice.toFixed(2)} (-{game.discount}%)
+            </span>
+          </>
+        ) : (
+          `€ ${game.price.toFixed(2)}`
+        )}
+      </p>
 
       <hr />
       <h4>🗣️ Recensioni</h4>
@@ -106,3 +124,4 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+

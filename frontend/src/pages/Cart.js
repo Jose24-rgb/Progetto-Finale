@@ -7,7 +7,12 @@ function Cart() {
   const { cart, removeFromCart } = useCart();
   const { user } = useAuth();
 
-  const total = cart.reduce((acc, game) => acc + game.price * game.quantity, 0);
+  const total = cart.reduce((acc, game) => {
+    const finalPrice = game.discount > 0
+      ? game.price * (1 - game.discount / 100)
+      : game.price;
+    return acc + finalPrice * game.quantity;
+  }, 0);
 
   const handleCheckout = async () => {
     if (!user) {
@@ -19,11 +24,11 @@ function Cart() {
       console.log('🔁 Inizio checkout con:', user.id, cart);
 
       const res = await axios.post('/checkout/create-checkout-session', {
-        userId: user.id, // ✅ corretto
+        userId: user.id,
         games: cart,
       });
 
-      window.location.href = res.data.url; // ✅ Redirect a Stripe
+      window.location.href = res.data.url;
     } catch (err) {
       console.error('❌ Errore nel checkout:', err);
       alert('Errore nel processo di pagamento.');
@@ -38,19 +43,39 @@ function Cart() {
       ) : (
         <>
           <ul className="list-group mb-4">
-            {cart.map((game, index) => (
-              <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <strong>{game.title}</strong> — € {game.price.toFixed(2)} × {game.quantity}
-                </div>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => removeFromCart(game._id)}
-                >
-                  Rimuovi
-                </button>
-              </li>
-            ))}
+            {cart.map((game, index) => {
+              const pricePerItem = game.discount > 0
+                ? game.price * (1 - game.discount / 100)
+                : game.price;
+
+              return (
+                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{game.title}</strong>
+                    <br />
+                    {game.discount > 0 ? (
+                      <>
+                        <span className="text-muted text-decoration-line-through">
+                          € {game.price.toFixed(2)}
+                        </span>{' '}
+                        <span className="text-success fw-bold">
+                          € {pricePerItem.toFixed(2)} (-{game.discount}%)
+                        </span>{' '}
+                        × {game.quantity}
+                      </>
+                    ) : (
+                      <> — € {game.price.toFixed(2)} × {game.quantity}</>
+                    )}
+                  </div>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => removeFromCart(game._id)}
+                  >
+                    Rimuovi
+                  </button>
+                </li>
+              );
+            })}
           </ul>
           <h4>Totale: € {total.toFixed(2)}</h4>
           <button className="btn btn-success w-100 mt-3" onClick={handleCheckout}>
@@ -63,5 +88,7 @@ function Cart() {
 }
 
 export default Cart;
+
+
 
 
