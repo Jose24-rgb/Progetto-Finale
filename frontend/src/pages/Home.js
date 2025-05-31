@@ -20,7 +20,7 @@ const Home = () => {
         setLoading(false);
       }
     };
-  
+
     fetchGames();
   }, [location.key]);
 
@@ -41,7 +41,18 @@ const Home = () => {
               <div className="card-body">
                 <h5 className="card-title">{game.title}</h5>
                 <p className="card-text">{game.genre}</p>
-                <p className="card-text fw-bold">€ {game.price.toFixed(2)}</p>
+                {game.discount > 0 ? (
+                  <>
+                    <p className="card-text text-muted text-decoration-line-through mb-1">
+                      € {game.price.toFixed(2)}
+                    </p>
+                    <p className="card-text fw-bold text-success">
+                      € {(game.price * (1 - game.discount / 100)).toFixed(2)} (-{game.discount}%)
+                    </p>
+                  </>
+                ) : (
+                  <p className="card-text fw-bold">€ {game.price.toFixed(2)}</p>
+                )}
                 <button
                   className="btn btn-primary w-100"
                   onClick={() => addToCart(game)}

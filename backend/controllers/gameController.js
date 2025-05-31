@@ -22,7 +22,7 @@ exports.getGameById = async (req, res) => {
 
 exports.createGame = async (req, res) => {
   try {
-    const { title, genre, price } = req.body;
+    const { title, genre, price, discount } = req.body;
     let imageUrl = '';
 
     if (req.file) {
@@ -32,7 +32,7 @@ exports.createGame = async (req, res) => {
       imageUrl = result.secure_url;
     }
 
-    const newGame = await Game.create({ title, genre, price, imageUrl });
+    const newGame = await Game.create({ title, genre, price, discount, imageUrl });
     res.status(201).json(newGame);
   } catch (err) {
     console.error('❌ Errore creazione gioco:', err.message);
@@ -55,7 +55,7 @@ exports.updateGame = async (req, res) => {
     res.json(updated);
   } catch (err) {
     console.error('❌ Errore aggiornamento gioco:', err.message);
-    res.status(500).json({ error: 'Errore nell\'aggiornare il gioco' });
+    res.status(500).json({ error: "Errore nell'aggiornare il gioco" });
   }
 };
 
