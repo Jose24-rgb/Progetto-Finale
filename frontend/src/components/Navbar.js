@@ -25,7 +25,7 @@ const Navbar = () => {
                 <Link className="nav-link" to="/orders">📦 Ordini</Link>
               </li>
               <li className="nav-item">
-                <span className="nav-link">👋 {user.user.username}</span>
+              <span className="nav-link">👋 {user?.username || 'Utente'}</span>
               </li>
               <li className="nav-item">
                 <button className="btn btn-outline-light ms-2" onClick={handleLogout}>Logout</button>

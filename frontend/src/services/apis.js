@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_URL,  // <-- corretta chiave
 });
 
 api.interceptors.request.use((config) => {
@@ -14,3 +14,4 @@ api.interceptors.request.use((config) => {
 });
 
 export default api;
+

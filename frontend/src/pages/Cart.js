@@ -16,12 +16,14 @@ function Cart() {
     }
 
     try {
+      console.log('🔁 Inizio checkout con:', user.id, cart);
+
       const res = await axios.post('/checkout/create-checkout-session', {
-        userId: user.user.id,
+        userId: user.id, // ✅ corretto
         games: cart,
       });
 
-      window.location.href = res.data.url;
+      window.location.href = res.data.url; // ✅ Redirect a Stripe
     } catch (err) {
       console.error('❌ Errore nel checkout:', err);
       alert('Errore nel processo di pagamento.');
