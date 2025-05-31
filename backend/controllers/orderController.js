@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const mongoose = require('mongoose');
 
 exports.createOrder = async (req, res) => {
   const { userId, games, total } = req.body;
@@ -16,9 +17,17 @@ exports.createOrder = async (req, res) => {
 };
 
 exports.getUserOrders = async (req, res) => {
-  console.log('🔍 Recupero ordini per utente:', req.params.userId);
-  const orders = await Order.find({ userId: req.params.userId });
-  res.json(orders);
+  try {
+    const userId = new mongoose.Types.ObjectId(req.params.userId); // ✅ Conversione importante
+    console.log('🔍 Recupero ordini per utente:', userId);
+    
+    const orders = await Order.find({ userId });
+    res.json(orders);
+  } catch (err) {
+    console.error('❌ Errore nel recupero ordini:', err);
+    res.status(500).json({ error: 'Errore interno nel recupero ordini' });
+  }
 };
+
 
 

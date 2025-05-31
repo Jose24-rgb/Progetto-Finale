@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 const setupSwagger = require('./config/swagger');
-const { stripeWebhook } = require('./controllers/webhookStripe');
 
 dotenv.config({
   path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
@@ -14,13 +13,10 @@ dotenv.config({
 const app = express();
 connectDB();
 
-// ✅ Webhook Stripe con express.raw()
-app.post('/api/checkout/webhook', express.raw({ type: 'application/json' }), stripeWebhook);
-
 // Sicurezza
 app.use(helmet());
 
-// Rate limiting
+// Limitazione richieste
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -28,28 +24,29 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// ✅ Body parser solo dopo webhook
+// Body parser (dopo eventuali webhook raw)
 app.use(express.json());
 app.use(cors());
 
 // Swagger UI
 setupSwagger(app);
 
-// API routes
+// Rotte API
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/games', require('./routes/gameRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
-app.use('/api/checkout', require('./routes/stripeRoutes'));
+app.use('/api/checkout', require('./routes/stripeRoutes')); // contiene anche il webhook corretto
 
 module.exports = app;
 
-// Server
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
   });
 }
+
+
 
 
 

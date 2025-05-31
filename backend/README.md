@@ -88,6 +88,8 @@ CRUD giochi (Admin)
 
 📘 API Documentation
 http://localhost:5000/api-docs
+ngrok http 5000
+
 
 Sviluppato da José Bueso
 📧 josephbueso1997al@gmail.com

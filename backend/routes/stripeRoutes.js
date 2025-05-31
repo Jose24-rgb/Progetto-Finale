@@ -8,9 +8,7 @@ const mongoose = require('mongoose');
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-
 const isValidEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
 
 const sendErrorEmailToCustomer = async (email, message) => {
   if (!isValidEmail(email)) return;
@@ -42,7 +40,6 @@ const sendErrorEmailToCustomer = async (email, message) => {
  *             properties:
  *               userId:
  *                 type: string
- *                 example: "60b6c0c1f1c2b530cc98e6d1"
  *               games:
  *                 type: array
  *                 items:
@@ -50,16 +47,12 @@ const sendErrorEmailToCustomer = async (email, message) => {
  *                   properties:
  *                     _id:
  *                       type: string
- *                       example: "60b6c0c1f1c2b530cc98e6d2"
  *                     title:
  *                       type: string
- *                       example: Cyberpunk 2077
  *                     price:
  *                       type: number
- *                       example: 59.99
  *                     quantity:
  *                       type: number
- *                       example: 1
  *     responses:
  *       200:
  *         description: URL di checkout creato
@@ -73,7 +66,9 @@ const sendErrorEmailToCustomer = async (email, message) => {
  */
 router.post('/create-checkout-session', createCheckoutSession);
 
-
+/**
+ * Webhook Stripe per gestire gli eventi di pagamento completati
+ */
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
@@ -107,8 +102,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
       await Order.create({
         _id: orderId,
-        userId: new mongoose.Types.ObjectId(userId), // 👈 forzato ObjectId corretto
-        games: games.map(g => ({ gameId: g._id, quantity: g.quantity })),
+        userId: new mongoose.Types.ObjectId(userId),
+        games: games.map(g => ({
+          gameId: g._id,
+          quantity: g.quantity
+        })),
         total: session.amount_total / 100,
         date: new Date(),
         status: 'pagato'
@@ -116,6 +114,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
       console.log('✅ Ordine salvato con successo');
 
+      // Email al cliente
       if (isValidEmail(email)) {
         await transporter.sendMail({
           from: `"GameDev Shop" <${process.env.EMAIL_USER}>`,
@@ -132,6 +131,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         console.warn('⚠️ Email cliente non valida');
       }
 
+      // Email all'admin
       await transporter.sendMail({
         from: `"GameDev Shop" <${process.env.EMAIL_USER}>`,
         to: process.env.EMAIL_USER,
@@ -146,7 +146,6 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
     } catch (err) {
       console.error('❌ Errore salvataggio ordine:', err.message);
-
       if (isValidEmail(email)) {
         await sendErrorEmailToCustomer(email, 'C’è stato un problema nel completare il tuo ordine. Il nostro team è stato avvisato.');
       }
@@ -157,6 +156,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 });
 
 module.exports = router;
+
 
 
 
