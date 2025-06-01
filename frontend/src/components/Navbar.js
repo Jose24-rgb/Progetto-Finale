@@ -19,13 +19,19 @@ const Navbar = () => {
             <Link className="nav-link" to="/cart">🛒 Carrello</Link>
           </li>
 
+          {user?.isAdmin && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/admin/create-game">➕ Crea Gioco</Link>
+            </li>
+          )}
+
           {user ? (
             <>
               <li className="nav-item">
                 <Link className="nav-link" to="/orders">📦 Ordini</Link>
               </li>
               <li className="nav-item">
-              <span className="nav-link">👋 {user?.username || 'Utente'}</span>
+                <span className="nav-link">👋 {user?.username || 'Utente'}</span>
               </li>
               <li className="nav-item">
                 <button className="btn btn-outline-light ms-2" onClick={handleLogout}>Logout</button>
@@ -48,5 +54,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
 
 

@@ -11,8 +11,10 @@ import Success from './pages/Success';
 import Cancel from './pages/Cancel';
 import Orders from './pages/Orders';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute'; // ✅ AGGIUNTO
 import GameDetail from './pages/GameDetail';
-
+import AdminCreateGame from './pages/AdminCreateGame';
+import AdminEditGame from './pages/AdminEditGame';
 
 function App() {
   return (
@@ -26,6 +28,25 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/games/:id" element={<GameDetail />} />
 
+            {/* ✅ ROTTE PROTETTE SOLO PER ADMIN */}
+            <Route
+              path="/admin/create-game"
+              element={
+                <AdminRoute>
+                  <AdminCreateGame />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/edit-game/:id"
+              element={
+                <AdminRoute>
+                  <AdminEditGame />
+                </AdminRoute>
+              }
+            />
+
+            {/* ✅ ROTTE PRIVATE PER UTENTI AUTENTICATI */}
             <Route
               path="/cart"
               element={
@@ -74,6 +95,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

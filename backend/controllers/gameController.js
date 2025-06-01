@@ -3,8 +3,67 @@ const { cloudinary } = require('../config/cloudinary');
 const mongoose = require('mongoose');
 
 exports.getAllGames = async (req, res) => {
-  const games = await Game.find();
-  res.json(games);
+  try {
+    const {
+      genre,
+      platform,
+      system,
+      type,
+      sort,
+      priceMin,
+      priceMax,
+      inStock
+    } = req.query;
+
+    const filter = {};
+
+    if (genre) filter.genre = genre;
+    if (platform) filter.platform = platform;
+    if (system) filter.system = system;
+    if (type && type !== 'Tutto') filter.type = type;
+
+    if (priceMin || priceMax) {
+      filter.price = {};
+      if (priceMin) filter.price.$gte = parseFloat(priceMin);
+      if (priceMax) filter.price.$lte = parseFloat(priceMax);
+    }
+
+    if (inStock === 'true') {
+      filter.stock = { $gt: 0 };
+    }
+
+    let sortOption = {};
+    switch (sort) {
+      case 'Prezzo: da basso ad alto':
+        sortOption.price = 1;
+        break;
+      case 'Prezzo: da alto a basso':
+        sortOption.price = -1;
+        break;
+      case 'Sconto: migliore':
+        sortOption.discount = -1;
+        break;
+      case 'Recensioni: migliore':
+        sortOption.reviewsAvg = -1;
+        break;
+      case 'Uscita: nuovo':
+        sortOption.createdAt = -1;
+        break;
+      case 'Uscita: vecchio':
+        sortOption.createdAt = 1;
+        break;
+      case 'Bestseller':
+      default:
+        sortOption = { createdAt: -1 };
+        break;
+    }
+
+    const games = await Game.find(filter).sort(sortOption);
+    res.json(games);
+  } catch (err) {
+    console.error('❌ Errore filtro giochi:', err.message);
+    res.status(500).json({ error: 'Errore nel recupero dei giochi' });
+  }
 };
 
 exports.getGameById = async (req, res) => {
@@ -63,5 +122,6 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
 
 

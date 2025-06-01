@@ -1,18 +1,30 @@
 import { useEffect, useState } from 'react';
 import axios from '../services/apis';
 import { useCart } from '../context/CartContext';
-import { useLocation, Link } from 'react-router-dom'; // ✅ Link importato
+import { useLocation, Link } from 'react-router-dom';
+import Filters from '../components/Filters'; // ⬅️ Importa il nuovo componente
 
 const Home = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({});
   const { addToCart } = useCart();
   const location = useLocation();
 
+  const buildQuery = (obj) => {
+    const query = Object.entries(obj)
+      .filter(([_, value]) => value !== '' && value !== null && value !== false)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+    return query ? `?${query}` : '';
+  };
+
   useEffect(() => {
     const fetchGames = async () => {
+      setLoading(true);
       try {
-        const res = await axios.get('/games');
+        const query = buildQuery(filters);
+        const res = await axios.get(`/games${query}`);
         setGames(res.data);
       } catch (err) {
         console.error('Errore nel recupero giochi:', err);
@@ -22,13 +34,22 @@ const Home = () => {
     };
 
     fetchGames();
-  }, [location.key]);
+  }, [filters, location.key]);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
   if (loading) return <p>Caricamento giochi...</p>;
 
   return (
     <div className="container mt-4">
       <h2 className="mb-4">🎮 Giochi disponibili</h2>
+
+      {/* ✅ FILTRI */}
+      <Filters onFilterChange={handleFilterChange} />
+
+      {/* ✅ LISTA GIOCHI */}
       <div className="row">
         {games.map((game) => (
           <div className="col-md-4 mb-4" key={game._id}>
@@ -73,5 +94,6 @@ const Home = () => {
 };
 
 export default Home;
+
 
 

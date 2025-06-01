@@ -72,6 +72,15 @@ const GameDetail = () => {
         )}
       </p>
 
+      {/* ✅ Solo admin può vedere questo pulsante */}
+      {user?.isAdmin && (
+        <div className="mb-3">
+          <a href={`/admin/edit-game/${game._id}`} className="btn btn-warning">
+            ✏️ Modifica Gioco
+          </a>
+        </div>
+      )}
+
       <hr />
       <h4>🗣️ Recensioni</h4>
       {reviews.length === 0 ? (
@@ -124,4 +133,5 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
 
