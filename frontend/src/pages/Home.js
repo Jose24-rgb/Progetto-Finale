@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import axios from '../services/apis';
 import { useCart } from '../context/CartContext';
 import { useLocation, Link } from 'react-router-dom';
-import Filters from '../components/Filters'; // ⬅️ Importa il nuovo componente
+import Filters from '../components/Filters';
 
 const Home = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState(() => {
+    const stored = localStorage.getItem('filters');
+    return stored ? JSON.parse(stored) : {};
+  });
   const { addToCart } = useCart();
   const location = useLocation();
 
@@ -38,57 +41,70 @@ const Home = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
+    localStorage.setItem('filters', JSON.stringify(newFilters));
   };
-
-  if (loading) return <p>Caricamento giochi...</p>;
 
   return (
     <div className="container mt-4">
       <h2 className="mb-4">🎮 Giochi disponibili</h2>
 
-      {/* ✅ FILTRI */}
-      <Filters onFilterChange={handleFilterChange} />
+      <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
-      {/* ✅ LISTA GIOCHI */}
-      <div className="row">
-        {games.map((game) => (
-          <div className="col-md-4 mb-4" key={game._id}>
-            <div className="card h-100">
-              <img
-                src={game.imageUrl}
-                className="card-img-top"
-                alt={game.title}
-              />
-              <div className="card-body">
-                <h5 className="card-title">
-                  <Link to={`/games/${game._id}`} className="text-decoration-none">
-                    {game.title}
-                  </Link>
-                </h5>
-                <p className="card-text">{game.genre}</p>
-                {game.discount > 0 ? (
-                  <>
-                    <p className="card-text text-muted text-decoration-line-through mb-1">
-                      € {game.price.toFixed(2)}
-                    </p>
-                    <p className="card-text fw-bold text-success">
-                      € {(game.price * (1 - game.discount / 100)).toFixed(2)} (-{game.discount}%)
-                    </p>
-                  </>
-                ) : (
-                  <p className="card-text fw-bold">€ {game.price.toFixed(2)}</p>
-                )}
-                <button
-                  className="btn btn-primary w-100"
-                  onClick={() => addToCart(game)}
-                >
-                  Aggiungi al carrello
-                </button>
+      {loading ? (
+        <p>Caricamento giochi...</p>
+      ) : games.length === 0 ? (
+        <p className="text-muted">Nessun risultato trovato.</p>
+      ) : (
+        <div className="row">
+          {games.map((game) => {
+            const finalPrice = game.discount > 0
+              ? game.price * (1 - game.discount / 100)
+              : game.price;
+
+            return (
+              <div className="col-md-4 mb-4" key={game._id}>
+                <div className="card h-100">
+                  <img
+                    src={game.imageUrl}
+                    className="card-img-top"
+                    alt={game.title}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      <Link to={`/games/${game._id}`} className="text-decoration-none">
+                        {game.title}
+                      </Link>
+                    </h5>
+                    <p className="card-text mb-1"><strong>🎮 Genere:</strong> {game.genre}</p>
+                    <p className="card-text mb-1"><strong>🖥️ Sistema:</strong> {game.system || '—'}</p>
+                    <p className="card-text mb-1"><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
+                    <p className="card-text mb-1"><strong>📦 Tipo:</strong> {game.type || '—'}</p>
+                    <p className="card-text mb-2"><strong>🔄 Stock:</strong> {game.stock}</p>
+                    {game.discount > 0 ? (
+                      <>
+                        <p className="card-text text-muted text-decoration-line-through mb-1">
+                          € {game.price.toFixed(2)}
+                        </p>
+                        <p className="card-text fw-bold text-success">
+                          € {finalPrice.toFixed(2)} (-{game.discount}%)
+                        </p>
+                      </>
+                    ) : (
+                      <p className="card-text fw-bold">€ {game.price.toFixed(2)}</p>
+                    )}
+                    <button
+                      className="btn btn-primary w-100"
+                      onClick={() => addToCart(game)}
+                    >
+                      Aggiungi al carrello
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

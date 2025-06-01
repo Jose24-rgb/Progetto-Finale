@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../services/apis';
 import { useAuth } from '../context/AuthContext';
 
@@ -55,9 +55,15 @@ const GameDetail = () => {
     <div className="container mt-5">
       <h2>{game.title}</h2>
       <img src={game.imageUrl} alt={game.title} className="img-fluid my-3" />
-      <p><strong>Genere:</strong> {game.genre}</p>
+
+      <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
+      <p><strong>🖥 Sistema:</strong> {game.system || '—'}</p>
+      <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
+      <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
+      <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
+
       <p>
-        <strong>Prezzo:</strong>{' '}
+        <strong>💰 Prezzo:</strong>{' '}
         {game.discount > 0 ? (
           <>
             <span className="text-muted text-decoration-line-through">
@@ -72,12 +78,11 @@ const GameDetail = () => {
         )}
       </p>
 
-      {/* ✅ Solo admin può vedere questo pulsante */}
       {user?.isAdmin && (
         <div className="mb-3">
-          <a href={`/admin/edit-game/${game._id}`} className="btn btn-warning">
+          <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
             ✏️ Modifica Gioco
-          </a>
+          </Link>
         </div>
       )}
 
@@ -133,5 +138,6 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
 
 

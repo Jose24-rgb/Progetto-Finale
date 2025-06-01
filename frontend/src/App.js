@@ -11,10 +11,11 @@ import Success from './pages/Success';
 import Cancel from './pages/Cancel';
 import Orders from './pages/Orders';
 import PrivateRoute from './components/PrivateRoute';
-import AdminRoute from './components/AdminRoute'; // ✅ AGGIUNTO
+import AdminRoute from './components/AdminRoute';
 import GameDetail from './pages/GameDetail';
 import AdminCreateGame from './pages/AdminCreateGame';
 import AdminEditGame from './pages/AdminEditGame';
+import AdminGameList from './pages/AdminGameList'; // ✅ importato
 
 function App() {
   return (
@@ -42,6 +43,14 @@ function App() {
               element={
                 <AdminRoute>
                   <AdminEditGame />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/games"
+              element={
+                <AdminRoute>
+                  <AdminGameList />
                 </AdminRoute>
               }
             />
