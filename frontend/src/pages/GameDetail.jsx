@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
 import { useAuth } from '../context/AuthContext';
 
 const GameDetail = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
@@ -30,6 +31,19 @@ const GameDetail = () => {
     fetchGame();
     fetchReviews();
   }, [id, user]);
+
+  const handleDelete = async () => {
+    const confirm = window.confirm('Sei sicuro di voler eliminare questo gioco?');
+    if (!confirm) return;
+
+    try {
+      await api.delete(`/games/${id}`);
+      alert('Gioco eliminato con successo');
+      navigate('/');
+    } catch (err) {
+      alert('Errore durante l\'eliminazione');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,23 +80,26 @@ const GameDetail = () => {
         <strong>💰 Prezzo:</strong>{' '}
         {game.discount > 0 ? (
           <>
-            <span className="text-muted text-decoration-line-through">
+            <span className="text-muted text-decoration-line-through me-2">
               € {game.price.toFixed(2)}
-            </span>{' '}
+            </span>
             <span className="text-success fw-bold">
               € {finalPrice.toFixed(2)} (-{game.discount}%)
             </span>
           </>
         ) : (
-          `€ ${game.price.toFixed(2)}`
+          <>€ {game.price.toFixed(2)}</>
         )}
       </p>
 
       {user?.isAdmin && (
-        <div className="mb-3">
+        <div className="d-flex gap-2 mb-3">
           <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
             ✏️ Modifica Gioco
           </Link>
+          <button className="btn btn-danger" onClick={handleDelete}>
+            🗑️ Elimina Gioco
+          </button>
         </div>
       )}
 
@@ -138,6 +155,9 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
+
+
 
 
 
