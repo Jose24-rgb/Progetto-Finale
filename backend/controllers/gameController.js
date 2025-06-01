@@ -85,7 +85,17 @@ exports.getGameById = async (req, res) => {
 
 exports.createGame = async (req, res) => {
   try {
-    const { title, genre, price, discount } = req.body;
+    const {
+      title,
+      genre,
+      price,
+      discount,
+      stock,
+      platform,
+      system,
+      type
+    } = req.body;
+
     let imageUrl = '';
 
     if (req.file) {
@@ -95,7 +105,18 @@ exports.createGame = async (req, res) => {
       imageUrl = result.secure_url;
     }
 
-    const newGame = await Game.create({ title, genre, price, discount, imageUrl });
+    const newGame = await Game.create({
+      title,
+      genre,
+      price,
+      discount,
+      stock,
+      platform,
+      system,
+      type,
+      imageUrl
+    });
+
     res.status(201).json(newGame);
   } catch (err) {
     console.error('❌ Errore creazione gioco:', err.message);

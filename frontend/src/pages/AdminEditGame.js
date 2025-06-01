@@ -5,6 +5,7 @@ import api from '../services/apis';
 const AdminEditGame = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     title: '',
     genre: '',
@@ -15,6 +16,8 @@ const AdminEditGame = () => {
     system: '',
     type: 'Gioco',
   });
+
+  const [originalForm, setOriginalForm] = useState(null);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -22,6 +25,7 @@ const AdminEditGame = () => {
       try {
         const res = await api.get(`/games/${id}`);
         setForm(res.data);
+        setOriginalForm(res.data);
       } catch (err) {
         alert('Errore nel recupero dati del gioco');
         navigate('/');
@@ -50,6 +54,47 @@ const AdminEditGame = () => {
       navigate('/');
     } catch (err) {
       alert(err.response?.data?.error || 'Errore aggiornamento');
+    }
+  };
+
+  const handleRestore = () => {
+    if (originalForm) {
+      setForm(originalForm);
+      setImage(null);
+    }
+  };
+
+  const handleClear = () => {
+    setForm({
+      title: '',
+      genre: '',
+      price: '',
+      discount: 0,
+      stock: 1,
+      platform: '',
+      system: '',
+      type: 'Gioco',
+    });
+    setImage(null);
+  };
+
+  const handleExit = () => {
+    const confirmExit = window.confirm('Vuoi uscire senza salvare le modifiche?');
+    if (confirmExit) {
+      navigate('/');
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm('Sei sicuro di voler eliminare questo gioco?');
+    if (confirmed) {
+      try {
+        await api.delete(`/games/${id}`);
+        alert('Gioco eliminato');
+        navigate('/');
+      } catch (err) {
+        alert('Errore durante l\'eliminazione');
+      }
     }
   };
 
@@ -97,7 +142,6 @@ const AdminEditGame = () => {
           value={form.stock}
           onChange={handleChange}
         />
-
         <select
           className="form-control my-2"
           name="platform"
@@ -150,7 +194,13 @@ const AdminEditGame = () => {
           accept="image/png, image/jpeg"
         />
 
-        <button className="btn btn-primary">Salva modifiche</button>
+        <div className="d-flex gap-2 flex-wrap mt-3">
+          <button type="submit" className="btn btn-primary">Salva modifiche</button>
+          <button type="button" className="btn btn-info" onClick={handleRestore}>🔄 Restaura modifiche</button>
+          <button type="button" className="btn btn-danger" onClick={handleClear}>🧹 Elimina modifiche</button>
+          <button type="button" className="btn btn-dark" onClick={handleExit}>❌ Esci senza salvare</button>
+          <button type="button" className="btn btn-outline-danger" onClick={handleDelete}>🗑️ Elimina gioco</button>
+        </div>
       </form>
     </div>
   );

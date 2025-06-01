@@ -14,8 +14,18 @@ const Filters = ({ onFilterChange }) => {
 
   const systems = ['PC', 'PlayStation 5', 'Xbox Series X|S', 'Switch', 'Switch 2'];
   const platforms = ['Epic Games', 'Steam', 'EA App', 'Rockstar', 'Ubisoft Connect', 'Nintendo eShop', 'Microsoft Store'];
-  const genres = ['Altro', 'Arcade', 'Avventura', 'Azione', 'FPS', 'MMO', 'Indies', 'Coop online', 'Free to Play']; // <-- Puoi estenderli
-  const types = ['Tutto', 'Giochi e DLC', 'Solo DLC', 'Solo giochi', 'Preordini', 'Carte regalo', 'Abbonamenti'];
+  const genres = ['Altro', 'Arcade', 'Avventura', 'Azione', 'FPS', 'MMO', 'Indies', 'Coop online', 'Free to Play'];
+
+  // 🔄 Mappatura visiva → valore effettivo
+  const types = [
+    { label: 'Tutto', value: '' },
+    { label: 'Giochi e DLC', value: 'Gioco + DLC' },
+    { label: 'Solo DLC', value: 'DLC' },
+    { label: 'Solo giochi', value: 'Gioco' },
+    { label: 'Preordini', value: 'Preordine' },
+    { label: 'Carte regalo', value: 'Carte regalo' },
+    { label: 'Abbonamenti', value: 'Abbonamento' }
+  ];
 
   const sorts = [
     'Bestseller',
@@ -91,7 +101,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
       <div className="col-md-1">
         <select className="form-select" name="type" onChange={handleChange}>
-          {types.map(t => <option key={t} value={t}>{t}</option>)}
+          {types.map(t => (
+            <option key={t.label} value={t.value}>{t.label}</option>
+          ))}
         </select>
       </div>
     </div>
@@ -99,3 +111,4 @@ const Filters = ({ onFilterChange }) => {
 };
 
 export default Filters;
+

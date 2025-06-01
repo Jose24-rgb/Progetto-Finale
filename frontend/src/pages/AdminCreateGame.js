@@ -28,7 +28,9 @@ const AdminCreateGame = () => {
     e.preventDefault();
     try {
       const data = new FormData();
-      Object.entries(form).forEach(([key, val]) => data.append(key, val));
+      Object.entries(form).forEach(([key, val]) => {
+        if (val) data.append(key, val);
+      });
       if (image) data.append('image', image);
 
       await api.post('/games', data);
@@ -83,11 +85,13 @@ const AdminCreateGame = () => {
           value={form.stock}
           onChange={handleChange}
         />
+
         <select
           className="form-control my-2"
           name="platform"
           value={form.platform}
           onChange={handleChange}
+          required
         >
           <option value="">Seleziona piattaforma</option>
           <option>Steam</option>
@@ -98,11 +102,13 @@ const AdminCreateGame = () => {
           <option>Nintendo eShop</option>
           <option>Microsoft Store</option>
         </select>
+
         <select
           className="form-control my-2"
           name="system"
           value={form.system}
           onChange={handleChange}
+          required
         >
           <option value="">Seleziona sistema</option>
           <option>PC</option>
@@ -111,17 +117,20 @@ const AdminCreateGame = () => {
           <option>Switch</option>
           <option>Switch 2</option>
         </select>
+
         <select
           className="form-control my-2"
           name="type"
           value={form.type}
           onChange={handleChange}
+          required
         >
           <option>Gioco</option>
           <option>DLC</option>
           <option>Preordine</option>
           <option>Abbonamento</option>
           <option>Carte regalo</option>
+          <option>Gioco + DLC</option>
         </select>
 
         <input
@@ -138,3 +147,4 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
