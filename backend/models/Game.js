@@ -7,7 +7,6 @@ const gameSchema = new mongoose.Schema({
   discount:  { type: Number, default: 0 },
   imageUrl:  { type: String },
 
-  // 🔽 Nuovi campi con validazione enum
   platform: {
     type: String,
     enum: [
@@ -34,17 +33,17 @@ const gameSchema = new mongoose.Schema({
 
   type: {
     type: String,
-    enum: ['Gioco', 'DLC', 'Preordine', 'Abbonamento', 'Carte regalo'],
+    enum: ['Gioco', 'DLC', 'Preordine', 'Abbonamento', 'Carte regalo', 'Gioco + DLC'],
     default: 'Gioco'
   },
 
   stock:      { type: Number, default: 1 },
   reviewsAvg: { type: Number, default: 0 },
-
   createdAt:  { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Game', gameSchema);
+
 
 
 

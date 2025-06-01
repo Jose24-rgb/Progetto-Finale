@@ -139,6 +139,7 @@ const AdminEditGame = () => {
           <option>Preordine</option>
           <option>Abbonamento</option>
           <option>Carte regalo</option>
+          <option>Gioco + DLC</option>
         </select>
 
         <label className="form-label">Cambia immagine</label>
@@ -156,3 +157,4 @@ const AdminEditGame = () => {
 };
 
 export default AdminEditGame;
+

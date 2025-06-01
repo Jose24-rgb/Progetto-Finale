@@ -17,7 +17,11 @@ exports.getAllGames = async (req, res) => {
 
     const filter = {};
 
-    if (genre) filter.genre = genre;
+    // GENRE: gestione case-insensitive con regex
+    if (genre) {
+      filter.genre = { $regex: new RegExp(genre, 'i') };
+    }
+
     if (platform) filter.platform = platform;
     if (system) filter.system = system;
     if (type && type !== 'Tutto') filter.type = type;
@@ -122,6 +126,7 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
 
 
 
