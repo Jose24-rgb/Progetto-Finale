@@ -60,10 +60,21 @@ const Home = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">🎮 Giochi disponibili</h2>
 
+      {/* Filtri */}
       <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
+      {/* Conteggio risultati */}
+      {!loading && games.length > 0 && (
+        <div className="mb-3">
+            <div className="mb-3 fw-semibold" style={{ fontSize: '1.1rem', paddingLeft: '57px' }}>
+            {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
+          </div>
+          
+          </div>
+      )}
+
+      {/* Lista giochi */}
       {loading ? (
         <p>Caricamento giochi...</p>
       ) : games.length === 0 ? (
@@ -123,6 +134,9 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
 
 
 
