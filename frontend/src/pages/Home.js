@@ -60,18 +60,24 @@ const Home = () => {
 
   return (
     <div className="container mt-4">
-
       {/* Filtri */}
       <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
-      {/* Conteggio risultati */}
+      {/* Conteggio risultati + Crea Gioco */}
       {!loading && games.length > 0 && (
-        <div className="mb-3">
-            <div className="mb-3 fw-semibold" style={{ fontSize: '1.1rem', paddingLeft: '57px' }}>
+        <div className="d-flex align-items-center mb-3" style={{ paddingLeft: '58px' }}>
+          <div className="fw-semibold me-3" style={{ fontSize: '1.1rem' }}>
             {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
           </div>
-          
-          </div>
+          {user?.isAdmin && (
+            <button
+              className="btn btn-success btn-sm"
+              onClick={() => navigate('/admin/create-game')}
+            >
+              ➕ Crea Gioco
+            </button>
+          )}
+        </div>
       )}
 
       {/* Lista giochi */}
@@ -134,6 +140,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 
