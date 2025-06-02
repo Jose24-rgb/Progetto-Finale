@@ -70,72 +70,52 @@ const Home = () => {
         <p className="text-muted">Nessun risultato trovato.</p>
       ) : (
         <div className="row">
-          {games.map((game) => {
-            const finalPrice = game.discount > 0
-              ? game.price * (1 - game.discount / 100)
-              : game.price;
-
-            return (
-              <div className="col-md-4 mb-4" key={game._id}>
-                <div className="card h-100">
+          {games.map((game) => (
+            <div className="col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
+              <div style={{ width: '100%', maxWidth: '300px' }}>
+                <div className="card p-0 border-0">
                   <img
                     src={game.imageUrl}
                     className="card-img-top"
                     alt={game.title}
+                    style={{ height: '450px', width: '100%', objectFit: 'contain' }}
                   />
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <Link to={`/games/${game._id}`} className="text-decoration-none">
-                        {game.title}
-                      </Link>
-                    </h5>
-                    <p className="card-text mb-1"><strong>🎮 Genere:</strong> {game.genre}</p>
-                    <p className="card-text mb-1"><strong>🖥️ Sistema:</strong> {game.system || '—'}</p>
-                    <p className="card-text mb-1"><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
-                    <p className="card-text mb-1"><strong>📦 Tipo:</strong> {game.type || '—'}</p>
-                    <p className="card-text mb-2"><strong>🔄 Stock:</strong> {game.stock}</p>
+                </div>
 
-                    {game.discount > 0 ? (
-                      <>
-                        <p className="card-text text-muted text-decoration-line-through mb-1">
-                          € {game.price.toFixed(2)}
-                        </p>
-                        <p className="card-text fw-bold text-success">
-                          € {finalPrice.toFixed(2)} (-{game.discount}%)
-                        </p>
-                      </>
-                    ) : (
-                      <p className="card-text fw-bold">€ {game.price.toFixed(2)}</p>
-                    )}
+                <div className="mt-2">
+                  <h5 className="card-title mb-2">
+                    <Link to={`/games/${game._id}`} className="text-decoration-none">
+                      {game.title}
+                    </Link>
+                  </h5>
 
-                    {user?.isAdmin && (
-                      <div className="d-flex gap-2 mb-2">
-                        <button
-                          className="btn btn-warning btn-sm flex-fill"
-                          onClick={() => navigate(`/admin/edit-game/${game._id}`)}
-                        >
-                          ✏️ Modifica
-                        </button>
-                        <button
-                          className="btn btn-danger btn-sm flex-fill"
-                          onClick={() => handleDelete(game._id)}
-                        >
-                          🗑️ Elimina
-                        </button>
-                      </div>
-                    )}
+                  {user?.isAdmin && (
+                    <div className="d-flex gap-2 mb-2">
+                      <button
+                        className="btn btn-warning btn-sm flex-fill"
+                        onClick={() => navigate(`/admin/edit-game/${game._id}`)}
+                      >
+                        ✏️ Modifica
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm flex-fill"
+                        onClick={() => handleDelete(game._id)}
+                      >
+                        🗑️ Elimina
+                      </button>
+                    </div>
+                  )}
 
-                    <button
-                      className="btn btn-primary w-100"
-                      onClick={() => addToCart(game)}
-                    >
-                      Aggiungi al carrello
-                    </button>
-                  </div>
+                  <button
+                    className="btn btn-primary w-100"
+                    onClick={() => addToCart(game)}
+                  >
+                    Aggiungi al carrello
+                  </button>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -143,6 +123,9 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
 
 
 
