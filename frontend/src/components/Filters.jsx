@@ -84,7 +84,7 @@ const Filters = ({ onFilterChange }) => {
             className="form-control form-control-lg text-center"
             placeholder="Min €"
             onChange={handleChange}
-            style={{ width: '120px' }}
+            style={{ width: '100px' }}
           />
         </div>
         <div className="col-auto mb-2">
@@ -94,7 +94,7 @@ const Filters = ({ onFilterChange }) => {
             className="form-control form-control-lg text-center"
             placeholder="Max €"
             onChange={handleChange}
-            style={{ width: '120px' }}
+            style={{ width: '100px' }}
           />
         </div>
         <div className="col-md-2 d-flex align-items-center mb-2">
