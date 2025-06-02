@@ -77,22 +77,24 @@ const Filters = ({ onFilterChange }) => {
 
       {/* Seconda riga */}
       <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
-        <div className="col-md-2 mb-2">
+        <div className="col-auto mb-2">
           <input
             type="number"
             name="priceMin"
-            className="form-control form-control-lg"
+            className="form-control form-control-lg text-center"
             placeholder="Min €"
             onChange={handleChange}
+            style={{ width: '120px' }}
           />
         </div>
-        <div className="col-md-2 mb-2">
+        <div className="col-auto mb-2">
           <input
             type="number"
             name="priceMax"
-            className="form-control form-control-lg"
+            className="form-control form-control-lg text-center"
             placeholder="Max €"
             onChange={handleChange}
+            style={{ width: '120px' }}
           />
         </div>
         <div className="col-md-2 d-flex align-items-center mb-2">
@@ -118,6 +120,8 @@ const Filters = ({ onFilterChange }) => {
 };
 
 export default Filters;
+
+
 
 
 
