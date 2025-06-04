@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
+
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,10 +13,15 @@ import Cancel from './pages/Cancel';
 import Orders from './pages/Orders';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
+
 import GameDetail from './pages/GameDetail';
 import AdminCreateGame from './pages/AdminCreateGame';
 import AdminEditGame from './pages/AdminEditGame';
-import AdminGameList from './pages/AdminGameList'; // ✅ importato
+import AdminGameList from './pages/AdminGameList';
+
+import ForgotPassword from './pages/ForgotPassword';      // ✅
+import ResetPassword from './pages/ResetPassword';        // ✅
+import VerifyEmail from './pages/VerifyEmail';            // ✅
 
 function App() {
   return (
@@ -29,7 +35,12 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/games/:id" element={<GameDetail />} />
 
-            {/* ✅ ROTTE PROTETTE SOLO PER ADMIN */}
+            {/* ✅ Rotte pubbliche aggiuntive */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+
+            {/* ✅ Rotte protette per ADMIN */}
             <Route
               path="/admin/create-game"
               element={
@@ -55,7 +66,7 @@ function App() {
               }
             />
 
-            {/* ✅ ROTTE PRIVATE PER UTENTI AUTENTICATI */}
+            {/* ✅ Rotte private per utenti loggati */}
             <Route
               path="/cart"
               element={
@@ -104,6 +115,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
