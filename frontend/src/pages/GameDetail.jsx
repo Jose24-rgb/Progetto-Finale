@@ -110,9 +110,11 @@ const GameDetail = () => {
         </div>
 
         {/* COLONNA DESTRA: Titolo */}
-        <div className="col-md-8 d-flex align-items-start justify-content-center justify-content-md-start">
-          <h2 className="text-center text-md-start">{game.title}</h2>
-        </div>
+      
+<div className="col-md-8 d-flex align-items-start justify-content-center justify-content-md-start">
+  <h2 className="text-center text-md-start">{game.title}</h2>
+</div>
+
       </div>
 
       <hr />

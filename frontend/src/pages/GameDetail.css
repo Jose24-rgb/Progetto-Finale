@@ -8,33 +8,69 @@
   margin-bottom: 1rem !important;
 }
 
-/* Allinea bene i dati */
+/* Allinea bene i dati su schermi grandi */
 @media (min-width: 768px) {
   .game-left-col {
     padding-left: 0 !important;
   }
+
+  h2 {
+    padding-left: 2rem;
+    font-size: 2rem;
+  }
 }
 
-.game-info p {
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
+/* Spaziatura verticale più compatta per info gioco */
+.game-left-col p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
 }
 
-.game-info .btn {
+/* Pulsanti modifica/elimina più compatti */
+.game-left-col .btn {
   padding: 0.35rem 0.75rem;
   font-size: 0.9rem;
+  margin-bottom: 0;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
+.game-left-col .btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Spazio orizzontale tra i due bottoni */
+.game-left-col .btn + .btn {
+  margin-left: 0.5rem;
+}
+
+/* Riduci spazio tra bottoni e blocco dati */
+.game-left-col .d-flex.mb-3 {
+  margin-bottom: 0.25rem !important;
+}
+
+/* Titolo */
+h2 {
+  margin-bottom: 1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+/* Recensioni */
 .list-group-item {
   word-break: break-word;
+  overflow-wrap: break-word;
   padding: 1rem;
 }
 
-/* Migliora il form su mobile */
+/* Migliora il layout recensioni e form su mobile */
 @media (max-width: 576px) {
   .list-group-item {
     font-size: 0.95rem;
     padding: 0.75rem;
+    border-left: 4px solid #ccc;
+    background-color: #f9f9f9;
   }
 
   .list-group-item strong {
@@ -47,5 +83,38 @@
     margin-top: 0.5rem;
     font-size: 0.8rem;
   }
+
+  textarea.form-control,
+  .form-select {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    padding-left: 0;
+  }
 }
+
+/* Ottimizzazioni tablet */
+@media (max-width: 768px) {
+  .game-left-col p {
+    font-size: 0.95rem;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 0.95rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+}
+
+
+
 
