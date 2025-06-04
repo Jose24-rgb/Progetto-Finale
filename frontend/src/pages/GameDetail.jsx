@@ -68,29 +68,24 @@ const GameDetail = () => {
 
   return (
     <div className="container mt-5">
-      <div className="row">
-      <div className="col-12 col-md-4 game-info">
+      <div className="row align-items-start mb-4">
+        {/* COLONNA SINISTRA: Immagine + Info */}
+        <div className="col-md-4 mb-4 game-left-col">
+          <img
+            src={game.imageUrl}
+            alt={game.title}
+            className="img-fluid game-cover"
+          />
 
-
-        <img
-  src={game.imageUrl}
-  alt={game.title}
-  className="img-fluid game-cover mx-0 mb-4"
-/>
-
-
-
-{user?.isAdmin && (
-  <div className="d-flex flex-row align-items-center gap-2 mb-1">
-    <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
-      ✏️ Modifica Gioco
-    </Link>
-    <button className="btn btn-danger" onClick={handleDelete}>
-      🗑️ Elimina Gioco
-    </button>
-  </div>
-          
-          
+          {user?.isAdmin && (
+            <div className="d-flex flex-wrap gap-2 mb-3">
+              <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
+                ✏️ Modifica Gioco
+              </Link>
+              <button className="btn btn-danger" onClick={handleDelete}>
+                🗑️ Elimina Gioco
+              </button>
+            </div>
           )}
 
           <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
@@ -114,11 +109,10 @@ const GameDetail = () => {
           </p>
         </div>
 
-        <div className="col-12 col-md-8">
-  <h2 className="ms-md-5 text-center text-md-start">{game.title}</h2>
-</div>
-
-
+        {/* COLONNA DESTRA: Titolo */}
+        <div className="col-md-8 d-flex align-items-start justify-content-center justify-content-md-start">
+          <h2 className="text-center text-md-start">{game.title}</h2>
+        </div>
       </div>
 
       <hr />
@@ -173,6 +167,8 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
+
 
 
 

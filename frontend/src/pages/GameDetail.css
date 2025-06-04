@@ -1,23 +1,51 @@
+/* Limita la dimensione e rende l'immagine responsive */
 .game-cover {
-    max-width: 300px; /* limite dimensione */
-    width: 100%;      /* responsivo */
-    height: auto;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-left: 0;
+  margin-bottom: 1rem !important;
+}
+
+/* Allinea bene i dati */
+@media (min-width: 768px) {
+  .game-left-col {
+    padding-left: 0 !important;
+  }
+}
+
+.game-info p {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.game-info .btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.list-group-item {
+  word-break: break-word;
+  padding: 1rem;
+}
+
+/* Migliora il form su mobile */
+@media (max-width: 576px) {
+  .list-group-item {
+    font-size: 0.95rem;
+    padding: 0.75rem;
+  }
+
+  .list-group-item strong {
     display: block;
-    margin: 0 auto;   /* centra l'immagine */
+    margin-bottom: 0.25rem;
   }
-  
-  .game-info p {
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+
+  .list-group-item small {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
   }
-  
-  .game-info .btn {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.9rem;
-  }
-  
-  .game-cover {
-    margin-bottom: 1rem !important;
-  }
-  
-  
+}
+
