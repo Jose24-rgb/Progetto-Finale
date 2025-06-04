@@ -1,0 +1,53 @@
+/* Card container: layout pulito e centrato */
+.game-card {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Immagini responsive */
+  .game-card img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+  
+  /* Pulsanti con spaziatura coerente */
+  .game-card .btn {
+    font-size: 0.95rem;
+  }
+  
+  .game-card .btn + .btn {
+    margin-top: 0.5rem;
+  }
+  
+  /* Titoli */
+  .game-card h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  /* Responsive media query per migliorare spazi su mobile */
+  @media (max-width: 576px) {
+    .game-card {
+      max-width: 100%;
+    }
+  
+    .game-card .btn {
+      font-size: 1rem;
+    }
+  
+    .game-card h5 {
+      font-size: 1.2rem;
+    }
+  
+    .game-card img {
+      max-height: 300px;
+    }
+  }
+  
+  

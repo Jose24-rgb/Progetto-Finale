@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import Filters from '../components/Filters';
 import { useAuth } from '../context/AuthContext';
+import './Home.css';
 
 const Home = () => {
   const [games, setGames] = useState([]);
@@ -62,15 +63,17 @@ const Home = () => {
       <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
       {!loading && games.length > 0 && (
-        <div className="d-flex align-items-center mb-3" style={{ paddingLeft: '58px' }}>
-          <div className="fw-semibold me-3" style={{ fontSize: '1.1rem' }}>
-            {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
+        <div className="row mb-3">
+          <div className="col-sm-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
+            <div className="fw-semibold me-3" style={{ fontSize: '1.1rem' }}>
+              {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
+            </div>
+            {user?.isAdmin && (
+              <button className="btn btn-success btn-sm" onClick={() => navigate('/admin/create-game')}>
+                ➕ Crea Gioco
+              </button>
+            )}
           </div>
-          {user?.isAdmin && (
-            <button className="btn btn-success btn-sm" onClick={() => navigate('/admin/create-game')}>
-              ➕ Crea Gioco
-            </button>
-          )}
         </div>
       )}
 
@@ -79,19 +82,18 @@ const Home = () => {
       ) : games.length === 0 ? (
         <p className="text-muted">Nessun risultato trovato.</p>
       ) : (
-        <div className="row">
+        <div className="row gx-3">
           {games.map((game) => (
-            <div className="col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
-              <div style={{ width: '100%', maxWidth: '300px' }}>
-                <div className="card p-0 border-0">
+            <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
+              <div className="card game-card p-2 border-0">
+                {game.imageUrl && (
                   <img
                     src={game.imageUrl}
-                    className="card-img-top"
+                    className="card-img-top img-fluid"
                     alt={game.title}
-                    style={{ height: '450px', width: '100%', objectFit: 'contain' }}
                   />
-                </div>
-                <div className="mt-2">
+                )}
+                <div className="mt-2 d-flex flex-column justify-content-between h-100">
                   <h5 className="card-title mb-2">
                     <Link to={`/games/${game._id}`} className="text-decoration-none">
                       {game.title}
@@ -99,15 +101,15 @@ const Home = () => {
                   </h5>
 
                   {user?.isAdmin && (
-                    <div className="d-flex gap-2 mb-2">
+                    <div className="d-flex flex-column gap-2 mb-2">
                       <button
-                        className="btn btn-warning btn-sm flex-fill"
+                        className="btn btn-warning btn-sm w-100"
                         onClick={() => navigate(`/admin/edit-game/${game._id}`)}
                       >
                         ✏️ Modifica
                       </button>
                       <button
-                        className="btn btn-danger btn-sm flex-fill"
+                        className="btn btn-danger btn-sm w-100"
                         onClick={() => handleDelete(game._id)}
                       >
                         🗑️ Elimina
@@ -129,6 +131,11 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+
+
 
 
 
