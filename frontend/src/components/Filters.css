@@ -4,8 +4,8 @@
   
   .clear-btn {
     position: absolute;
-    top: -10px;
-    right: 0px;
+    top: -12px;
+    right: -12px;
     background-color: #dc3545;
     color: white;
     border: none;
@@ -91,7 +91,8 @@ input[type="checkbox"],
 /* Applica il cursore a select e alle opzioni */
 select,
 select option {
-  cursor: pointer;
+  cursor: pointer !important;
 }
+
 
 

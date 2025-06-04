@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from '../services/apis';
 import { useCart } from '../context/CartContext';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
@@ -19,11 +19,10 @@ const Home = () => {
   const navigate = useNavigate();
 
   const buildQuery = (obj) => {
-    const query = Object.entries(obj)
+    return Object.entries(obj)
       .filter(([_, value]) => value !== '' && value !== null && value !== false)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
-    return query ? `?${query}` : '';
   };
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const Home = () => {
       setLoading(true);
       try {
         const query = buildQuery(filters);
-        const res = await axios.get(`/games${query}`);
+        const res = await axios.get(`/games?${query}`);
         setGames(res.data);
       } catch (err) {
         console.error('Errore nel recupero giochi:', err);
@@ -43,10 +42,10 @@ const Home = () => {
     fetchGames();
   }, [filters, location.key]);
 
-  const handleFilterChange = (newFilters) => {
+  const handleFilterChange = useCallback((newFilters) => {
     setFilters(newFilters);
     localStorage.setItem('filters', JSON.stringify(newFilters));
-  };
+  }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Sei sicuro di voler eliminare questo gioco?')) return;
@@ -60,27 +59,21 @@ const Home = () => {
 
   return (
     <div className="container mt-4">
-      {/* Filtri */}
       <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
-      {/* Conteggio risultati + Crea Gioco */}
       {!loading && games.length > 0 && (
         <div className="d-flex align-items-center mb-3" style={{ paddingLeft: '58px' }}>
           <div className="fw-semibold me-3" style={{ fontSize: '1.1rem' }}>
             {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
           </div>
           {user?.isAdmin && (
-            <button
-              className="btn btn-success btn-sm"
-              onClick={() => navigate('/admin/create-game')}
-            >
+            <button className="btn btn-success btn-sm" onClick={() => navigate('/admin/create-game')}>
               ➕ Crea Gioco
             </button>
           )}
         </div>
       )}
 
-      {/* Lista giochi */}
       {loading ? (
         <p>Caricamento giochi...</p>
       ) : games.length === 0 ? (
@@ -98,7 +91,6 @@ const Home = () => {
                     style={{ height: '450px', width: '100%', objectFit: 'contain' }}
                   />
                 </div>
-
                 <div className="mt-2">
                   <h5 className="card-title mb-2">
                     <Link to={`/games/${game._id}`} className="text-decoration-none">
@@ -123,10 +115,7 @@ const Home = () => {
                     </div>
                   )}
 
-                  <button
-                    className="btn btn-primary w-100"
-                    onClick={() => addToCart(game)}
-                  >
+                  <button className="btn btn-primary w-100" onClick={() => addToCart(game)}>
                     Aggiungi al carrello
                   </button>
                 </div>
@@ -140,6 +129,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 

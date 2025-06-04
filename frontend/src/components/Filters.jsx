@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Filters.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BootstrapDropdown from './BootstrapDropdown';
 
-const Filters = ({ onFilterChange }) => {
+const Filters = ({ onFilterChange, defaultFilters = {} }) => {
   const [filters, setFilters] = useState({
     system: '',
     platform: '',
@@ -10,12 +12,18 @@ const Filters = ({ onFilterChange }) => {
     type: '',
     priceMin: '',
     priceMax: '',
-    inStock: false
+    inStock: false,
+    ...defaultFilters,
   });
 
   const systems = ['PC', 'PlayStation 5', 'Xbox Series X|S', 'Switch', 'Switch 2'];
   const platforms = ['Epic Games', 'Steam', 'EA App', 'Rockstar', 'Ubisoft Connect', 'Nintendo eShop', 'Microsoft Store'];
   const genres = ['Altro', 'Arcade', 'Avventura', 'Azione', 'FPS', 'MMO', 'Indies', 'Coop online', 'Free to Play'];
+  const sorts = [
+    'Bestseller', 'Sconto: migliore', 'Prezzo: da basso ad alto',
+    'Prezzo: da alto a basso', 'Uscita: nuovo', 'Uscita: vecchio',
+    'Recensioni: migliore', 'Recensioni: peggiore'
+  ];
   const types = [
     { label: 'Tutto', value: '' },
     { label: 'Giochi e DLC', value: 'Gioco + DLC' },
@@ -25,11 +33,10 @@ const Filters = ({ onFilterChange }) => {
     { label: 'Carte regalo', value: 'Carte regalo' },
     { label: 'Abbonamenti', value: 'Abbonamento' }
   ];
-  const sorts = [
-    'Bestseller', 'Sconto: migliore', 'Prezzo: da basso ad alto',
-    'Prezzo: da alto a basso', 'Uscita: nuovo', 'Uscita: vecchio',
-    'Recensioni: migliore', 'Recensioni: peggiore'
-  ];
+
+  useEffect(() => {
+    onFilterChange(filters);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -39,44 +46,52 @@ const Filters = ({ onFilterChange }) => {
     onFilterChange(newFilters);
   };
 
-  const handleClear = (name) => {
-    const newFilters = { ...filters, [name]: '' };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
-  };
-
-  const renderSelect = (name, label, options) => (
-    <div className="col-md-3 mb-2 select-wrapper">
-      <select
-        className={`form-select form-select-lg ${filters[name] ? 'no-arrow' : ''}`}
-        name={name}
-        value={filters[name]}
-        onChange={handleChange}
-      >
-        <option value="">{label}</option>
-        {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-      </select>
-      {filters[name] && (
-        <button
-          type="button"
-          className="clear-btn"
-          onClick={() => handleClear(name)}
-        >
-          &times;
-        </button>
-      )}
-    </div>
-  );
-
   return (
-    <div className="mb-4 d-flex flex-column align-items-center">
-      <div className="row mb-3 w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
-        {renderSelect('system', 'Sistemi', systems)}
-        {renderSelect('platform', 'Piattaforme', platforms)}
-        {renderSelect('genre', 'Generi...', genres)}
-        {renderSelect('sort', 'Ordina per:', sorts)}
+    <div className="mb-4 d-flex flex-column align-items-center gap-3">
+      {/* RIGA 1 */}
+      <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
+        <div className="col-md-3 mb-2">
+          <BootstrapDropdown
+            name="system"
+            label="Sistemi"
+            options={systems}
+            value={filters.system}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="col-md-3 mb-2">
+          <BootstrapDropdown
+            name="platform"
+            label="Piattaforme"
+            options={platforms}
+            value={filters.platform}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="col-md-3 mb-2">
+          <BootstrapDropdown
+            name="genre"
+            label="Generi..."
+            options={genres}
+            value={filters.genre}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="col-md-3 mb-2">
+          <BootstrapDropdown
+            name="sort"
+            label="Ordina per:"
+            options={sorts}
+            value={filters.sort}
+            onChange={handleChange}
+          />
+        </div>
       </div>
 
+      {/* RIGA 2 */}
       <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
         <div className="col-auto mb-2">
           <input
@@ -101,29 +116,33 @@ const Filters = ({ onFilterChange }) => {
           />
         </div>
         <div className="col-md-2 stock-checkbox-wrapper mb-2">
-        <input
-          type="checkbox"
-          name="inStock"
-          className="form-check-input me-2"
-          onChange={handleChange}
-          onMouseUp={(e) => e.currentTarget.blur()} // Rimuove il focus dopo il click
-          checked={filters.inStock}
-          style={{ transform: 'scale(1.5)' }}
-       />
-
+          <input
+            type="checkbox"
+            name="inStock"
+            className="form-check-input me-2"
+            onChange={handleChange}
+            onMouseUp={(e) => e.currentTarget.blur()}
+            checked={filters.inStock}
+            style={{ transform: 'scale(1.5)' }}
+          />
           <label className="form-check-label">In stock</label>
         </div>
         <div className="col-md-3 mb-2">
-          <select
-            className="form-select form-select-lg"
+          <BootstrapDropdown
             name="type"
-            value={filters.type}
-            onChange={handleChange}
-          >
-            {types.map(t => (
-              <option key={t.label} value={t.value}>{t.label}</option>
-            ))}
-          </select>
+            label="Tutto"
+            options={types.map(t => t.label)}
+            value={types.find(t => t.value === filters.type)?.label || ''}
+            onChange={(e) => {
+              const selected = types.find(t => t.label === e.target.value);
+              handleChange({
+                target: {
+                  name: 'type',
+                  value: selected ? selected.value : ''
+                }
+              });
+            }}
+          />
         </div>
       </div>
     </div>
@@ -131,6 +150,13 @@ const Filters = ({ onFilterChange }) => {
 };
 
 export default Filters;
+
+
+
+
+
+
+
 
 
 
