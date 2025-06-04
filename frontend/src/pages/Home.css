@@ -1,72 +1,92 @@
 /* Card container: layout pulito e centrato */
 .game-card {
-    width: 100%;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+/* Immagini responsive */
+.game-card img {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* Pulsanti con spaziatura coerente */
+.game-card .btn {
+  font-size: 0.95rem;
+}
+
+/* Pulsanti verticali (es. carrello) */
+.game-card .btn-stack .btn + .btn {
+  margin-top: 0.5rem;
+}
+
+/* Titoli */
+.game-card h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Responsive: mobile <576px */
+@media (max-width: 576px) {
+  .game-card {
+    max-width: 100%;
   }
-  
-  /* Immagini responsive */
-  .game-card img {
-    width: 100%;
-    height: auto;
-    max-height: 450px;
-    object-fit: contain;
-    border-radius: 6px;
-  }
-  
-  /* Pulsanti con spaziatura coerente */
+
   .game-card .btn {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
-  
-  .game-card .btn + .btn {
-    margin-top: 0.5rem;
-  }
-  
-  /* Titoli */
+
   .game-card h5 {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.2rem;
   }
-  
-  /* Responsive media query per migliorare spazi su mobile */
-  @media (max-width: 576px) {
-    .game-card {
-      max-width: 100%;
-    }
-  
-    .game-card .btn {
-      font-size: 1rem;
-    }
-  
-    .game-card h5 {
-      font-size: 1.2rem;
-    }
-  
-    .game-card img {
-      max-height: 300px;
-    }
+
+  .game-card img {
+    max-height: 300px;
   }
-  
-  @media (min-width: 768px) {
-    .game-card h5 {
-      font-size: 1.3rem;
-    }
-    .results-admin-shift {
-        margin-left: 4.5em;
-      }
+}
+
+/* Responsive: tablet >768px */
+@media (min-width: 768px) {
+  .game-card h5 {
+    font-size: 1.3rem;
   }
-  
+
+  .results-admin-shift {
+    margin-left: 4.5em;
+  }
+}
+
+/* Pulsanti amministrativi */
+.admin-btn {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7px;
+  line-height: 1.1;
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* Mobile extra piccolo: stack pulsanti admin */
+@media (max-width: 400px) {
+  .admin-actions {
+    flex-direction: column !important;
+  }
 
   .admin-btn {
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 7px;
+    width: 100% !important;
   }
+}
+
   
   
   

@@ -100,25 +100,27 @@ const Home = () => {
                     </Link>
                   </h5>
 
-                  {/* Aggiungi al carrello sopra */}
-                  <button className="btn btn-primary btn-sm w-100 mb-2" onClick={() => addToCart(game)}>
-                    🛒 Aggiungi al carrello
-                  </button>
+                  {/* Aggiungi al carrello */}
+                  <div className="btn-stack">
+                    <button className="btn btn-primary btn-sm w-100" onClick={() => addToCart(game)}>
+                      🛒 Aggiungi al carrello
+                    </button>
+                  </div>
 
-                  {/* Admin buttons affiancati */}
+                  {/* Pulsanti admin responsivi */}
                   {user?.isAdmin && (
-  <div className="d-flex gap-2">
-  <button
-    className="btn btn-warning btn-sm w-50 admin-btn"
-    onClick={() => navigate(`/admin/edit-game/${game._id}`)}
-  >
-    ✏️ Modifica
-  </button>
-  <button
-    className="btn btn-danger btn-sm w-50 admin-btn"
-    onClick={() => handleDelete(game._id)}
-  >
-    🗑️ Elimina
+                    <div className="d-flex gap-2 admin-actions flex-sm-row flex-column">
+                      <button
+                        className="btn btn-warning btn-sm admin-btn w-50"
+                        onClick={() => navigate(`/admin/edit-game/${game._id}`)}
+                      >
+                        ✏️ Modifica
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm admin-btn w-50"
+                        onClick={() => handleDelete(game._id)}
+                      >
+                        🗑️ Elimina
                       </button>
                     </div>
                   )}
@@ -133,6 +135,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 
