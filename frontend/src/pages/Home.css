@@ -50,4 +50,24 @@
     }
   }
   
+  @media (min-width: 768px) {
+    .game-card h5 {
+      font-size: 1.3rem;
+    }
+    .results-admin-shift {
+        margin-left: 4.5em;
+      }
+  }
+  
+
+  .admin-btn {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 7px;
+  }
+  
+  
+  
   

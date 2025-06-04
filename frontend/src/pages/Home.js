@@ -59,12 +59,12 @@ const Home = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 mb-5">
       <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
       {!loading && games.length > 0 && (
         <div className="row mb-3">
-          <div className="col-sm-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
+          <div className="col-sm-12 col-md-6 d-flex align-items-center mb-2 mb-md-0 results-admin-shift">
             <div className="fw-semibold me-3" style={{ fontSize: '1.1rem' }}>
               {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
             </div>
@@ -100,26 +100,28 @@ const Home = () => {
                     </Link>
                   </h5>
 
+                  {/* Aggiungi al carrello sopra */}
+                  <button className="btn btn-primary btn-sm w-100 mb-2" onClick={() => addToCart(game)}>
+                    🛒 Aggiungi al carrello
+                  </button>
+
+                  {/* Admin buttons affiancati */}
                   {user?.isAdmin && (
-                    <div className="d-flex flex-column gap-2 mb-2">
-                      <button
-                        className="btn btn-warning btn-sm w-100"
-                        onClick={() => navigate(`/admin/edit-game/${game._id}`)}
-                      >
-                        ✏️ Modifica
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm w-100"
-                        onClick={() => handleDelete(game._id)}
-                      >
-                        🗑️ Elimina
+  <div className="d-flex gap-2">
+  <button
+    className="btn btn-warning btn-sm w-50 admin-btn"
+    onClick={() => navigate(`/admin/edit-game/${game._id}`)}
+  >
+    ✏️ Modifica
+  </button>
+  <button
+    className="btn btn-danger btn-sm w-50 admin-btn"
+    onClick={() => handleDelete(game._id)}
+  >
+    🗑️ Elimina
                       </button>
                     </div>
                   )}
-
-                  <button className="btn btn-primary w-100" onClick={() => addToCart(game)}>
-                    Aggiungi al carrello
-                  </button>
                 </div>
               </div>
             </div>
@@ -131,6 +133,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 
