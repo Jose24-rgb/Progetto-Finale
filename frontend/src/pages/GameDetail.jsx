@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
 import { useAuth } from '../context/AuthContext';
+import './GameDetail.css';
 
 const GameDetail = () => {
   const { id } = useParams();
@@ -67,41 +68,58 @@ const GameDetail = () => {
 
   return (
     <div className="container mt-5">
-      <h2>{game.title}</h2>
-      <img src={game.imageUrl} alt={game.title} className="img-fluid my-3" />
+      <div className="row">
+      <div className="col-12 col-md-4 game-info">
 
-      <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
-      <p><strong>🖥 Sistema:</strong> {game.system || '—'}</p>
-      <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
-      <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
-      <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
 
-      <p>
-        <strong>💰 Prezzo:</strong>{' '}
-        {game.discount > 0 ? (
-          <>
-            <span className="text-muted text-decoration-line-through me-2">
-              € {game.price.toFixed(2)}
-            </span>
-            <span className="text-success fw-bold">
-              € {finalPrice.toFixed(2)} (-{game.discount}%)
-            </span>
-          </>
-        ) : (
-          <>€ {game.price.toFixed(2)}</>
-        )}
-      </p>
+        <img
+  src={game.imageUrl}
+  alt={game.title}
+  className="img-fluid game-cover mx-0 mb-4"
+/>
 
-      {user?.isAdmin && (
-        <div className="d-flex gap-2 mb-3">
-          <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
-            ✏️ Modifica Gioco
-          </Link>
-          <button className="btn btn-danger" onClick={handleDelete}>
-            🗑️ Elimina Gioco
-          </button>
+
+
+{user?.isAdmin && (
+  <div className="d-flex flex-row align-items-center gap-2 mb-1">
+    <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
+      ✏️ Modifica Gioco
+    </Link>
+    <button className="btn btn-danger" onClick={handleDelete}>
+      🗑️ Elimina Gioco
+    </button>
+  </div>
+          
+          
+          )}
+
+          <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
+          <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
+          <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
+          <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
+          <p>
+            <strong>💰 Prezzo:</strong>{' '}
+            {game.discount > 0 ? (
+              <>
+                <span className="text-muted text-decoration-line-through me-2">
+                  € {game.price.toFixed(2)}
+                </span>
+                <span className="text-success fw-bold">
+                  € {finalPrice.toFixed(2)} (-{game.discount}%)
+                </span>
+              </>
+            ) : (
+              <>€ {game.price.toFixed(2)}</>
+            )}
+          </p>
         </div>
-      )}
+
+        <div className="col-12 col-md-8">
+  <h2 className="ms-md-5 text-center text-md-start">{game.title}</h2>
+</div>
+
+
+      </div>
 
       <hr />
       <h4>🗣️ Recensioni</h4>

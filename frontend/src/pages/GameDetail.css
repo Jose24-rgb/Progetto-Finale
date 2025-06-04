@@ -1,0 +1,23 @@
+.game-cover {
+    max-width: 300px; /* limite dimensione */
+    width: 100%;      /* responsivo */
+    height: auto;
+    display: block;
+    margin: 0 auto;   /* centra l'immagine */
+  }
+  
+  .game-info p {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .game-info .btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .game-cover {
+    margin-bottom: 1rem !important;
+  }
+  
+  
