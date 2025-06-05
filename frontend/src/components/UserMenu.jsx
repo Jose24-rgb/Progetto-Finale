@@ -76,8 +76,6 @@ const UserMenu = ({ avatarLetter, menuOpen, setMenuOpen, user, handleLogout, id,
             ) : (
               <>
                 <li><Link to="/orders" className="dropdown-item" role="menuitem">📦 Ordini</Link></li>
-                <li><Link to="#" className="dropdown-item" role="menuitem">💼 Abbonamento</Link></li>
-                <li><Link to="#" className="dropdown-item" role="menuitem">⚙️ Config</Link></li>
                 <li>
                   <button onClick={handleLogout} className="dropdown-item text-danger" role="menuitem">
                     🚪 Logout
@@ -93,5 +91,6 @@ const UserMenu = ({ avatarLetter, menuOpen, setMenuOpen, user, handleLogout, id,
 };
 
 export default UserMenu;
+
 
   
