@@ -2,6 +2,7 @@ import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import axios from '../services/apis';
 import { useAuth } from '../context/AuthContext';
+import './Cart.css';
 
 function Cart() {
   const { cart, removeFromCart } = useCart();
@@ -36,48 +37,53 @@ function Cart() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>🛒 Il tuo carrello</h2>
+    <div className="container mt-5 mb-5">
+      <h2 className="text-center text-md-start mb-4">🛒 Il tuo carrello</h2>
+
       {cart.length === 0 ? (
-        <p>Il carrello è vuoto. <Link to="/">Torna alla home</Link></p>
+        <p className="text-muted">Il carrello è vuoto. <Link to="/">Torna alla home</Link></p>
       ) : (
         <>
-          <ul className="list-group mb-4">
-            {cart.map((game, index) => {
-              const pricePerItem = game.discount > 0
-                ? game.price * (1 - game.discount / 100)
-                : game.price;
+          <div className="table-responsive">
+            <ul className="list-group mb-4">
+              {cart.map((game, index) => {
+                const pricePerItem = game.discount > 0
+                  ? game.price * (1 - game.discount / 100)
+                  : game.price;
 
-              return (
-                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                  <div>
-                    <strong>{game.title}</strong>
-                    <br />
-                    {game.discount > 0 ? (
-                      <>
-                        <span className="text-muted text-decoration-line-through">
-                          € {game.price.toFixed(2)}
-                        </span>{' '}
-                        <span className="text-success fw-bold">
-                          € {pricePerItem.toFixed(2)} (-{game.discount}%)
-                        </span>{' '}
-                        × {game.quantity}
-                      </>
-                    ) : (
-                      <> — € {game.price.toFixed(2)} × {game.quantity}</>
-                    )}
-                  </div>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => removeFromCart(game._id)}
-                  >
-                    Rimuovi
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          <h4>Totale: € {total.toFixed(2)}</h4>
+                return (
+                  <li key={index} className="list-group-item cart-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+  <div className="w-100">
+                      <strong>{game.title}</strong>
+                      <br />
+                      {game.discount > 0 ? (
+                        <>
+                          <span className="text-muted text-decoration-line-through">
+                            € {game.price.toFixed(2)}
+                          </span>{' '}
+                          <span className="text-success fw-bold">
+                            € {pricePerItem.toFixed(2)} (-{game.discount}%)
+                          </span>{' '}
+                          × {game.quantity}
+                        </>
+                      ) : (
+                        <>€ {game.price.toFixed(2)} × {game.quantity}</>
+                      )}
+                    </div>
+                    <button
+    className="btn btn-danger btn-sm mt-2 mt-md-0 cart-remove-btn"
+    onClick={() => removeFromCart(game._id)}
+  >
+    Rimuovi
+  </button>
+
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <h4 className="text-end">Totale: € {total.toFixed(2)}</h4>
           <button className="btn btn-success w-100 mt-3" onClick={handleCheckout}>
             Procedi al pagamento con Stripe
           </button>
@@ -88,6 +94,7 @@ function Cart() {
 }
 
 export default Cart;
+
 
 
 
