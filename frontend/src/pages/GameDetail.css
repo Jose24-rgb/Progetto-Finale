@@ -15,10 +15,12 @@
   }
 
   h2 {
-    padding-left: 2rem;
+    padding-left: 0; /* ← CORRETTO: evita il rientro a sinistra */
+    padding-right: 1rem; /* ↦ se vuoi aggiungere un po’ di spazio a destra */
     font-size: 2rem;
   }
 }
+
 
 /* Spaziatura verticale più compatta per info gioco */
 .game-left-col p {

@@ -68,52 +68,53 @@ const GameDetail = () => {
 
   return (
     <div className="container mt-5">
-      <div className="row align-items-start mb-4">
-        {/* COLONNA SINISTRA: Immagine + Info */}
-        <div className="col-md-4 mb-4 game-left-col">
-          <img
-            src={game.imageUrl}
-            alt={game.title}
-            className="img-fluid game-cover"
-          />
+  <div className="row align-items-start mb-4">
+    {/* COLONNA SINISTRA: Immagine + Info */}
+    <div className="col-md-4 mb-4 game-left-col">
+      <img
+        src={game.imageUrl}
+        alt={game.title}
+        className="img-fluid game-cover"
+      />
 
-          {user?.isAdmin && (
-            <div className="d-flex flex-wrap gap-2 mb-3">
-              <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
-                ✏️ Modifica Gioco
-              </Link>
-              <button className="btn btn-danger" onClick={handleDelete}>
-                🗑️ Elimina Gioco
-              </button>
-            </div>
-          )}
-
-          <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
-          <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
-          <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
-          <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
-          <p>
-            <strong>💰 Prezzo:</strong>{' '}
-            {game.discount > 0 ? (
-              <>
-                <span className="text-muted text-decoration-line-through me-2">
-                  € {game.price.toFixed(2)}
-                </span>
-                <span className="text-success fw-bold">
-                  € {finalPrice.toFixed(2)} (-{game.discount}%)
-                </span>
-              </>
-            ) : (
-              <>€ {game.price.toFixed(2)}</>
-            )}
-          </p>
+      {user?.isAdmin && (
+        <div className="d-flex flex-wrap gap-2 mb-3">
+          <Link to={`/admin/edit-game/${game._id}`} className="btn btn-warning">
+            ✏️ Modifica Gioco
+          </Link>
+          <button className="btn btn-danger" onClick={handleDelete}>
+            🗑️ Elimina Gioco
+          </button>
         </div>
+      )}
 
-        {/* COLONNA DESTRA: Titolo */}
-      
-<div className="col-md-8 d-flex align-items-start justify-content-center justify-content-md-start">
-  <h2 className="text-center text-md-start">{game.title}</h2>
-</div>
+      <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
+      <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
+      <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
+      <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
+      <p>
+        <strong>💰 Prezzo:</strong>{' '}
+        {game.discount > 0 ? (
+          <>
+            <span className="text-muted text-decoration-line-through me-2">
+              € {game.price.toFixed(2)}
+            </span>
+            <span className="text-success fw-bold">
+              € {finalPrice.toFixed(2)} (-{game.discount}%)
+            </span>
+          </>
+        ) : (
+          <>€ {game.price.toFixed(2)}</>
+        )}
+      </p>
+    </div>
+
+    {/* COLONNA DESTRA: Solo Titolo */}
+    <div className="col-md-8 d-flex align-items-start justify-content-center justify-content-md-start">
+      <h2 className="text-center text-md-start">{game.title}</h2>
+    </div>
+  
+
 
       </div>
 
