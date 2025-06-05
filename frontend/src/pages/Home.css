@@ -4,8 +4,7 @@
   max-width: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0.5rem;
   margin: 0 auto;
 }
 
@@ -18,20 +17,26 @@
   border-radius: 6px;
 }
 
-/* Pulsanti con spaziatura coerente */
+/* Titolo e spaziatura coerente */
+.game-card h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Pulsanti */
 .game-card .btn {
   font-size: 0.95rem;
 }
 
-/* Pulsanti verticali (es. carrello) */
+/* Stack pulsanti verticali */
 .game-card .btn-stack .btn + .btn {
   margin-top: 0.5rem;
 }
 
-/* Titoli */
-.game-card h5 {
-  font-size: 1.1rem;
-  font-weight: 600;
+/* Riduci spazio sotto immagine */
+.game-card .mt-2 {
+  margin-top: 0.5rem !important;
 }
 
 /* Responsive: mobile <576px */
@@ -77,12 +82,18 @@
 }
 
 /* Pulsanti amministrativi */
+.admin-actions {
+  gap: 5px; /* 👈 Aggiunta la spaziatura tra i pulsanti */
+  display: flex;
+  margin: 5px;
+}
+
+/* Stile pulsanti admin */
 .admin-btn {
   min-height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 7px;
   line-height: 1.1;
   padding: 0 0.5rem;
   font-size: 0.9rem;
@@ -104,7 +115,6 @@
     margin-left: 0;
   }
 }
-
 
   
   
