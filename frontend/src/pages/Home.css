@@ -29,16 +29,6 @@
   font-size: 0.95rem;
 }
 
-/* Stack pulsanti verticali */
-.game-card .btn-stack .btn + .btn {
-  margin-top: 0.5rem;
-}
-
-/* Riduci spazio sotto immagine */
-.game-card .mt-2 {
-  margin-top: 0.5rem !important;
-}
-
 /* Responsive: mobile <576px */
 @media (max-width: 576px) {
   .game-card {
@@ -81,13 +71,6 @@
   }
 }
 
-/* Pulsanti amministrativi */
-.admin-actions {
-  gap: 5px; /* 👈 Aggiunta la spaziatura tra i pulsanti */
-  display: flex;
-  margin: 5px;
-}
-
 /* Stile pulsanti admin */
 .admin-btn {
   min-height: 34px;
@@ -102,19 +85,16 @@
 
 /* Stack pulsanti admin su mobile */
 @media (max-width: 400px) {
-  .admin-actions {
-    flex-direction: column !important;
-  }
-
   .admin-btn {
     width: 100% !important;
   }
 
-  .admin-actions .admin-btn + .admin-btn {
+  .admin-btn + .admin-btn {
     margin-top: 0.5rem;
     margin-left: 0;
   }
 }
+
 
   
   
