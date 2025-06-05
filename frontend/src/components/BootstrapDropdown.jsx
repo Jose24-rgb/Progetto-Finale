@@ -23,23 +23,47 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
     onChange(fakeEvent);
   };
 
-  // Mostra la X solo se c'è un valore selezionato diverso dal label iniziale
   const shouldShowClear = value && value !== '' && value !== label;
+  const dropdownId = `dropdown-${name}`;
 
   return (
     <div className="position-relative select-wrapper">
+      {/* Fallback accessibile per screen reader */}
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        aria-hidden="true"
+        tabIndex={-1}
+        hidden
+      >
+        <option value="">{label}</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>{opt}</option>
+        ))}
+      </select>
+
       <Dropdown onSelect={handleSelect} className="w-100 dropdown-wrapper">
         <Dropdown.Toggle
           as="button"
+          id={dropdownId}
           type="button"
           className="custom-toggle dropdown-toggle"
+          aria-haspopup="listbox"
+          aria-expanded={!!value}
+          aria-label={`${label} per ${name}`}
         >
           {value || label}
         </Dropdown.Toggle>
 
-        <Dropdown.Menu className="w-100">
+        <Dropdown.Menu className="w-100" role="listbox" aria-labelledby={dropdownId}>
           {options.map((opt) => (
-            <Dropdown.Item key={opt} eventKey={opt}>
+            <Dropdown.Item
+              key={opt}
+              eventKey={opt}
+              role="option"
+              aria-selected={value === opt}
+            >
               {opt}
             </Dropdown.Item>
           ))}
@@ -52,6 +76,7 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
           className="clear-btn"
           onClick={handleClear}
           title="Cancella selezione"
+          aria-label="Cancella selezione"
         >
           ×
         </button>
@@ -61,6 +86,8 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
 };
 
 export default BootstrapDropdown;
+
+
 
 
 

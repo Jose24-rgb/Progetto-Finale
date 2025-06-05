@@ -95,6 +95,7 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
             placeholder="Min €"
             value={filters.priceMin}
             onChange={handleChange}
+            aria-label="Prezzo minimo"
             style={{ width: '100px' }}
           />
         </div>
@@ -106,6 +107,7 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
             placeholder="Max €"
             value={filters.priceMax}
             onChange={handleChange}
+            aria-label="Prezzo massimo"
             style={{ width: '100px' }}
           />
         </div>
@@ -117,6 +119,7 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
             onChange={handleChange}
             onMouseUp={(e) => e.currentTarget.blur()}
             checked={filters.inStock}
+            aria-label="Solo prodotti disponibili in stock"
             style={{ transform: 'scale(1.5)' }}
           />
           <label className="form-check-label">In stock</label>
