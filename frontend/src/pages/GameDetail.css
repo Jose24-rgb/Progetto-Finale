@@ -98,6 +98,7 @@ h2 {
   h2 {
     font-size: 1.5rem;
     padding-left: 0;
+    margin-top: 1rem; /* ← aggiungi questo */
   }
 }
 
