@@ -16,6 +16,8 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
     ...defaultFilters,
   });
 
+  const [rotate, setRotate] = useState(false);
+
   const systems = ['PC', 'PlayStation 5', 'Xbox Series X|S', 'Switch', 'Switch 2'];
   const platforms = ['Epic Games', 'Steam', 'EA App', 'Rockstar', 'Ubisoft Connect', 'Nintendo eShop', 'Microsoft Store'];
   const genres = ['Altro', 'Arcade', 'Avventura', 'Azione', 'FPS', 'MMO', 'Indies', 'Coop online', 'Free to Play'];
@@ -46,48 +48,40 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
     onFilterChange(newFilters);
   };
 
+  const handleReset = () => {
+    const resetFilters = {
+      system: '',
+      platform: '',
+      genre: '',
+      sort: '',
+      type: '',
+      priceMin: '',
+      priceMax: '',
+      inStock: false,
+    };
+    setFilters(resetFilters);
+    onFilterChange(resetFilters);
+
+    // Trigger animazione rotazione
+    setRotate(true);
+    setTimeout(() => setRotate(false), 400);
+  };
+
   return (
     <div className="mb-4 d-flex flex-column align-items-center gap-3">
       {/* RIGA 1 */}
       <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
         <div className="col-md-3 mb-2">
-          <BootstrapDropdown
-            name="system"
-            label="Sistemi"
-            options={systems}
-            value={filters.system}
-            onChange={handleChange}
-          />
+          <BootstrapDropdown name="system" label="Sistemi" options={systems} value={filters.system} onChange={handleChange} />
         </div>
-
         <div className="col-md-3 mb-2">
-          <BootstrapDropdown
-            name="platform"
-            label="Piattaforme"
-            options={platforms}
-            value={filters.platform}
-            onChange={handleChange}
-          />
+          <BootstrapDropdown name="platform" label="Piattaforme" options={platforms} value={filters.platform} onChange={handleChange} />
         </div>
-
         <div className="col-md-3 mb-2">
-          <BootstrapDropdown
-            name="genre"
-            label="Generi..."
-            options={genres}
-            value={filters.genre}
-            onChange={handleChange}
-          />
+          <BootstrapDropdown name="genre" label="Generi..." options={genres} value={filters.genre} onChange={handleChange} />
         </div>
-
         <div className="col-md-3 mb-2">
-          <BootstrapDropdown
-            name="sort"
-            label="Ordina per:"
-            options={sorts}
-            value={filters.sort}
-            onChange={handleChange}
-          />
+          <BootstrapDropdown name="sort" label="Ordina per:" options={sorts} value={filters.sort} onChange={handleChange} />
         </div>
       </div>
 
@@ -144,12 +138,24 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
             }}
           />
         </div>
+        <div className="col-auto mb-2 d-flex justify-content-center align-items-center">
+          <button
+            className={`reset-icon-btn ${rotate ? 'rotate' : ''}`}
+            onClick={handleReset}
+            title="Reset filtri"
+          >
+            🔄
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Filters;
+
+
+
 
 
 
