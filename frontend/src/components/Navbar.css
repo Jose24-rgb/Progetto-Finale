@@ -1,0 +1,8 @@
+/* Migliore spaziatura per avatar su dispositivi piccoli */
+@media (max-width: 576px) {
+    .navbar .nav-item {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  

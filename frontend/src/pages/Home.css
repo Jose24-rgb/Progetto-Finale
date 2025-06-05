@@ -6,6 +6,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 0 1rem;
+  margin: 0 auto;
 }
 
 /* Immagini responsive */
@@ -36,7 +37,8 @@
 /* Responsive: mobile <576px */
 @media (max-width: 576px) {
   .game-card {
-    max-width: 100%;
+    max-width: 95%;
+    margin-bottom: 1.5rem;
   }
 
   .game-card .btn {
@@ -52,7 +54,7 @@
   }
 }
 
-/* Responsive: tablet >768px */
+/* Responsive: tablet >=768px */
 @media (min-width: 768px) {
   .game-card h5 {
     font-size: 1.3rem;
@@ -60,6 +62,17 @@
 
   .results-admin-shift {
     margin-left: 4.5em;
+  }
+}
+
+/* Responsive: desktop >=992px */
+@media (min-width: 992px) {
+  .game-card h5 {
+    font-size: 1.4rem;
+  }
+
+  .game-card img {
+    max-height: 500px;
   }
 }
 
@@ -76,7 +89,7 @@
   white-space: nowrap;
 }
 
-/* Mobile extra piccolo: stack pulsanti admin */
+/* Stack pulsanti admin su mobile */
 @media (max-width: 400px) {
   .admin-actions {
     flex-direction: column !important;
@@ -85,7 +98,13 @@
   .admin-btn {
     width: 100% !important;
   }
+
+  .admin-actions .admin-btn + .admin-btn {
+    margin-top: 0.5rem;
+    margin-left: 0;
+  }
 }
+
 
   
   
