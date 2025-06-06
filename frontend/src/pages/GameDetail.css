@@ -126,4 +126,15 @@ h2 {
   line-height: 1.6;
 }
 
+.card .list-group {
+  border-radius: 0.5rem;
+}
+
+.card .list-group-item {
+  border-bottom: 1px solid #eee;
+}
+
+.card .list-group-item:last-child {
+  border-bottom: none;
+}
 

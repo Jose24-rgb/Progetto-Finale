@@ -109,7 +109,7 @@ const GameDetail = () => {
           </p>
         </div>
 
-        {/* COLONNA DESTRA: Titolo + Descrizione */}
+        {/* COLONNA DESTRA: Titolo + Descrizione + Recensioni */}
         <div className="col-md-8">
           <h2 className="text-center text-md-start">{game.title}</h2>
           {game.description && (
@@ -117,61 +117,71 @@ const GameDetail = () => {
               {game.description}
             </p>
           )}
+
+          <hr />
+          <h4>🗣️ Recensioni</h4>
+          {reviews.length === 0 ? (
+            <p>Nessuna recensione per questo gioco.</p>
+          ) : (
+            <div className="card mb-4">
+              <div
+                className="list-group"
+                style={{
+                  maxHeight: reviews.length > 3 ? '300px' : 'auto',
+                  overflowY: reviews.length > 3 ? 'auto' : 'visible',
+                }}
+              >
+                {reviews.map((r) => (
+                  <div key={r._id} className="list-group-item">
+                    <strong>{r.userId?.username || 'Anonimo'}</strong> — ⭐ {r.rating}/5
+                    <br />
+                    {r.comment}
+                    <br />
+                    <small>{new Date(r.date).toLocaleDateString()}</small>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {user && !hasReviewed && (
+            <>
+              <h5 className="mt-4">Lascia una recensione</h5>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-2">
+                  <label>Voto</label>
+                  <select className="form-select" value={rating} onChange={e => setRating(Number(e.target.value))}>
+                    {[5, 4, 3, 2, 1].map(n => (
+                      <option key={n} value={n}>{n} ⭐</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-2">
+                  <label>Commento</label>
+                  <textarea
+                    className="form-control"
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
+                    required
+                  />
+                </div>
+                <button className="btn btn-primary">Invia recensione</button>
+              </form>
+            </>
+          )}
+
+          {user && hasReviewed && (
+            <p className="text-muted mt-3">Hai già recensito questo gioco.</p>
+          )}
         </div>
       </div>
-
-      <hr />
-      <h4>🗣️ Recensioni</h4>
-      {reviews.length === 0 ? (
-        <p>Nessuna recensione per questo gioco.</p>
-      ) : (
-        <ul className="list-group mb-4">
-          {reviews.map((r) => (
-            <li key={r._id} className="list-group-item">
-              <strong>{r.userId?.username || 'Anonimo'}</strong> — ⭐ {r.rating}/5
-              <br />
-              {r.comment}
-              <br />
-              <small>{new Date(r.date).toLocaleDateString()}</small>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {user && !hasReviewed && (
-        <>
-          <h5 className="mt-4">Lascia una recensione</h5>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-2">
-              <label>Voto</label>
-              <select className="form-select" value={rating} onChange={e => setRating(Number(e.target.value))}>
-                {[5, 4, 3, 2, 1].map(n => (
-                  <option key={n} value={n}>{n} ⭐</option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-2">
-              <label>Commento</label>
-              <textarea
-                className="form-control"
-                value={comment}
-                onChange={e => setComment(e.target.value)}
-                required
-              />
-            </div>
-            <button className="btn btn-primary">Invia recensione</button>
-          </form>
-        </>
-      )}
-
-      {user && hasReviewed && (
-        <p className="text-muted mt-3">Hai già recensito questo gioco.</p>
-      )}
     </div>
   );
 };
 
 export default GameDetail;
+
+
 
 
 
