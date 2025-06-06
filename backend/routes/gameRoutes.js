@@ -66,6 +66,8 @@ router.get('/:id', getGameById);
  *                 type: string
  *               price:
  *                 type: number
+ *               description:
+ *                 type: string
  *               image:
  *                 type: string
  *                 format: binary
@@ -102,6 +104,8 @@ router.post('/', verifyToken, isAdmin, upload.single('image'), createGame);
  *                 type: string
  *               price:
  *                 type: number
+ *               description:
+ *                 type: string
  *               image:
  *                 type: string
  *                 format: binary
@@ -136,6 +140,7 @@ router.put('/:id', verifyToken, isAdmin, upload.single('image'), updateGame);
 router.delete('/:id', verifyToken, isAdmin, deleteGame);
 
 module.exports = router;
+
 
 
 

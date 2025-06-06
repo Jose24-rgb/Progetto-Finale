@@ -16,22 +16,15 @@ exports.getAllGames = async (req, res) => {
     } = req.query;
 
     const filter = {};
-
-    // GENRE: gestione case-insensitive con regex
-    if (genre) {
-      filter.genre = { $regex: new RegExp(genre, 'i') };
-    }
-
+    if (genre) filter.genre = { $regex: new RegExp(genre, 'i') };
     if (platform) filter.platform = platform;
     if (system) filter.system = system;
     if (type && type !== 'Tutto') filter.type = type;
-
     if (priceMin || priceMax) {
       filter.price = {};
       if (priceMin) filter.price.$gte = parseFloat(priceMin);
       if (priceMax) filter.price.$lte = parseFloat(priceMax);
     }
-
     if (inStock === 'true') {
       filter.stock = { $gt: 0 };
     }
@@ -72,7 +65,6 @@ exports.getAllGames = async (req, res) => {
 
 exports.getGameById = async (req, res) => {
   const { id } = req.params;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'ID non valido' });
   }
@@ -93,11 +85,11 @@ exports.createGame = async (req, res) => {
       stock,
       platform,
       system,
-      type
+      type,
+      description // ✅ AGGIUNTO
     } = req.body;
 
     let imageUrl = '';
-
     if (req.file) {
       const base64 = req.file.buffer.toString('base64');
       const dataUri = `data:${req.file.mimetype};base64,${base64}`;
@@ -114,6 +106,7 @@ exports.createGame = async (req, res) => {
       platform,
       system,
       type,
+      description, // ✅ AGGIUNTO
       imageUrl
     });
 
@@ -147,6 +140,8 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
+
 
 
 

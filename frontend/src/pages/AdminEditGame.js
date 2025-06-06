@@ -15,6 +15,7 @@ const AdminEditGame = () => {
     platform: '',
     system: '',
     type: 'Gioco',
+    description: '', // Descrizione aggiunta
   });
 
   const [originalForm, setOriginalForm] = useState(null);
@@ -74,6 +75,7 @@ const AdminEditGame = () => {
       platform: '',
       system: '',
       type: 'Gioco',
+      description: '', // Anche qui
     });
     setImage(null);
   };
@@ -113,6 +115,18 @@ const AdminEditGame = () => {
               required
             />
           </div>
+
+          <div className="col-12">
+            <textarea
+              className="form-control my-2"
+              name="description"
+              placeholder="Descrizione del gioco"
+              value={form.description}
+              onChange={handleChange}
+              rows={4}
+            ></textarea>
+          </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -224,5 +238,6 @@ const AdminEditGame = () => {
 };
 
 export default AdminEditGame;
+
 
 

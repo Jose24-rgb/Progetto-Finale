@@ -119,5 +119,11 @@ h2 {
 }
 
 
+/* Descrizione gioco */
+.game-description {
+  white-space: pre-line;
+  font-size: 1rem;
+  line-height: 1.6;
+}
 
 

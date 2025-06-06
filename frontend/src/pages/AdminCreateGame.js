@@ -12,7 +12,9 @@ const AdminCreateGame = () => {
     platform: '',
     system: '',
     type: 'Gioco',
+    description: '', // ✅ Aggiunto
   });
+
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
@@ -29,7 +31,9 @@ const AdminCreateGame = () => {
     try {
       const data = new FormData();
       Object.entries(form).forEach(([key, val]) => {
-        if (val) data.append(key, val);
+        if (val !== undefined && val !== null) {
+          data.append(key, val);
+        }
       });
       if (image) data.append('image', image);
 
@@ -56,6 +60,18 @@ const AdminCreateGame = () => {
               required
             />
           </div>
+
+          <div className="col-12">
+            <textarea
+              className="form-control my-2"
+              name="description"
+              placeholder="Descrizione del gioco"
+              value={form.description}
+              onChange={handleChange}
+              rows={4}
+            ></textarea>
+          </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -162,5 +178,6 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
 
 
