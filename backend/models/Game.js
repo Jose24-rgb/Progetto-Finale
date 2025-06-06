@@ -37,13 +37,15 @@ const gameSchema = new mongoose.Schema({
     default: 'Gioco'
   },
 
-  description: { type: String }, // ✅ CAMPO AGGIUNTO
-  stock:      { type: Number, default: 1 },
-  reviewsAvg: { type: Number, default: 0 },
-  createdAt:  { type: Date, default: Date.now }
+  description: { type: String },
+  trailerUrl:  { type: String }, // ✅ AGGIUNTO
+  stock:       { type: Number, default: 1 },
+  reviewsAvg:  { type: Number, default: 0 },
+  createdAt:   { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Game', gameSchema);
+
 
 
 

@@ -86,7 +86,8 @@ exports.createGame = async (req, res) => {
       platform,
       system,
       type,
-      description // ✅ AGGIUNTO
+      description,
+      trailerUrl // ✅ AGGIUNTO
     } = req.body;
 
     let imageUrl = '';
@@ -106,7 +107,8 @@ exports.createGame = async (req, res) => {
       platform,
       system,
       type,
-      description, // ✅ AGGIUNTO
+      description,
+      trailerUrl, // ✅ AGGIUNTO
       imageUrl
     });
 
@@ -140,6 +142,7 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
 
 
 

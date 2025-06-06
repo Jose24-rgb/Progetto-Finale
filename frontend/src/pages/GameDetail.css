@@ -19,8 +19,8 @@
     padding-right: 1rem; /* ↦ se vuoi aggiungere un po’ di spazio a destra */
     font-size: 2rem;
   }
+  
 }
-
 
 /* Spaziatura verticale più compatta per info gioco */
 .game-left-col p {
@@ -116,8 +116,8 @@ h2 {
   h2 {
     font-size: 1.75rem;
   }
+  
 }
-
 
 /* Descrizione gioco */
 .game-description {
@@ -137,4 +137,29 @@ h2 {
 .card .list-group-item:last-child {
   border-bottom: none;
 }
+
+/* Trailer video */
+.trailer-wrapper {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.trailer-wrapper h4 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.ratio iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1;
+  pointer-events: auto;
+}
+.ratio {
+  position: relative;
+}
+
 

@@ -15,7 +15,8 @@ const AdminEditGame = () => {
     platform: '',
     system: '',
     type: 'Gioco',
-    description: '', // Descrizione aggiunta
+    description: '',
+    trailerUrl: '' // ✅ Aggiunto
   });
 
   const [originalForm, setOriginalForm] = useState(null);
@@ -75,7 +76,8 @@ const AdminEditGame = () => {
       platform: '',
       system: '',
       type: 'Gioco',
-      description: '', // Anche qui
+      description: '',
+      trailerUrl: ''
     });
     setImage(null);
   };
@@ -125,6 +127,16 @@ const AdminEditGame = () => {
               onChange={handleChange}
               rows={4}
             ></textarea>
+          </div>
+
+          <div className="col-12">
+            <input
+              className="form-control my-2"
+              name="trailerUrl"
+              placeholder="Link del trailer video (YouTube o altro)"
+              value={form.trailerUrl || ''}
+              onChange={handleChange}
+            />
           </div>
 
           <div className="col-md-6">

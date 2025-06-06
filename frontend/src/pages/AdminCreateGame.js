@@ -12,7 +12,8 @@ const AdminCreateGame = () => {
     platform: '',
     system: '',
     type: 'Gioco',
-    description: '', // ✅ Aggiunto
+    description: '',
+    trailerUrl: '' // ✅ AGGIUNTO
   });
 
   const [image, setImage] = useState(null);
@@ -70,6 +71,16 @@ const AdminCreateGame = () => {
               onChange={handleChange}
               rows={4}
             ></textarea>
+          </div>
+
+          <div className="col-12">
+            <input
+              className="form-control my-2"
+              name="trailerUrl"
+              placeholder="Link del trailer video (YouTube o altro)"
+              value={form.trailerUrl}
+              onChange={handleChange}
+            />
           </div>
 
           <div className="col-md-6">
@@ -178,6 +189,7 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
 
 
 

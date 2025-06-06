@@ -60,6 +60,16 @@ const GameDetail = () => {
     }
   };
 
+  // ✅ Funzione estesa (supporta Vimeo e YouTube)
+  const getEmbedUrl = (url) => {
+    if (!url) return '';
+    const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+    const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+    if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+    return '';
+  };
+
   if (!game) return <p>Caricamento...</p>;
 
   const finalPrice = game.discount > 0
@@ -69,7 +79,6 @@ const GameDetail = () => {
   return (
     <div className="container mt-5">
       <div className="row align-items-start mb-4">
-        {/* COLONNA SINISTRA: Immagine + Info */}
         <div className="col-md-4 mb-4 game-left-col">
           <img
             src={game.imageUrl}
@@ -109,7 +118,6 @@ const GameDetail = () => {
           </p>
         </div>
 
-        {/* COLONNA DESTRA: Titolo + Descrizione + Recensioni */}
         <div className="col-md-8">
           <h2 className="text-center text-md-start">{game.title}</h2>
           {game.description && (
@@ -175,11 +183,27 @@ const GameDetail = () => {
           )}
         </div>
       </div>
+
+      {game.trailerUrl && (
+        <div className="trailer-wrapper">
+          <h4>🎬 Trailer</h4>
+          <div className="ratio ratio-16x9">
+            <iframe
+              src={getEmbedUrl(game.trailerUrl)}
+              title="Trailer video"
+              allow="autoplay; fullscreen; picture-in-picture"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default GameDetail;
+
+
+
 
 
 
