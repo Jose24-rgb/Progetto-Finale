@@ -68,14 +68,8 @@ const Home = () => {
   const isMobile = window.innerWidth < 768;
   const hideFilters = isMobile && searchQuery.trim().length > 0;
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('it-IT', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  };
-
-  const isUpcoming = (releaseDate) => {
-    if (!releaseDate) return false;
-    return new Date(releaseDate) > new Date();
+  const isComingSoon = (stock) => {
+    return stock?.toLowerCase() === 'prossimamente';
   };
 
   return (
@@ -108,57 +102,64 @@ const Home = () => {
         <p className="text-muted">Nessun risultato trovato.</p>
       ) : (
         <div className="row gx-3">
-          {filteredGames.map((game) => (
-            <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
-              <div className="card game-card p-2 border-0">
-                {game.imageUrl && (
-                  <img
-                    src={game.imageUrl}
-                    className="card-img-top img-fluid"
-                    alt={game.title}
-                  />
-                )}
-                <div className="d-flex flex-column mt-2">
-                  <h5 className="card-title mb-2">
-                    <Link to={`/games/${game._id}`} className="text-decoration-none">
-                      {game.title}
-                    </Link>
-                  </h5>
-
-                  {game.releaseDate && (
-                    <small className="text-muted">
-                      {isUpcoming(game.releaseDate)
-                        ? '🕒 Prossimamente'
-                        : `🗓 Disponibile dal: ${formatDate(game.releaseDate)}`}
-                    </small>
+          {filteredGames.map((game) => {
+            const comingSoon = isComingSoon(game.stock);
+            return (
+              <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
+                <div className="card game-card p-2 border-0">
+                  {game.imageUrl && (
+                    <img
+                      src={game.imageUrl}
+                      className="card-img-top img-fluid"
+                      alt={game.title}
+                    />
                   )}
+                  <div className="d-flex flex-column mt-2">
+                    <h5 className="card-title mb-2">
+                      <Link to={`/games/${game._id}`} className="text-decoration-none">
+                        {game.title}
+                      </Link>
+                    </h5>
 
-                  <div className="d-grid gap-2 mt-2">
-                    <button className="btn btn-primary btn-sm w-100" onClick={() => addToCart(game)}>
-                      🛒 Aggiungi al carrello
-                    </button>
-                  </div>
+                    {game.stock && (
+                      <small className="text-muted">
+                        {comingSoon ? '🕒 Prossimamente' : `📦 Disponibilità: ${game.stock}`}
+                      </small>
+                    )}
 
-                  {user?.isAdmin && (
-                    <div className="d-flex flex-sm-row flex-column gap-2 mt-2">
-                      <button
-                        className="btn btn-warning btn-sm admin-btn w-50"
-                        onClick={() => navigate(`/admin/edit-game/${game._id}`)}
-                      >
-                        ✏️ Modifica
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm admin-btn w-50"
-                        onClick={() => handleDelete(game._id)}
-                      >
-                        🗑️ Elimina
-                      </button>
+                    <div className="d-grid gap-2 mt-2">
+                      {comingSoon ? (
+                        <button className="btn btn-secondary btn-sm w-100" disabled>
+                          🕒 Prossimamente
+                        </button>
+                      ) : (
+                        <button className="btn btn-primary btn-sm w-100" onClick={() => addToCart(game)}>
+                          🛒 Aggiungi al carrello
+                        </button>
+                      )}
                     </div>
-                  )}
+
+                    {user?.isAdmin && (
+                      <div className="d-flex flex-sm-row flex-column gap-2 mt-2">
+                        <button
+                          className="btn btn-warning btn-sm admin-btn w-50"
+                          onClick={() => navigate(`/admin/edit-game/${game._id}`)}
+                        >
+                          ✏️ Modifica
+                        </button>
+                        <button
+                          className="btn btn-danger btn-sm admin-btn w-50"
+                          onClick={() => handleDelete(game._id)}
+                        >
+                          🗑️ Elimina
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
@@ -166,6 +167,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 

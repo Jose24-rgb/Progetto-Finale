@@ -1,4 +1,4 @@
-// ✅ FILE: GameDetail.jsx (completo con supporto link DLC, gioco base e trailer mp4/YouTube/Vimeo)
+// ✅ FILE: GameDetail.jsx (aggiornato per nascondere prezzo se "Prossimamente")
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
@@ -43,7 +43,7 @@ const GameDetail = () => {
       alert('Gioco eliminato con successo');
       navigate('/');
     } catch (err) {
-      alert('Errore durante l\'eliminazione');
+      alert("Errore durante l'eliminazione");
     }
   };
 
@@ -102,21 +102,24 @@ const GameDetail = () => {
           <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
           <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
           <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
-          <p>
-            <strong>💰 Prezzo:</strong>{' '}
-            {game.discount > 0 ? (
-              <>
-                <span className="text-muted text-decoration-line-through me-2">
-                  € {game.price.toFixed(2)}
-                </span>
-                <span className="text-success fw-bold">
-                  € {finalPrice.toFixed(2)} (-{game.discount}%)
-                </span>
-              </>
-            ) : (
-              <>€ {game.price.toFixed(2)}</>
-            )}
-          </p>
+
+          {game.stock?.toLowerCase() !== 'prossimamente' && (
+            <p>
+              <strong>💰 Prezzo:</strong>{' '}
+              {game.discount > 0 ? (
+                <>
+                  <span className="text-muted text-decoration-line-through me-2">
+                    € {game.price.toFixed(2)}
+                  </span>
+                  <span className="text-success fw-bold">
+                    € {finalPrice.toFixed(2)} (-{game.discount}%)
+                  </span>
+                </>
+              ) : (
+                <>€ {game.price.toFixed(2)}</>
+              )}
+            </p>
+          )}
 
           {game.type === 'Gioco' && game.dlcLink && (
             <p>
@@ -225,6 +228,8 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
+
 
 
 

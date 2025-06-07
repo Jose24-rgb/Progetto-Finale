@@ -16,7 +16,7 @@ const gameSchema = new mongoose.Schema({
       'EA App',
       'Rockstar',
       'Ubisoft Connect',
-      'Nintendo eShop',
+      'Nintendo eShop', 
       'PlayStation Store',
       'Xbox Store',
       'Microsoft Store'
@@ -44,7 +44,7 @@ const gameSchema = new mongoose.Schema({
   trailerUrl:    { type: String },
   dlcLink:       { type: String, default: '' },
   baseGameLink:  { type: String, default: '' },
-  stock:         { type: Number, default: 1 },
+  stock:         { type: String, default: '1' },
   reviewsAvg:    { type: Number, default: 0 },
   createdAt:     { type: Date, default: Date.now }
 });

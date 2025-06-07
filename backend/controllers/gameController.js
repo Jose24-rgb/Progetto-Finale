@@ -26,7 +26,7 @@ exports.getAllGames = async (req, res) => {
       if (priceMax) filter.price.$lte = parseFloat(priceMax);
     }
     if (inStock === 'true') {
-      filter.stock = { $gt: 0 };
+      filter.stock = { $ne: '0' }; // ✅ Adatto a campo stringa
     }
 
     let sortOption = {};
@@ -113,7 +113,6 @@ exports.createGame = async (req, res) => {
       trailerUrl,
       dlcLink,
       baseGameLink,
-      releaseDate, // ✅ salvato
       imageUrl
     });
 
@@ -147,6 +146,7 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
 
 
 

@@ -1,4 +1,3 @@
-// ✅ FILE: AdminEditGame.js (con supporto a dlcLink, baseGameLink e releaseDate)
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
@@ -12,14 +11,14 @@ const AdminEditGame = () => {
     genre: '',
     price: '',
     discount: 0,
-    stock: 1,
+    stock: '',
     platform: '',
     system: '',
     type: 'Gioco',
     description: '',
     trailerUrl: '',
     dlcLink: '',
-    baseGameLink: '',
+    baseGameLink: ''
   });
 
   const [originalForm, setOriginalForm] = useState(null);
@@ -29,8 +28,9 @@ const AdminEditGame = () => {
     const fetchGame = async () => {
       try {
         const res = await api.get(`/games/${id}`);
-        setForm(res.data);
-        setOriginalForm(res.data);
+        const { releaseDate, ...rest } = res.data;
+        setForm(rest);
+        setOriginalForm(rest);
       } catch (err) {
         alert('Errore nel recupero dati del gioco');
         navigate('/');
@@ -51,7 +51,23 @@ const AdminEditGame = () => {
     e.preventDefault();
     try {
       const data = new FormData();
-      Object.entries(form).forEach(([key, val]) => data.append(key, val));
+
+      const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
+      const price = isComingSoon ? 0 : parseFloat(form.price) || 0;
+      const discount = isComingSoon ? 0 : parseFloat(form.discount) || 0;
+
+      data.append('title', form.title);
+      data.append('genre', form.genre);
+      data.append('price', price);
+      data.append('discount', discount);
+      data.append('stock', form.stock);
+      data.append('platform', form.platform);
+      data.append('system', form.system);
+      data.append('type', form.type);
+      data.append('description', form.description);
+      data.append('trailerUrl', form.trailerUrl);
+      data.append('dlcLink', form.dlcLink);
+      data.append('baseGameLink', form.baseGameLink);
       if (image) data.append('image', image);
 
       await api.put(`/games/${id}`, data);
@@ -75,28 +91,26 @@ const AdminEditGame = () => {
       genre: '',
       price: '',
       discount: 0,
-      stock: 1,
+      stock: '',
       platform: '',
       system: '',
       type: 'Gioco',
       description: '',
       trailerUrl: '',
       dlcLink: '',
-      baseGameLink: '',
+      baseGameLink: ''
     });
     setImage(null);
   };
 
   const handleExit = () => {
-    const confirmExit = window.confirm('Vuoi uscire senza salvare le modifiche?');
-    if (confirmExit) {
+    if (window.confirm('Vuoi uscire senza salvare le modifiche?')) {
       navigate('/');
     }
   };
 
   const handleDelete = async () => {
-    const confirmed = window.confirm('Sei sicuro di voler eliminare questo gioco?');
-    if (confirmed) {
+    if (window.confirm('Sei sicuro di voler eliminare questo gioco?')) {
       try {
         await api.delete(`/games/${id}`);
         alert('Gioco eliminato');
@@ -164,7 +178,6 @@ const AdminEditGame = () => {
             />
           </div>
 
-
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -183,7 +196,8 @@ const AdminEditGame = () => {
               placeholder="Prezzo"
               value={form.price}
               onChange={handleChange}
-              required
+              required={form.stock.toLowerCase() !== 'prossimamente'}
+              disabled={form.stock.toLowerCase() === 'prossimamente'}
             />
           </div>
 
@@ -195,6 +209,7 @@ const AdminEditGame = () => {
               placeholder="Sconto %"
               value={form.discount}
               onChange={handleChange}
+              disabled={form.stock.toLowerCase() === 'prossimamente'}
             />
           </div>
 
@@ -202,8 +217,8 @@ const AdminEditGame = () => {
             <input
               className="form-control my-2"
               name="stock"
-              type="number"
-              placeholder="Disponibilità"
+              type="text"
+              placeholder="Disponibilità (es. 'Prossimamente')"
               value={form.stock}
               onChange={handleChange}
             />
@@ -285,6 +300,8 @@ const AdminEditGame = () => {
 };
 
 export default AdminEditGame;
+
+
 
 
 

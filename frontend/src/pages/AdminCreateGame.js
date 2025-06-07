@@ -1,4 +1,3 @@
-// ✅ FILE: AdminCreateGame.js (aggiornato con nuove piattaforme e data di uscita)
 import { useState } from 'react';
 import api from '../services/apis';
 import { useNavigate } from 'react-router-dom';
@@ -9,14 +8,14 @@ const AdminCreateGame = () => {
     genre: '',
     price: '',
     discount: 0,
-    stock: 1,
+    stock: '',
     platform: '',
     system: '',
     type: 'Gioco',
     description: '',
     trailerUrl: '',
     dlcLink: '',
-    baseGameLink: '',
+    baseGameLink: ''
   });
 
   const [image, setImage] = useState(null);
@@ -34,11 +33,24 @@ const AdminCreateGame = () => {
     e.preventDefault();
     try {
       const data = new FormData();
-      Object.entries(form).forEach(([key, val]) => {
-        if (val !== undefined && val !== null) {
-          data.append(key, val);
-        }
-      });
+
+      // Gestione sicura per il prezzo e sconto se il gioco è "Prossimamente"
+      const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
+      const price = isComingSoon ? 0 : parseFloat(form.price) || 0;
+      const discount = isComingSoon ? 0 : parseFloat(form.discount) || 0;
+
+      data.append('title', form.title);
+      data.append('genre', form.genre);
+      data.append('price', price);
+      data.append('discount', discount);
+      data.append('stock', form.stock);
+      data.append('platform', form.platform);
+      data.append('system', form.system);
+      data.append('type', form.type);
+      data.append('description', form.description);
+      data.append('trailerUrl', form.trailerUrl);
+      data.append('dlcLink', form.dlcLink);
+      data.append('baseGameLink', form.baseGameLink);
       if (image) data.append('image', image);
 
       await api.post('/games', data);
@@ -106,7 +118,6 @@ const AdminCreateGame = () => {
             />
           </div>
 
-
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -116,6 +127,7 @@ const AdminCreateGame = () => {
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -124,9 +136,11 @@ const AdminCreateGame = () => {
               placeholder="Prezzo"
               value={form.price}
               onChange={handleChange}
-              required
+              required={!form.stock.toLowerCase().includes('prossimamente')}
+              disabled={form.stock.toLowerCase() === 'prossimamente'}
             />
           </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -135,18 +149,21 @@ const AdminCreateGame = () => {
               placeholder="Sconto %"
               value={form.discount}
               onChange={handleChange}
+              disabled={form.stock.toLowerCase() === 'prossimamente'}
             />
           </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
               name="stock"
-              type="number"
-              placeholder="Disponibilità"
+              type="text"
+              placeholder="Disponibilità (es. 'Prossimamente')"
               value={form.stock}
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -167,6 +184,7 @@ const AdminCreateGame = () => {
               <option>Xbox Store</option>
             </select>
           </div>
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -183,6 +201,7 @@ const AdminCreateGame = () => {
               <option>Switch 2</option>
             </select>
           </div>
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -199,6 +218,7 @@ const AdminCreateGame = () => {
               <option>Gioco + DLC</option>
             </select>
           </div>
+
           <div className="col-md-6">
             <input
               type="file"
@@ -208,6 +228,7 @@ const AdminCreateGame = () => {
             />
           </div>
         </div>
+
         <button className="btn btn-success mt-3">Crea gioco</button>
       </form>
     </div>
@@ -215,6 +236,8 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
+
 
 
 
