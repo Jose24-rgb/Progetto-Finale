@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import axios from '../services/apis';
 import { useCart } from '../context/CartContext';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Filters from '../components/Filters';
 import { useAuth } from '../context/AuthContext';
 import './Home.css';
@@ -13,6 +13,9 @@ const Home = () => {
     const stored = localStorage.getItem('filters');
     return stored ? JSON.parse(stored) : {};
   });
+
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
 
   const { addToCart } = useCart();
   const { user } = useAuth();
@@ -58,15 +61,19 @@ const Home = () => {
     }
   };
 
+  const filteredGames = games.filter(game =>
+    game.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="container mt-4 mb-5">
       <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
 
-      {!loading && games.length > 0 && (
+      {!loading && filteredGames.length > 0 && (
         <div className="row mb-3">
           <div className="col-sm-12 col-md-6 d-flex align-items-center mb-2 mb-md-0 results-admin-shift">
             <div className="fw-semibold me-3" style={{ fontSize: '1.1rem' }}>
-              {games.length} {games.length === 1 ? 'risultato' : 'risultati'}
+              {filteredGames.length} {filteredGames.length === 1 ? 'risultato' : 'risultati'}
             </div>
             {user?.isAdmin && (
               <button className="btn btn-success btn-sm" onClick={() => navigate('/admin/create-game')}>
@@ -79,11 +86,11 @@ const Home = () => {
 
       {loading ? (
         <p>Caricamento giochi...</p>
-      ) : games.length === 0 ? (
+      ) : filteredGames.length === 0 ? (
         <p className="text-muted">Nessun risultato trovato.</p>
       ) : (
         <div className="row gx-3">
-          {games.map((game) => (
+          {filteredGames.map((game) => (
             <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
               <div className="card game-card p-2 border-0">
                 {game.imageUrl && (
@@ -133,6 +140,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 

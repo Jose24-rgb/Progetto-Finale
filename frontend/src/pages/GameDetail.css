@@ -100,6 +100,9 @@ h2 {
     padding-left: 0;
     margin-top: 1rem; /* ← aggiungi questo */
   }
+  .trailer-wrapper {
+    margin-bottom: 3rem;
+  }
 }
 
 /* Ottimizzazioni tablet */
@@ -142,6 +145,7 @@ h2 {
 .trailer-wrapper {
   margin-top: 3rem;
   text-align: center;
+  margin-bottom: 5rem;
 }
 
 .trailer-wrapper h4 {

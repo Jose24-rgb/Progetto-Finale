@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 import UserMenu from '../components/UserMenu';
@@ -7,9 +7,13 @@ import './Navbar.css';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navbarCollapsed, setNavbarCollapsed] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleLogout = () => {
     logout();
@@ -18,6 +22,12 @@ const Navbar = () => {
 
   const toggleNavbar = () => setNavbarCollapsed(!navbarCollapsed);
   const avatarLetter = user?.username?.charAt(0).toUpperCase() || null;
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    navigate(`/?search=${encodeURIComponent(value)}`);
+  };
 
   return (
     <nav
@@ -43,8 +53,20 @@ const Navbar = () => {
         id="main-navbar"
       >
         {/* Desktop navbar */}
-        <ul className="navbar-nav ms-auto d-flex align-items-center d-none d-lg-flex">
-          <li className="nav-item me-3">
+        <ul className="navbar-nav ms-auto d-flex align-items-center d-none d-lg-flex gap-3">
+          {isHomePage && (
+            <li className="nav-item">
+              <input
+                type="text"
+                className="form-control form-control-sm"
+                placeholder="🔍 Cerca gioco..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                style={{ minWidth: '180px' }}
+              />
+            </li>
+          )}
+          <li className="nav-item">
             <Link to="/cart" className="text-white text-decoration-none" style={{ fontSize: '1.5rem' }} aria-label="Vai al carrello">🛒</Link>
           </li>
           <li className="nav-item">
@@ -61,9 +83,17 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile navbar */}
-        <div className="d-flex d-lg-none justify-content-end align-items-center gap-3 mt-3 w-100">
+        <div className="d-flex d-lg-none flex-row align-items-center gap-2 mt-3 w-100">
+          {isHomePage && (
+            <input
+              type="text"
+              className="form-control form-control-sm flex-grow-1"
+              placeholder="🔍 Cerca gioco..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          )}
           <Link to="/cart" className="text-white text-decoration-none" style={{ fontSize: '1.5rem' }} aria-label="Vai al carrello">🛒</Link>
-
           <UserMenu
             avatarLetter={avatarLetter}
             menuOpen={mobileMenuOpen}
@@ -80,6 +110,9 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
 
 
 
