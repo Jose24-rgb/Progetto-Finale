@@ -1,4 +1,4 @@
-// ✅ FILE: AdminCreateGame.js
+// ✅ FILE: AdminCreateGame.js (aggiornato con nuove piattaforme e data di uscita)
 import { useState } from 'react';
 import api from '../services/apis';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const AdminCreateGame = () => {
     description: '',
     trailerUrl: '',
     dlcLink: '',
-    baseGameLink: ''
+    baseGameLink: '',
   });
 
   const [image, setImage] = useState(null);
@@ -106,6 +106,7 @@ const AdminCreateGame = () => {
             />
           </div>
 
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -162,6 +163,8 @@ const AdminCreateGame = () => {
               <option>Ubisoft Connect</option>
               <option>Nintendo eShop</option>
               <option>Microsoft Store</option>
+              <option>PlayStation Store</option>
+              <option>Xbox Store</option>
             </select>
           </div>
           <div className="col-md-6">
@@ -212,6 +215,7 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
 
 
 

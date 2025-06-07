@@ -68,6 +68,16 @@ const Home = () => {
   const isMobile = window.innerWidth < 768;
   const hideFilters = isMobile && searchQuery.trim().length > 0;
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('it-IT', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  };
+
+  const isUpcoming = (releaseDate) => {
+    if (!releaseDate) return false;
+    return new Date(releaseDate) > new Date();
+  };
+
   return (
     <div className="container mt-4 mb-5">
       <Filters
@@ -115,7 +125,15 @@ const Home = () => {
                     </Link>
                   </h5>
 
-                  <div className="d-grid gap-2">
+                  {game.releaseDate && (
+                    <small className="text-muted">
+                      {isUpcoming(game.releaseDate)
+                        ? '🕒 Prossimamente'
+                        : `🗓 Disponibile dal: ${formatDate(game.releaseDate)}`}
+                    </small>
+                  )}
+
+                  <div className="d-grid gap-2 mt-2">
                     <button className="btn btn-primary btn-sm w-100" onClick={() => addToCart(game)}>
                       🛒 Aggiungi al carrello
                     </button>
@@ -148,6 +166,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 

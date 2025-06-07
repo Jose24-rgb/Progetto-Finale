@@ -19,7 +19,7 @@ const Filters = ({ onFilterChange, defaultFilters = {}, hideFilters = false, onR
   const [rotate, setRotate] = useState(false);
 
   const systems = ['PC', 'PlayStation 5', 'Xbox Series X|S', 'Switch', 'Switch 2'];
-  const platforms = ['Epic Games', 'Steam', 'EA App', 'Rockstar', 'Ubisoft Connect', 'Nintendo eShop', 'Microsoft Store'];
+  const platforms = ['Epic Games', 'Steam', 'EA App', 'Rockstar', 'Ubisoft Connect', 'Nintendo eShop', 'Microsoft Store', 'PlayStation Store','Xbox Store' ];
   const genres = ['Altro', 'Arcade', 'Avventura', 'Azione', 'FPS', 'MMO', 'Indies', 'Coop online', 'Free to Play'];
   const sorts = [
     'Bestseller', 'Sconto: migliore', 'Prezzo: da basso ad alto',

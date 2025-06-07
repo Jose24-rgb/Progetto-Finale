@@ -17,6 +17,8 @@ const gameSchema = new mongoose.Schema({
       'Rockstar',
       'Ubisoft Connect',
       'Nintendo eShop',
+      'PlayStation Store',
+      'Xbox Store',
       'Microsoft Store'
     ]
   },
@@ -38,22 +40,16 @@ const gameSchema = new mongoose.Schema({
     default: 'Gioco'
   },
 
-  description: { type: String },
-  trailerUrl:  { type: String },
-
-  // ✅ LINK ALLA PAGINA DLC (se Gioco)
-  dlcLink:     { type: String, default: '' },
-
-  // ✅ LINK AL GIOCO BASE (se DLC)
-  baseGameLink: { type: String, default: '' },
-
-  stock:       { type: Number, default: 1 },
-  reviewsAvg:  { type: Number, default: 0 },
-  createdAt:   { type: Date, default: Date.now }
+  description:   { type: String },
+  trailerUrl:    { type: String },
+  dlcLink:       { type: String, default: '' },
+  baseGameLink:  { type: String, default: '' },
+  stock:         { type: Number, default: 1 },
+  reviewsAvg:    { type: Number, default: 0 },
+  createdAt:     { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Game', gameSchema);
-
 
 
 

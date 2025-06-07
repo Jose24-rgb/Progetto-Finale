@@ -1,4 +1,4 @@
-// ✅ FILE: GameDetail.jsx (completo con supporto link DLC e link gioco base separato con baseGameLink)
+// ✅ FILE: GameDetail.jsx (completo con supporto link DLC, gioco base e trailer mp4/YouTube/Vimeo)
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
@@ -67,6 +67,7 @@ const GameDetail = () => {
     if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
     const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
     if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+    if (url.endsWith('.mp4')) return url;
     return '';
   };
 
@@ -206,11 +207,16 @@ const GameDetail = () => {
         <div className="trailer-wrapper">
           <h4>🎬 Trailer</h4>
           <div className="ratio ratio-16x9">
-            <iframe
-              src={getEmbedUrl(game.trailerUrl)}
-              title="Trailer video"
-              allow="autoplay; fullscreen; picture-in-picture"
-            />
+            {getEmbedUrl(game.trailerUrl).endsWith('.mp4') ? (
+              <video controls src={getEmbedUrl(game.trailerUrl)} width="100%" />
+            ) : (
+              <iframe
+                src={getEmbedUrl(game.trailerUrl)}
+                title="Trailer video"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            )}
           </div>
         </div>
       )}
@@ -219,6 +225,7 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
 
 
 

@@ -1,4 +1,4 @@
-// ✅ FILE: AdminEditGame.js (con supporto a dlcLink e baseGameLink)
+// ✅ FILE: AdminEditGame.js (con supporto a dlcLink, baseGameLink e releaseDate)
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
@@ -19,7 +19,7 @@ const AdminEditGame = () => {
     description: '',
     trailerUrl: '',
     dlcLink: '',
-    baseGameLink: ''
+    baseGameLink: '',
   });
 
   const [originalForm, setOriginalForm] = useState(null);
@@ -82,7 +82,7 @@ const AdminEditGame = () => {
       description: '',
       trailerUrl: '',
       dlcLink: '',
-      baseGameLink: ''
+      baseGameLink: '',
     });
     setImage(null);
   };
@@ -164,6 +164,7 @@ const AdminEditGame = () => {
             />
           </div>
 
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -223,6 +224,8 @@ const AdminEditGame = () => {
               <option>Ubisoft Connect</option>
               <option>Nintendo eShop</option>
               <option>Microsoft Store</option>
+              <option>PlayStation Store</option>
+              <option>Xbox Store</option>
             </select>
           </div>
 
@@ -282,6 +285,7 @@ const AdminEditGame = () => {
 };
 
 export default AdminEditGame;
+
 
 
 

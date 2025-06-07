@@ -1,4 +1,3 @@
-// ✅ FILE: controllers/gameController.js
 const Game = require('../models/Game');
 const { cloudinary } = require('../config/cloudinary');
 const mongoose = require('mongoose');
@@ -90,7 +89,7 @@ exports.createGame = async (req, res) => {
       description,
       trailerUrl,
       dlcLink,
-      baseGameLink
+      baseGameLink,
     } = req.body;
 
     let imageUrl = '';
@@ -114,6 +113,7 @@ exports.createGame = async (req, res) => {
       trailerUrl,
       dlcLink,
       baseGameLink,
+      releaseDate, // ✅ salvato
       imageUrl
     });
 
@@ -147,6 +147,7 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
 
 
 
