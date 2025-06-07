@@ -18,7 +18,8 @@ const AdminEditGame = () => {
     description: '',
     trailerUrl: '',
     dlcLink: '',
-    baseGameLink: ''
+    baseGameLink: '',
+    preorder: false  // ✅
   });
 
   const [originalForm, setOriginalForm] = useState(null);
@@ -29,7 +30,7 @@ const AdminEditGame = () => {
       try {
         const res = await api.get(`/games/${id}`);
         const { releaseDate, ...rest } = res.data;
-        setForm(rest);
+        setForm(prev => ({ ...prev, ...rest }));
         setOriginalForm(rest);
       } catch (err) {
         alert('Errore nel recupero dati del gioco');
@@ -40,7 +41,11 @@ const AdminEditGame = () => {
   }, [id, navigate]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleFile = (e) => {
@@ -68,6 +73,7 @@ const AdminEditGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
+      data.append('preorder', isComingSoon ? form.preorder : false); // ✅
       if (image) data.append('image', image);
 
       await api.put(`/games/${id}`, data);
@@ -98,7 +104,8 @@ const AdminEditGame = () => {
       description: '',
       trailerUrl: '',
       dlcLink: '',
-      baseGameLink: ''
+      baseGameLink: '',
+      preorder: false
     });
     setImage(null);
   };
@@ -152,7 +159,7 @@ const AdminEditGame = () => {
             <input
               className="form-control my-2"
               name="trailerUrl"
-              placeholder="Link trailer (YouTube o altro)"
+              placeholder="Link trailer"
               value={form.trailerUrl}
               onChange={handleChange}
             />
@@ -162,7 +169,7 @@ const AdminEditGame = () => {
             <input
               className="form-control my-2"
               name="dlcLink"
-              placeholder="Link alla pagina del DLC (se presente)"
+              placeholder="Link DLC"
               value={form.dlcLink}
               onChange={handleChange}
             />
@@ -172,7 +179,7 @@ const AdminEditGame = () => {
             <input
               className="form-control my-2"
               name="baseGameLink"
-              placeholder="Link al gioco principale (se DLC)"
+              placeholder="Link gioco principale"
               value={form.baseGameLink}
               onChange={handleChange}
             />
@@ -223,6 +230,24 @@ const AdminEditGame = () => {
               onChange={handleChange}
             />
           </div>
+
+          {form.stock.toLowerCase() === 'prossimamente' && (
+            <div className="col-12">
+              <div className="form-check my-2">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name="preorder"
+                  checked={form.preorder}
+                  onChange={handleChange}
+                  id="preorderCheck"
+                />
+                <label className="form-check-label" htmlFor="preorderCheck">
+                  ✅ Abilita preordine per questo gioco
+                </label>
+              </div>
+            </div>
+          )}
 
           <div className="col-md-6">
             <select

@@ -15,14 +15,19 @@ const AdminCreateGame = () => {
     description: '',
     trailerUrl: '',
     dlcLink: '',
-    baseGameLink: ''
+    baseGameLink: '',
+    preorder: false  // ✅ Aggiunto
   });
 
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleFile = (e) => {
@@ -50,6 +55,7 @@ const AdminCreateGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
+      data.append('preorder', isComingSoon ? form.preorder : false);  // ✅ Include solo se ha senso
       if (image) data.append('image', image);
 
       await api.post('/games', data);
@@ -163,6 +169,24 @@ const AdminCreateGame = () => {
             />
           </div>
 
+          {form.stock.toLowerCase() === 'prossimamente' && (
+            <div className="col-12">
+              <div className="form-check my-2">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name="preorder"
+                  checked={form.preorder}
+                  onChange={handleChange}
+                  id="preorderCheck"
+                />
+                <label className="form-check-label" htmlFor="preorderCheck">
+                  ✅ Abilita preordine per questo gioco
+                </label>
+              </div>
+            </div>
+          )}
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -235,6 +259,7 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
 
 
 

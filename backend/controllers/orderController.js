@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const mongoose = require('mongoose');
+const Game = require('../models/Game');
 
 exports.createOrder = async (req, res) => {
   const { userId, games, total } = req.body;
@@ -9,25 +10,35 @@ exports.createOrder = async (req, res) => {
   }
 
   try {
-    const newOrder = await Order.create({ userId, games, total });
+    // Carichiamo i giochi per verificare quali sono preordinabili
+    const gameIds = games.map(g => g.gameId);
+    const foundGames = await Game.find({ _id: { $in: gameIds } });
+
+    const gamesWithPreorderFlag = games.map(item => {
+      const gameInfo = foundGames.find(g => g._id.toString() === item.gameId);
+      const isPreorder = gameInfo?.stock?.toLowerCase() === 'prossimamente' && gameInfo?.preorder === true;
+      return {
+        ...item,
+        isPreorder: isPreorder || false
+      };
+    });
+
+    const newOrder = await Order.create({
+      _id: new mongoose.Types.ObjectId().toString(),
+      userId,
+      games: gamesWithPreorderFlag,
+      total,
+      status: 'pagato'
+    });
+
     res.status(201).json(newOrder);
   } catch (err) {
+    console.error('❌ Errore nella creazione ordine:', err);
     res.status(500).json({ error: 'Errore durante la creazione dell\'ordine' });
   }
 };
 
-exports.getUserOrders = async (req, res) => {
-  try {
-    const userId = new mongoose.Types.ObjectId(req.params.userId);
-    console.log('🔍 Recupero ordini per utente:', userId);
-    
-    const orders = await Order.find({ userId });
-    res.json(orders);
-  } catch (err) {
-    console.error('❌ Errore nel recupero ordini:', err);
-    res.status(500).json({ error: 'Errore interno nel recupero ordini' });
-  }
-};
+
 
 
 

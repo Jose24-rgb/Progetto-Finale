@@ -54,7 +54,11 @@ function Cart() {
                 return (
                   <li key={index} className="list-group-item cart-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
   <div className="w-100">
-                      <strong>{game.title}</strong>
+  <strong>{game.title}</strong>
+{game.stock?.toLowerCase() === 'prossimamente' && (
+  <span className="badge bg-warning text-dark ms-2">Preordine</span>
+)}
+
                       <br />
                       {game.discount > 0 ? (
                         <>

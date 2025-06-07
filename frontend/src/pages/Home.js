@@ -68,8 +68,8 @@ const Home = () => {
   const isMobile = window.innerWidth < 768;
   const hideFilters = isMobile && searchQuery.trim().length > 0;
 
-  const isComingSoon = (stock) => {
-    return stock?.toLowerCase() === 'prossimamente';
+  const isComingSoon = (game) => {
+    return game.stock?.toLowerCase() === 'prossimamente';
   };
 
   return (
@@ -103,7 +103,7 @@ const Home = () => {
       ) : (
         <div className="row gx-3">
           {filteredGames.map((game) => {
-            const comingSoon = isComingSoon(game.stock);
+            const comingSoon = isComingSoon(game);
             return (
               <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
                 <div className="card game-card p-2 border-0">
@@ -129,9 +129,15 @@ const Home = () => {
 
                     <div className="d-grid gap-2 mt-2">
                       {comingSoon ? (
-                        <button className="btn btn-secondary btn-sm w-100" disabled>
-                          🕒 Prossimamente
-                        </button>
+                        game.preorder ? (
+                          <button className="btn btn-warning btn-sm w-100" onClick={() => addToCart(game)}>
+                            🔔 Preordina
+                          </button>
+                        ) : (
+                          <button className="btn btn-secondary btn-sm w-100" disabled>
+                            🕒 Prossimamente
+                          </button>
+                        )
                       ) : (
                         <button className="btn btn-primary btn-sm w-100" onClick={() => addToCart(game)}>
                           🛒 Aggiungi al carrello
