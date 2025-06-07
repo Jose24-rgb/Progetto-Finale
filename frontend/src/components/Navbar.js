@@ -9,7 +9,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+
   const isHomePage = location.pathname === '/';
+  const isCartPage = location.pathname === '/cart'; // 👈 nuovo
 
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,13 +32,11 @@ const Navbar = () => {
     navigate(`/?search=${encodeURIComponent(value)}`);
   };
 
-  // Aggiorna lo stato della query in base all'URL
   useEffect(() => {
     const current = searchParams.get('search') || '';
     setSearchQuery(current);
   }, [searchParams]);
 
-  // ✅ Solo in mobile spariscono le azioni se c'è testo
   const isMobile = window.innerWidth < 768;
   const hideActions = isMobile && searchQuery.trim().length > 0;
 
@@ -70,7 +70,6 @@ const Navbar = () => {
               />
             </li>
           )}
-          {/* ✅ Desktop: azioni SEMPRE visibili */}
           <li className="nav-item">
             <Link
               to="/cart"
@@ -95,7 +94,7 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile navbar */}
-        <div className="d-flex d-lg-none flex-row align-items-center gap-2 mt-3 w-100">
+        <div className="d-flex d-lg-none flex-row align-items-center gap-2 mt-3 w-100 justify-content-end">
           {isHomePage && (
             <input
               type="text"
@@ -107,14 +106,16 @@ const Navbar = () => {
           )}
           {!hideActions && (
             <>
-              <Link
-                to="/cart"
-                className="text-white text-decoration-none"
-                style={{ fontSize: '1.5rem' }}
-                aria-label="Vai al carrello"
-              >
-                🛒
-              </Link>
+              {!isCartPage && ( // 👈 nascondi carrello se già nel carrello
+                <Link
+                  to="/cart"
+                  className="text-white text-decoration-none"
+                  style={{ fontSize: '1.5rem' }}
+                  aria-label="Vai al carrello"
+                >
+                  🛒
+                </Link>
+              )}
               <UserMenu
                 avatarLetter={avatarLetter}
                 menuOpen={mobileMenuOpen}
@@ -133,6 +134,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
 
