@@ -1,3 +1,4 @@
+// ✅ FILE: AdminCreateGame.js
 import { useState } from 'react';
 import api from '../services/apis';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +14,9 @@ const AdminCreateGame = () => {
     system: '',
     type: 'Gioco',
     description: '',
-    trailerUrl: '' // ✅ AGGIUNTO
+    trailerUrl: '',
+    dlcLink: '',
+    baseGameLink: ''
   });
 
   const [image, setImage] = useState(null);
@@ -77,8 +80,28 @@ const AdminCreateGame = () => {
             <input
               className="form-control my-2"
               name="trailerUrl"
-              placeholder="Link del trailer video (YouTube o altro)"
+              placeholder="Link trailer (YouTube o Vimeo)"
               value={form.trailerUrl}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-12">
+            <input
+              className="form-control my-2"
+              name="dlcLink"
+              placeholder="Link alla pagina del DLC (opzionale)"
+              value={form.dlcLink}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-12">
+            <input
+              className="form-control my-2"
+              name="baseGameLink"
+              placeholder="Link al gioco principale (opzionale, solo per DLC)"
+              value={form.baseGameLink}
               onChange={handleChange}
             />
           </div>
@@ -189,6 +212,8 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
+
 
 
 

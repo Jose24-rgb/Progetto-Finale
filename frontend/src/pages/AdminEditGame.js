@@ -1,3 +1,4 @@
+// ✅ FILE: AdminEditGame.js (con supporto a dlcLink e baseGameLink)
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
@@ -16,7 +17,9 @@ const AdminEditGame = () => {
     system: '',
     type: 'Gioco',
     description: '',
-    trailerUrl: '' // ✅ Aggiunto
+    trailerUrl: '',
+    dlcLink: '',
+    baseGameLink: ''
   });
 
   const [originalForm, setOriginalForm] = useState(null);
@@ -77,7 +80,9 @@ const AdminEditGame = () => {
       system: '',
       type: 'Gioco',
       description: '',
-      trailerUrl: ''
+      trailerUrl: '',
+      dlcLink: '',
+      baseGameLink: ''
     });
     setImage(null);
   };
@@ -133,8 +138,28 @@ const AdminEditGame = () => {
             <input
               className="form-control my-2"
               name="trailerUrl"
-              placeholder="Link del trailer video (YouTube o altro)"
-              value={form.trailerUrl || ''}
+              placeholder="Link trailer (YouTube o altro)"
+              value={form.trailerUrl}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-12">
+            <input
+              className="form-control my-2"
+              name="dlcLink"
+              placeholder="Link alla pagina del DLC (se presente)"
+              value={form.dlcLink}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-12">
+            <input
+              className="form-control my-2"
+              name="baseGameLink"
+              placeholder="Link al gioco principale (se DLC)"
+              value={form.baseGameLink}
               onChange={handleChange}
             />
           </div>
@@ -148,6 +173,7 @@ const AdminEditGame = () => {
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -159,6 +185,7 @@ const AdminEditGame = () => {
               required
             />
           </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -169,6 +196,7 @@ const AdminEditGame = () => {
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -179,6 +207,7 @@ const AdminEditGame = () => {
               onChange={handleChange}
             />
           </div>
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -196,6 +225,7 @@ const AdminEditGame = () => {
               <option>Microsoft Store</option>
             </select>
           </div>
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -211,6 +241,7 @@ const AdminEditGame = () => {
               <option>Switch 2</option>
             </select>
           </div>
+
           <div className="col-md-6">
             <select
               className="form-control my-2"
@@ -226,6 +257,7 @@ const AdminEditGame = () => {
               <option>Gioco + DLC</option>
             </select>
           </div>
+
           <div className="col-md-6">
             <label className="form-label">Cambia immagine</label>
             <input
@@ -250,6 +282,8 @@ const AdminEditGame = () => {
 };
 
 export default AdminEditGame;
+
+
 
 
 

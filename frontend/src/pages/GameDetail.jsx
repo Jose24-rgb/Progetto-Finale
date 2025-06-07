@@ -1,3 +1,4 @@
+// ✅ FILE: GameDetail.jsx (completo con supporto link DLC e link gioco base separato con baseGameLink)
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
@@ -60,7 +61,6 @@ const GameDetail = () => {
     }
   };
 
-  // ✅ Funzione estesa (supporta Vimeo e YouTube)
   const getEmbedUrl = (url) => {
     if (!url) return '';
     const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
@@ -116,6 +116,24 @@ const GameDetail = () => {
               <>€ {game.price.toFixed(2)}</>
             )}
           </p>
+
+          {game.type === 'Gioco' && game.dlcLink && (
+            <p>
+              <strong>🔗 DLC disponibile:</strong>{' '}
+              <a href={game.dlcLink} className="text-primary text-decoration-underline">
+                Vai al contenuto aggiuntivo →
+              </a>
+            </p>
+          )}
+
+          {game.type === 'DLC' && game.baseGameLink && (
+            <p>
+              <strong>🧩 Richiede gioco base:</strong>{' '}
+              <a href={game.baseGameLink} className="text-primary text-decoration-underline">
+                Vai al gioco principale →
+              </a>
+            </p>
+          )}
         </div>
 
         <div className="col-md-8">
@@ -201,6 +219,8 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
+
 
 
 

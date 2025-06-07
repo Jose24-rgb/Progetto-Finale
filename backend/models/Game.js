@@ -1,3 +1,4 @@
+// ✅ FILE: models/Game.js
 const mongoose = require('mongoose');
 
 const gameSchema = new mongoose.Schema({
@@ -38,13 +39,21 @@ const gameSchema = new mongoose.Schema({
   },
 
   description: { type: String },
-  trailerUrl:  { type: String }, // ✅ AGGIUNTO
+  trailerUrl:  { type: String },
+
+  // ✅ LINK ALLA PAGINA DLC (se Gioco)
+  dlcLink:     { type: String, default: '' },
+
+  // ✅ LINK AL GIOCO BASE (se DLC)
+  baseGameLink: { type: String, default: '' },
+
   stock:       { type: Number, default: 1 },
   reviewsAvg:  { type: Number, default: 0 },
   createdAt:   { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Game', gameSchema);
+
 
 
 
