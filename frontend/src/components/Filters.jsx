@@ -3,7 +3,7 @@ import './Filters.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BootstrapDropdown from './BootstrapDropdown';
 
-const Filters = ({ onFilterChange, defaultFilters = {} }) => {
+const Filters = ({ onFilterChange, defaultFilters = {}, hideFilters = false, onResetSearch }) => {
   const [filters, setFilters] = useState({
     system: '',
     platform: '',
@@ -62,85 +62,91 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
     setFilters(resetFilters);
     onFilterChange(resetFilters);
 
-    // Trigger animazione rotazione
+    if (onResetSearch) onResetSearch(); // ✅ resetta anche la barra di ricerca
+
     setRotate(true);
     setTimeout(() => setRotate(false), 400);
   };
 
   return (
     <div className="mb-4 d-flex flex-column align-items-center gap-3">
-      {/* RIGA 1 */}
-      <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
-        <div className="col-md-3 mb-2">
-          <BootstrapDropdown name="system" label="Sistemi" options={systems} value={filters.system} onChange={handleChange} />
+      {!hideFilters && (
+        <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
+          <div className="col-md-3 mb-2">
+            <BootstrapDropdown name="system" label="Sistemi" options={systems} value={filters.system} onChange={handleChange} />
+          </div>
+          <div className="col-md-3 mb-2">
+            <BootstrapDropdown name="platform" label="Piattaforme" options={platforms} value={filters.platform} onChange={handleChange} />
+          </div>
+          <div className="col-md-3 mb-2">
+            <BootstrapDropdown name="genre" label="Generi..." options={genres} value={filters.genre} onChange={handleChange} />
+          </div>
+          <div className="col-md-3 mb-2">
+            <BootstrapDropdown name="sort" label="Ordina per:" options={sorts} value={filters.sort} onChange={handleChange} />
+          </div>
         </div>
-        <div className="col-md-3 mb-2">
-          <BootstrapDropdown name="platform" label="Piattaforme" options={platforms} value={filters.platform} onChange={handleChange} />
-        </div>
-        <div className="col-md-3 mb-2">
-          <BootstrapDropdown name="genre" label="Generi..." options={genres} value={filters.genre} onChange={handleChange} />
-        </div>
-        <div className="col-md-3 mb-2">
-          <BootstrapDropdown name="sort" label="Ordina per:" options={sorts} value={filters.sort} onChange={handleChange} />
-        </div>
-      </div>
+      )}
 
-      {/* RIGA 2 */}
       <div className="row w-100 justify-content-center" style={{ maxWidth: '1000px' }}>
-        <div className="col-auto mb-2">
-          <input
-            type="number"
-            name="priceMin"
-            className="form-control form-control-lg text-center"
-            placeholder="Min €"
-            value={filters.priceMin}
-            onChange={handleChange}
-            aria-label="Prezzo minimo"
-            style={{ width: '100px' }}
-          />
-        </div>
-        <div className="col-auto mb-2">
-          <input
-            type="number"
-            name="priceMax"
-            className="form-control form-control-lg text-center"
-            placeholder="Max €"
-            value={filters.priceMax}
-            onChange={handleChange}
-            aria-label="Prezzo massimo"
-            style={{ width: '100px' }}
-          />
-        </div>
-        <div className="col-md-2 stock-checkbox-wrapper mb-2">
-          <input
-            type="checkbox"
-            name="inStock"
-            className="form-check-input me-2"
-            onChange={handleChange}
-            onMouseUp={(e) => e.currentTarget.blur()}
-            checked={filters.inStock}
-            aria-label="Solo prodotti disponibili in stock"
-            style={{ transform: 'scale(1.5)' }}
-          />
-          <label className="form-check-label">In stock</label>
-        </div>
-        <div className="col-md-3 mb-2">
-          <BootstrapDropdown
-            name="type"
-            label="Tutto"
-            options={types.map(t => t.label)}
-            value={types.find(t => t.value === filters.type)?.label || ''}
-            onChange={(e) => {
-              const selected = types.find(t => t.label === e.target.value);
-              handleChange({
-                target: {
-                  name: 'type',
-                  value: selected ? selected.value : ''
-                }
-              });
-            }}
-          />
-        </div>
+        {!hideFilters && (
+          <>
+            <div className="col-auto mb-2">
+              <input
+                type="number"
+                name="priceMin"
+                className="form-control form-control-lg text-center"
+                placeholder="Min €"
+                value={filters.priceMin}
+                onChange={handleChange}
+                aria-label="Prezzo minimo"
+                style={{ width: '100px' }}
+              />
+            </div>
+            <div className="col-auto mb-2">
+              <input
+                type="number"
+                name="priceMax"
+                className="form-control form-control-lg text-center"
+                placeholder="Max €"
+                value={filters.priceMax}
+                onChange={handleChange}
+                aria-label="Prezzo massimo"
+                style={{ width: '100px' }}
+              />
+            </div>
+            <div className="col-md-2 stock-checkbox-wrapper mb-2">
+              <input
+                type="checkbox"
+                name="inStock"
+                className="form-check-input me-2"
+                onChange={handleChange}
+                onMouseUp={(e) => e.currentTarget.blur()}
+                checked={filters.inStock}
+                aria-label="Solo prodotti disponibili in stock"
+                style={{ transform: 'scale(1.5)' }}
+              />
+              <label className="form-check-label">In stock</label>
+            </div>
+            <div className="col-md-3 mb-2">
+              <BootstrapDropdown
+                name="type"
+                label="Tutto"
+                options={types.map(t => t.label)}
+                value={types.find(t => t.value === filters.type)?.label || ''}
+                onChange={(e) => {
+                  const selected = types.find(t => t.label === e.target.value);
+                  handleChange({
+                    target: {
+                      name: 'type',
+                      value: selected ? selected.value : ''
+                    }
+                  });
+                }}
+              />
+            </div>
+          </>
+        )}
+
         <div className="col-auto mb-2 d-flex justify-content-center align-items-center">
           <button
             className={`reset-icon-btn ${rotate ? 'rotate' : ''}`}
@@ -156,6 +162,8 @@ const Filters = ({ onFilterChange, defaultFilters = {} }) => {
 };
 
 export default Filters;
+
+
 
 
 

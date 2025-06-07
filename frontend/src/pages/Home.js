@@ -65,9 +65,17 @@ const Home = () => {
     game.title.toLowerCase().startsWith(searchQuery.toLowerCase())
   );
 
+  const isMobile = window.innerWidth < 768;
+  const hideFilters = isMobile && searchQuery.trim().length > 0;
+
   return (
     <div className="container mt-4 mb-5">
-      <Filters onFilterChange={handleFilterChange} defaultFilters={filters} />
+      <Filters
+        onFilterChange={handleFilterChange}
+        defaultFilters={filters}
+        hideFilters={hideFilters}
+        onResetSearch={() => navigate('/')}
+      />
 
       {!loading && filteredGames.length > 0 && (
         <div className="row mb-3">
@@ -140,6 +148,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
 
 
 

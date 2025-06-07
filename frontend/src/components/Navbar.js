@@ -1,6 +1,6 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserMenu from '../components/UserMenu';
 import './Navbar.css';
 
@@ -8,6 +8,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const isHomePage = location.pathname === '/';
 
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -29,12 +30,18 @@ const Navbar = () => {
     navigate(`/?search=${encodeURIComponent(value)}`);
   };
 
+  // Aggiorna lo stato della query in base all'URL
+  useEffect(() => {
+    const current = searchParams.get('search') || '';
+    setSearchQuery(current);
+  }, [searchParams]);
+
+  // ✅ Solo in mobile spariscono le azioni se c'è testo
+  const isMobile = window.innerWidth < 768;
+  const hideActions = isMobile && searchQuery.trim().length > 0;
+
   return (
-    <nav
-      className="navbar navbar-expand-lg navbar-dark bg-dark px-3"
-      role="navigation"
-      aria-label="Main navigation"
-    >
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3" role="navigation" aria-label="Main navigation">
       <Link className="navbar-brand" to="/">🎮 GameDev Shop</Link>
 
       <button
@@ -48,10 +55,7 @@ const Navbar = () => {
         <span className="navbar-toggler-icon"></span>
       </button>
 
-      <div
-        className={`collapse navbar-collapse ${!navbarCollapsed ? 'show' : ''}`}
-        id="main-navbar"
-      >
+      <div className={`collapse navbar-collapse ${!navbarCollapsed ? 'show' : ''}`} id="main-navbar">
         {/* Desktop navbar */}
         <ul className="navbar-nav ms-auto d-flex align-items-center d-none d-lg-flex gap-3">
           {isHomePage && (
@@ -66,8 +70,16 @@ const Navbar = () => {
               />
             </li>
           )}
+          {/* ✅ Desktop: azioni SEMPRE visibili */}
           <li className="nav-item">
-            <Link to="/cart" className="text-white text-decoration-none" style={{ fontSize: '1.5rem' }} aria-label="Vai al carrello">🛒</Link>
+            <Link
+              to="/cart"
+              className="text-white text-decoration-none"
+              style={{ fontSize: '1.5rem' }}
+              aria-label="Vai al carrello"
+            >
+              🛒
+            </Link>
           </li>
           <li className="nav-item">
             <UserMenu
@@ -93,16 +105,27 @@ const Navbar = () => {
               onChange={handleSearchChange}
             />
           )}
-          <Link to="/cart" className="text-white text-decoration-none" style={{ fontSize: '1.5rem' }} aria-label="Vai al carrello">🛒</Link>
-          <UserMenu
-            avatarLetter={avatarLetter}
-            menuOpen={mobileMenuOpen}
-            setMenuOpen={setMobileMenuOpen}
-            user={user}
-            handleLogout={handleLogout}
-            id="mobile-user-menu"
-            ariaLabel="Menu utente mobile"
-          />
+          {!hideActions && (
+            <>
+              <Link
+                to="/cart"
+                className="text-white text-decoration-none"
+                style={{ fontSize: '1.5rem' }}
+                aria-label="Vai al carrello"
+              >
+                🛒
+              </Link>
+              <UserMenu
+                avatarLetter={avatarLetter}
+                menuOpen={mobileMenuOpen}
+                setMenuOpen={setMobileMenuOpen}
+                user={user}
+                handleLogout={handleLogout}
+                id="mobile-user-menu"
+                ariaLabel="Menu utente mobile"
+              />
+            </>
+          )}
         </div>
       </div>
     </nav>
@@ -110,6 +133,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
 
 
 
