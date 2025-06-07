@@ -76,6 +76,14 @@ const GameDetail = () => {
     ? game.price * (1 - game.discount / 100)
     : game.price;
 
+  const shouldShowPrice =
+    game.stock?.toLowerCase() !== 'prossimamente' || game.preorder;
+
+  const stockDisplay =
+    game.stock?.toLowerCase() === 'prossimamente' && game.preorder
+      ? 'Demo'
+      : game.stock ?? '—';
+
   return (
     <div className="container mt-5">
       <div className="row align-items-start mb-4">
@@ -98,11 +106,11 @@ const GameDetail = () => {
           )}
 
           <p><strong>🎮 Genere:</strong> {game.genre || '—'}</p>
-          <p><strong>🛒 Piattaforma:</strong> {game.platform || '—'}</p>
+          <p><strong>🗒 Piattaforma:</strong> {game.platform || '—'}</p>
           <p><strong>🏷 Tipo:</strong> {game.type || 'Gioco'}</p>
-          <p><strong>📊 Stock:</strong> {game.stock ?? '—'}</p>
+          <p><strong>📊 Stock:</strong> {stockDisplay}</p>
 
-          {game.stock?.toLowerCase() !== 'prossimamente' && (
+          {shouldShowPrice ? (
             <p>
               <strong>💰 Prezzo:</strong>{' '}
               {game.discount > 0 ? (
@@ -118,6 +126,8 @@ const GameDetail = () => {
                 <>€ {game.price.toFixed(2)}</>
               )}
             </p>
+          ) : (
+            <p><strong>💰 Prezzo:</strong> Non disponibile</p>
           )}
 
           {game.type === 'Gioco' && game.dlcLink && (
@@ -148,7 +158,7 @@ const GameDetail = () => {
           )}
 
           <hr />
-          <h4>🗣️ Recensioni</h4>
+          <h4>🔤 Recensioni</h4>
           {reviews.length === 0 ? (
             <p>Nessuna recensione per questo gioco.</p>
           ) : (

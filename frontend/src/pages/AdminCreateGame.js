@@ -16,7 +16,7 @@ const AdminCreateGame = () => {
     trailerUrl: '',
     dlcLink: '',
     baseGameLink: '',
-    preorder: false  // ✅ Aggiunto
+    preorder: false
   });
 
   const [image, setImage] = useState(null);
@@ -40,8 +40,8 @@ const AdminCreateGame = () => {
       const data = new FormData();
 
       const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
-      const price = isComingSoon ? 0 : parseFloat(form.price) || 0;
-      const discount = isComingSoon ? 0 : parseFloat(form.discount) || 0;
+      const price = isComingSoon && !form.preorder ? 0 : parseFloat(form.price) || 0;
+      const discount = isComingSoon && !form.preorder ? 0 : parseFloat(form.discount) || 0;
 
       data.append('title', form.title);
       data.append('genre', form.genre);
@@ -55,7 +55,7 @@ const AdminCreateGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
-      data.append('preorder', isComingSoon ? form.preorder : false);  // ✅ Include solo se ha senso
+      data.append('preorder', isComingSoon ? form.preorder : false);
       if (image) data.append('image', image);
 
       await api.post('/games', data);
@@ -65,6 +65,9 @@ const AdminCreateGame = () => {
       alert(err.response?.data?.error || 'Errore creazione gioco');
     }
   };
+
+  const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
+  const disablePriceFields = isComingSoon && !form.preorder;
 
   return (
     <div className="container mt-5">
@@ -97,7 +100,7 @@ const AdminCreateGame = () => {
             <input
               className="form-control my-2"
               name="trailerUrl"
-              placeholder="Link trailer (YouTube o Vimeo)"
+              placeholder="Link trailer"
               value={form.trailerUrl}
               onChange={handleChange}
             />
@@ -107,7 +110,7 @@ const AdminCreateGame = () => {
             <input
               className="form-control my-2"
               name="dlcLink"
-              placeholder="Link alla pagina del DLC (opzionale)"
+              placeholder="Link DLC"
               value={form.dlcLink}
               onChange={handleChange}
             />
@@ -117,7 +120,7 @@ const AdminCreateGame = () => {
             <input
               className="form-control my-2"
               name="baseGameLink"
-              placeholder="Link al gioco principale (opzionale, solo per DLC)"
+              placeholder="Link gioco principale"
               value={form.baseGameLink}
               onChange={handleChange}
             />
@@ -141,8 +144,8 @@ const AdminCreateGame = () => {
               placeholder="Prezzo"
               value={form.price}
               onChange={handleChange}
-              required={!form.stock.toLowerCase().includes('prossimamente')}
-              disabled={form.stock.toLowerCase() === 'prossimamente'}
+              required={!disablePriceFields}
+              disabled={disablePriceFields}
             />
           </div>
 
@@ -154,7 +157,7 @@ const AdminCreateGame = () => {
               placeholder="Sconto %"
               value={form.discount}
               onChange={handleChange}
-              disabled={form.stock.toLowerCase() === 'prossimamente'}
+              disabled={disablePriceFields}
             />
           </div>
 
@@ -169,7 +172,7 @@ const AdminCreateGame = () => {
             />
           </div>
 
-          {form.stock.toLowerCase() === 'prossimamente' && (
+          {isComingSoon && (
             <div className="col-12">
               <div className="form-check my-2">
                 <input
@@ -259,6 +262,7 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
+
 
 
 
