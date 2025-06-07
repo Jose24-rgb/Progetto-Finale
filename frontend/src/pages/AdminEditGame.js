@@ -73,8 +73,6 @@ const AdminEditGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
-
-      // Invio preorder indipendente da stock
       data.append('preorder', form.preorder);
 
       if (image) data.append('image', image);
@@ -90,7 +88,7 @@ const AdminEditGame = () => {
   const handleRestore = () => {
     if (originalForm) {
       setForm(originalForm);
-      setImage(null);
+      setImage(null); // Make sure the image state is reset on restore
     }
   };
 
@@ -110,7 +108,7 @@ const AdminEditGame = () => {
       baseGameLink: '',
       preorder: false
     });
-    setImage(null);
+    setImage(null); // Make sure the image state is cleared
   };
 
   const handleExit = () => {
@@ -131,7 +129,7 @@ const AdminEditGame = () => {
     }
   };
 
-  const disablePriceFields = parseInt(form.stock, 10) === 0 && !form.preorder;
+  const disablePriceFields = !(form.stock && parseInt(form.stock, 10) > 0);
 
   return (
     <div className="container mt-5">
@@ -229,6 +227,14 @@ const AdminEditGame = () => {
             />
           </div>
 
+          {disablePriceFields && (
+            <div className="col-12">
+              <div className="alert alert-warning py-2">
+                ⚠️ Prezzo e sconto disabilitati perché lo stock è 0.
+              </div>
+            </div>
+          )}
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -241,7 +247,6 @@ const AdminEditGame = () => {
             />
           </div>
 
-          {/* Mostriamo sempre il checkbox preorder */}
           <div className="col-12">
             <div className="form-check my-2">
               <input
@@ -258,10 +263,9 @@ const AdminEditGame = () => {
             </div>
           </div>
 
-          {/* Avviso se stock=0 e preorder attivo */}
           {parseInt(form.stock, 10) === 0 && form.preorder && (
             <div className="col-12">
-              <div className="alert alert-warning">
+              <div className="alert alert-warning py-2">
                 ⚠️ Hai abilitato il preordine ma lo stock è 0. Il gioco risulterà non disponibile per l'utente.
               </div>
             </div>
@@ -273,6 +277,7 @@ const AdminEditGame = () => {
               name="platform"
               value={form.platform}
               onChange={handleChange}
+              required
             >
               <option value="">Seleziona piattaforma</option>
               <option>Steam</option>
@@ -293,6 +298,7 @@ const AdminEditGame = () => {
               name="system"
               value={form.system}
               onChange={handleChange}
+              required
             >
               <option value="">Seleziona sistema</option>
               <option>PC</option>
@@ -309,6 +315,7 @@ const AdminEditGame = () => {
               name="type"
               value={form.type}
               onChange={handleChange}
+              required
             >
               <option>Gioco</option>
               <option>DLC</option>
@@ -343,6 +350,7 @@ const AdminEditGame = () => {
 };
 
 export default AdminEditGame;
+
 
 
 

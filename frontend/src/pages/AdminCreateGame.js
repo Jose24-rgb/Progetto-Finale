@@ -55,21 +55,20 @@ const AdminCreateGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
-      
-      // Invio preorder indipendente da stock
       data.append('preorder', form.preorder);
 
       if (image) data.append('image', image);
 
       await api.post('/games', data);
       alert('Gioco creato con successo!');
-      navigate('/');
+      navigate('/');  // Redirect to the homepage or another page
     } catch (err) {
-      alert(err.response?.data?.error || 'Errore creazione gioco');
+      console.error(err);
+      alert(err?.response?.data?.error || 'Errore creazione gioco');
     }
   };
 
-  const disablePriceFields = parseInt(form.stock, 10) === 0 && !form.preorder;
+  const disablePriceFields = !(form.stock && parseInt(form.stock, 10) > 0);
 
   return (
     <div className="container mt-5">
@@ -167,6 +166,14 @@ const AdminCreateGame = () => {
             />
           </div>
 
+          {disablePriceFields && (
+            <div className="col-12">
+              <div className="alert alert-warning py-2">
+                ⚠️ Prezzo e sconto disabilitati perché lo stock è 0.
+              </div>
+            </div>
+          )}
+
           <div className="col-md-6">
             <input
               className="form-control my-2"
@@ -179,7 +186,6 @@ const AdminCreateGame = () => {
             />
           </div>
 
-          {/* Mostra sempre checkbox preorder */}
           <div className="col-12">
             <div className="form-check my-2">
               <input
@@ -196,10 +202,9 @@ const AdminCreateGame = () => {
             </div>
           </div>
 
-          {/* Avviso se stock=0 e preorder attivo */}
           {parseInt(form.stock, 10) === 0 && form.preorder && (
             <div className="col-12">
-              <div className="alert alert-warning">
+              <div className="alert alert-warning py-2">
                 ⚠️ Hai abilitato il preordine ma lo stock è 0. Il gioco risulterà non disponibile per l'utente.
               </div>
             </div>
@@ -278,7 +283,6 @@ const AdminCreateGame = () => {
 };
 
 export default AdminCreateGame;
-
 
 
 

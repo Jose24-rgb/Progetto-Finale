@@ -103,8 +103,8 @@ const Home = () => {
               ? (game.stock.toLowerCase() === 'prossimamente' ? 0 : parseInt(game.stock, 10) || 0)
               : game.stock;
 
-            const isPreorder = game.preorder === true;
             const isOutOfStock = rawStock === 0;
+            const showPrice = rawStock > 0;
 
             return (
               <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
@@ -126,23 +126,23 @@ const Home = () => {
                     <small className="text-muted">
                       {isOutOfStock
                         ? '❌ Non disponibile'
-                        : isPreorder
+                        : game.preorder
                           ? '🔔 Preordine'
                           : `📦 Disponibilità: ${rawStock}`
                       }
                     </small>
 
                     <div className="d-grid gap-2 mt-2">
-                      {isOutOfStock ? (
-                        <button className="btn btn-secondary btn-sm w-100" disabled>
-                          ❌ Non disponibile
-                        </button>
-                      ) : (
+                      {showPrice ? (
                         <button
-                          className={`btn btn-${isPreorder ? 'warning' : 'primary'} btn-sm w-100`}
+                          className={`btn btn-${game.preorder ? 'warning' : 'primary'} btn-sm w-100`}
                           onClick={() => addToCart(game)}
                         >
-                          {isPreorder ? '🔔 Preordina' : '🛒 Aggiungi al carrello'}
+                          {game.preorder ? '🔔 Preordina' : '🛒 Aggiungi al carrello'}
+                        </button>
+                      ) : (
+                        <button className="btn btn-secondary btn-sm w-100" disabled>
+                          ❌ Non disponibile
                         </button>
                       )}
                     </div>
@@ -175,6 +175,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 
