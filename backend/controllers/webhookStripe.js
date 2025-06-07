@@ -8,7 +8,7 @@ exports.stripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
 
-  // Verifica la firma dell'evento
+  
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
@@ -16,7 +16,7 @@ exports.stripeWebhook = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Gestisci evento completamento pagamento
+  
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const { orderId, userId, games } = session.metadata;
@@ -56,7 +56,7 @@ exports.stripeWebhook = async (req, res) => {
     }
   }
 
-  // Per altri eventi non gestiti
+  
   res.status(200).json({ received: true });
 };
 

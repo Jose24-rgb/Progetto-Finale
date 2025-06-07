@@ -1,4 +1,3 @@
-/* Card container: layout pulito e centrato */
 .game-card {
   width: 100%;
   max-width: 300px;
@@ -8,7 +7,7 @@
   margin: 0 auto;
 }
 
-/* Immagini responsive */
+
 .game-card img {
   width: 100%;
   height: auto;
@@ -17,19 +16,19 @@
   border-radius: 6px;
 }
 
-/* Titolo e spaziatura coerente */
+
 .game-card h5 {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
-/* Pulsanti */
+
 .game-card .btn {
   font-size: 0.95rem;
 }
 
-/* Responsive: mobile <576px */
+
 @media (max-width: 576px) {
   .game-card {
     max-width: 95%;
@@ -49,7 +48,7 @@
   }
 }
 
-/* Responsive: tablet >=768px */
+
 @media (min-width: 768px) {
   .game-card h5 {
     font-size: 1.3rem;
@@ -60,7 +59,7 @@
   }
 }
 
-/* Responsive: desktop >=992px */
+
 @media (min-width: 992px) {
   .game-card h5 {
     font-size: 1.4rem;
@@ -71,7 +70,7 @@
   }
 }
 
-/* Stile pulsanti admin */
+
 .admin-btn {
   min-height: 34px;
   display: flex;
@@ -83,7 +82,7 @@
   white-space: nowrap;
 }
 
-/* Stack pulsanti admin su mobile */
+
 @media (max-width: 400px) {
   .admin-btn {
     width: 100% !important;

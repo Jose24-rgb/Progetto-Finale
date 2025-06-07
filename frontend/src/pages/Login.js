@@ -47,7 +47,6 @@ function Login() {
         <button className="btn btn-primary w-100 mt-3">Login</button>
       </form>
 
-      {/* 🔗 Collegamenti extra */}
       <div className="mt-3 text-center">
         <p>
           <Link to="/forgot-password" className="text-decoration-none">

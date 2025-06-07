@@ -9,9 +9,9 @@ const {
   resetPassword
 } = require('../controllers/authController');
 
-// ✅ Rate limiter avanzato per login
+
 const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minuti
+  windowMs: 15 * 60 * 1000, 
   max: 5,
   message: 'Troppe richieste di login. Riprova più tardi.',
   standardHeaders: true,

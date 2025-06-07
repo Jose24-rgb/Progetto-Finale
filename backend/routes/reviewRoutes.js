@@ -4,13 +4,13 @@ const { getReviews, addReview, deleteReview } = require('../controllers/reviewCo
 const verifyToken = require('../middleware/authMiddleware');
 const isAdmin = require('../middleware/isAdmin');
 
-// Tutte le recensioni per un gioco
+
 router.get('/:gameId', getReviews);
 
-// Aggiungi recensione (solo autenticato)
+
 router.post('/:gameId', verifyToken, addReview);
 
-// Cancella recensione (solo admin)
+
 router.delete('/:id', verifyToken, isAdmin, deleteReview);
 
 module.exports = router;

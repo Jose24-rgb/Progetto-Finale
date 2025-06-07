@@ -8,6 +8,6 @@ const reviewSchema = new mongoose.Schema({
   date:     { type: Date, default: Date.now }
 });
 
-reviewSchema.index({ gameId: 1, userId: 1 }, { unique: true }); // 1 sola recensione per utente per gioco
+reviewSchema.index({ gameId: 1, userId: 1 }, { unique: true }); 
 
 module.exports = mongoose.model('Review', reviewSchema);

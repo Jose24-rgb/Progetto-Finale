@@ -1,16 +1,26 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    const storedCart = localStorage.getItem('cart');
-    return storedCart ? JSON.parse(storedCart) : [];
-  });
+  const { user } = useAuth();
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    if (user?.id) {
+      const storedCart = localStorage.getItem(`cart_${user.id}`);
+      setCart(storedCart ? JSON.parse(storedCart) : []);
+    } else {
+      setCart([]);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user?.id) {
+      localStorage.setItem(`cart_${user.id}`, JSON.stringify(cart));
+    }
+  }, [cart, user]);
 
   const addToCart = (game) => {
     setCart(prev =>
@@ -34,6 +44,7 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
+
 
 
 

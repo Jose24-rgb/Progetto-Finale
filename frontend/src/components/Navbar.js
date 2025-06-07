@@ -11,7 +11,7 @@ const Navbar = () => {
   const [searchParams] = useSearchParams();
 
   const isHomePage = location.pathname === '/';
-  const isCartPage = location.pathname === '/cart'; // 👈 nuovo
+  const isCartPage = location.pathname === '/cart';
 
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,7 +56,6 @@ const Navbar = () => {
       </button>
 
       <div className={`collapse navbar-collapse ${!navbarCollapsed ? 'show' : ''}`} id="main-navbar">
-        {/* Desktop navbar */}
         <ul className="navbar-nav ms-auto d-flex align-items-center d-none d-lg-flex gap-3">
           {isHomePage && (
             <li className="nav-item">
@@ -93,7 +92,6 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {/* Mobile navbar */}
         <div className="d-flex d-lg-none flex-row align-items-center gap-2 mt-3 w-100 justify-content-end">
           {isHomePage && (
             <input
@@ -106,7 +104,7 @@ const Navbar = () => {
           )}
           {!hideActions && (
             <>
-              {!isCartPage && ( // 👈 nascondi carrello se già nel carrello
+              {!isCartPage && (
                 <Link
                   to="/cart"
                   className="text-white text-decoration-none"

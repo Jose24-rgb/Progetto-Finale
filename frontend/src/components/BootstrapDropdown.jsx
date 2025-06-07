@@ -28,7 +28,7 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
 
   return (
     <div className="position-relative select-wrapper">
-      {/* Accessibile per screen reader */}
+
       <select
         name={name}
         value={value}

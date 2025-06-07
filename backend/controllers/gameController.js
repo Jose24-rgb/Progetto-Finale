@@ -26,7 +26,7 @@ exports.getAllGames = async (req, res) => {
       if (priceMax) filter.price.$lte = parseFloat(priceMax);
     }
     if (inStock === 'true') {
-      filter.stock = { $ne: '0' }; // ✅ Adatto a campo stringa
+      filter.stock = { $ne: '0' };
     }
 
     let sortOption = {};

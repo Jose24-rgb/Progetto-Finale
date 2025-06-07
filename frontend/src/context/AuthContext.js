@@ -25,5 +25,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// ✅ MANCAVA QUESTA RIGA
 export const useAuth = () => useContext(AuthContext);

@@ -8,7 +8,7 @@
     margin: 0.5rem 0;
   }
 
-  /* Gestione dropdown generale su schermi piccoli */
+  
   .navbar .position-relative .position-absolute[role="menu"] {
     max-width: 90vw;
     min-width: 180px;
@@ -25,7 +25,6 @@
 }
 
 @media (max-width: 400px) {
-  /* Solo su schermi extra piccoli: forza larghezza massima */
   .navbar .position-relative .position-absolute[role="menu"] {
     max-width: 95vw;
   }

@@ -19,9 +19,9 @@ import AdminCreateGame from './pages/AdminCreateGame';
 import AdminEditGame from './pages/AdminEditGame';
 import AdminGameList from './pages/AdminGameList';
 
-import ForgotPassword from './pages/ForgotPassword';      // ✅
-import ResetPassword from './pages/ResetPassword';        // ✅
-import VerifyEmail from './pages/VerifyEmail';            // ✅
+import ForgotPassword from './pages/ForgotPassword';     
+import ResetPassword from './pages/ResetPassword';        
+import VerifyEmail from './pages/VerifyEmail';           
 
 function App() {
   return (
@@ -35,12 +35,12 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/games/:id" element={<GameDetail />} />
 
-            {/* ✅ Rotte pubbliche aggiuntive */}
+            
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
 
-            {/* ✅ Rotte protette per ADMIN */}
+           
             <Route
               path="/admin/create-game"
               element={
@@ -66,7 +66,7 @@ function App() {
               }
             />
 
-            {/* ✅ Rotte private per utenti loggati */}
+           
             <Route
               path="/cart"
               element={

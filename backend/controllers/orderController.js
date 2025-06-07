@@ -18,7 +18,7 @@ exports.createOrder = async (req, res) => {
 
 exports.getUserOrders = async (req, res) => {
   try {
-    const userId = new mongoose.Types.ObjectId(req.params.userId); // ✅ Conversione importante
+    const userId = new mongoose.Types.ObjectId(req.params.userId);
     console.log('🔍 Recupero ordini per utente:', userId);
     
     const orders = await Order.find({ userId });

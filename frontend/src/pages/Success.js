@@ -12,7 +12,7 @@ const Success = () => {
   useEffect(() => {
     clearCart();
     setTimeout(() => {
-      window.location.href = '/'; // ✅ redirect forzato con refresh
+      window.location.href = '/';
     }, 2000);
   }, [clearCart]);
 

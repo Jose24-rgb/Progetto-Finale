@@ -18,18 +18,18 @@
   text-overflow: ellipsis;
 }
 
-/* Nasconde la freccia standard Bootstrap */
+
 .custom-toggle.dropdown-toggle::after {
   display: none !important;
 }
 
-/* Freccia personalizzata */
+
 .toggle-arrow {
   flex-shrink: 0;
-  font-size: 1.3rem; /* 👈 aumenta la dimensione della freccia */
+  font-size: 1.3rem;
   color: #212529;
   pointer-events: none;
-  transform: scaleX(1.4); /* 👈 allarga orizzontalmente */
+  transform: scaleX(1.4); 
 }
 
 
@@ -38,28 +38,28 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
-  text-align: left; /* 👈 forza l’allineamento a sinistra */
+  text-align: left;
 }
 
 
-/* Bordo blu al passaggio */
+
 .custom-toggle:hover {
   border-color: #86b7fe !important;
 }
 
-/* Dropdown Menu Items */
+
 .dropdown-menu .dropdown-item {
   text-align: left;
   font-size: 1rem;
 }
 
-/* Hover effetto blu */
+
 .dropdown-menu .dropdown-item:hover {
   background-color: #0d6efd;
   color: white;
 }
 
-/* Wrapper per font coerente */
+
 .dropdown-wrapper {
   font-family: inherit;
 }
@@ -71,7 +71,7 @@
   cursor: pointer !important;
 }
 
-/* Pulsante di reset */
+
 .clear-btn {
   position: absolute;
   top: -12px;

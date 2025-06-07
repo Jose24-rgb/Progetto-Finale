@@ -89,7 +89,7 @@ exports.verifyEmail = async (req, res) => {
 };
 
 
-// ✅ Invia email per reset password
+
 exports.requestPasswordReset = async (req, res) => {
   const { email } = req.body;
   try {
@@ -98,7 +98,7 @@ exports.requestPasswordReset = async (req, res) => {
 
     const token = crypto.randomBytes(32).toString('hex');
     user.resetToken = token;
-    user.resetExpires = Date.now() + 3600000; // 1 ora
+    user.resetExpires = Date.now() + 3600000;
     await user.save();
 
     const link = `http://localhost:3000/reset-password?token=${token}&email=${email}`;
@@ -117,7 +117,7 @@ exports.requestPasswordReset = async (req, res) => {
   }
 };
 
-// ✅ Esegue reset password
+
 exports.resetPassword = async (req, res) => {
   const { email, token, newPassword } = req.body;
   try {

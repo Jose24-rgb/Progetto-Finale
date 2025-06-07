@@ -38,7 +38,7 @@ const Filters = ({ onFilterChange, defaultFilters = {}, hideFilters = false, onR
 
   useEffect(() => {
     onFilterChange(filters);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -62,7 +62,7 @@ const Filters = ({ onFilterChange, defaultFilters = {}, hideFilters = false, onR
     setFilters(resetFilters);
     onFilterChange(resetFilters);
 
-    if (onResetSearch) onResetSearch(); // ✅ resetta anche la barra di ricerca
+    if (onResetSearch) onResetSearch();
 
     setRotate(true);
     setTimeout(() => setRotate(false), 400);

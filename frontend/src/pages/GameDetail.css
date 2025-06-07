@@ -1,4 +1,3 @@
-/* Limita la dimensione e rende l'immagine responsive */
 .game-cover {
   max-width: 300px;
   width: 100%;
@@ -8,28 +7,27 @@
   margin-bottom: 1rem !important;
 }
 
-/* Allinea bene i dati su schermi grandi */
 @media (min-width: 768px) {
   .game-left-col {
     padding-left: 0 !important;
   }
 
   h2 {
-    padding-left: 0; /* ← CORRETTO: evita il rientro a sinistra */
-    padding-right: 1rem; /* ↦ se vuoi aggiungere un po’ di spazio a destra */
+    padding-left: 0;
+    padding-right: 1rem;
     font-size: 2rem;
   }
   
 }
 
-/* Spaziatura verticale più compatta per info gioco */
+
 .game-left-col p {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
   line-height: 1.3;
 }
 
-/* Pulsanti modifica/elimina più compatti */
+
 .game-left-col .btn {
   padding: 0.35rem 0.75rem;
   font-size: 0.9rem;
@@ -41,17 +39,17 @@
   transform: translateY(-2px);
 }
 
-/* Spazio orizzontale tra i due bottoni */
+
 .game-left-col .btn + .btn {
   margin-left: 0.5rem;
 }
 
-/* Riduci spazio tra bottoni e blocco dati */
+
 .game-left-col .d-flex.mb-3 {
   margin-bottom: 0.25rem !important;
 }
 
-/* Titolo */
+
 h2 {
   margin-bottom: 1rem;
   word-break: break-word;
@@ -59,14 +57,14 @@ h2 {
   text-wrap: balance;
 }
 
-/* Recensioni */
+
 .list-group-item {
   word-break: break-word;
   overflow-wrap: break-word;
   padding: 1rem;
 }
 
-/* Migliora il layout recensioni e form su mobile */
+
 @media (max-width: 576px) {
   .list-group-item {
     font-size: 0.95rem;
@@ -98,14 +96,14 @@ h2 {
   h2 {
     font-size: 1.5rem;
     padding-left: 0;
-    margin-top: 1rem; /* ← aggiungi questo */
+    margin-top: 1rem;
   }
   .trailer-wrapper {
     margin-bottom: 3rem;
   }
 }
 
-/* Ottimizzazioni tablet */
+
 @media (max-width: 768px) {
   .game-left-col p {
     font-size: 0.95rem;
@@ -122,7 +120,7 @@ h2 {
   
 }
 
-/* Descrizione gioco */
+
 .game-description {
   white-space: pre-line;
   font-size: 1rem;
@@ -141,7 +139,7 @@ h2 {
   border-bottom: none;
 }
 
-/* Trailer video */
+
 .trailer-wrapper {
   margin-top: 3rem;
   text-align: center;

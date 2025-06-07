@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 const UserMenu = ({ avatarLetter, menuOpen, setMenuOpen, user, handleLogout, id, ariaLabel }) => {
   const menuRef = useRef(null);
 
-  // Chiudi il menu cliccando fuori
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {

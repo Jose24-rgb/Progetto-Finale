@@ -34,7 +34,6 @@ const AdminCreateGame = () => {
     try {
       const data = new FormData();
 
-      // Gestione sicura per il prezzo e sconto se il gioco è "Prossimamente"
       const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
       const price = isComingSoon ? 0 : parseFloat(form.price) || 0;
       const discount = isComingSoon ? 0 : parseFloat(form.discount) || 0;

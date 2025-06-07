@@ -15,7 +15,7 @@ const Checkout = () => {
           email: user.user.email,
           games: cart
         });
-        window.location.href = res.data.url; // Redirect to Stripe
+        window.location.href = res.data.url;
       } catch (err) {
         console.error('Errore Stripe:', err.response?.data?.error);
         alert('Errore nel checkout. Riprova.');
