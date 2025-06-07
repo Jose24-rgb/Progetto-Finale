@@ -1,11 +1,15 @@
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext'; // ✅ Aggiunto
 import { useState, useEffect } from 'react';
 import UserMenu from '../components/UserMenu';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { cart } = useCart(); // ✅ Ottieni il carrello
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0); // ✅ Calcola il totale
+
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -40,6 +44,25 @@ const Navbar = () => {
   const isMobile = window.innerWidth < 768;
   const hideActions = isMobile && searchQuery.trim().length > 0;
 
+  const renderCartIcon = () => (
+    <Link
+      to="/cart"
+      className="text-white text-decoration-none position-relative"
+      style={{ fontSize: '1.5rem' }}
+      aria-label="Vai al carrello"
+    >
+      🛒
+      {cartCount > 0 && (
+        <span
+          className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          style={{ fontSize: '0.7rem' }}
+        >
+          {cartCount}
+        </span>
+      )}
+    </Link>
+  );
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3" role="navigation" aria-label="Main navigation">
       <Link className="navbar-brand" to="/">🎮 GameDev Shop</Link>
@@ -69,15 +92,8 @@ const Navbar = () => {
               />
             </li>
           )}
-          <li className="nav-item">
-            <Link
-              to="/cart"
-              className="text-white text-decoration-none"
-              style={{ fontSize: '1.5rem' }}
-              aria-label="Vai al carrello"
-            >
-              🛒
-            </Link>
+          <li className="nav-item position-relative">
+            {renderCartIcon()}
           </li>
           <li className="nav-item">
             <UserMenu
@@ -104,16 +120,7 @@ const Navbar = () => {
           )}
           {!hideActions && (
             <>
-              {!isCartPage && (
-                <Link
-                  to="/cart"
-                  className="text-white text-decoration-none"
-                  style={{ fontSize: '1.5rem' }}
-                  aria-label="Vai al carrello"
-                >
-                  🛒
-                </Link>
-              )}
+              {!isCartPage && renderCartIcon()}
               <UserMenu
                 avatarLetter={avatarLetter}
                 menuOpen={mobileMenuOpen}
