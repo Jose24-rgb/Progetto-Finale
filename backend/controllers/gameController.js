@@ -20,7 +20,7 @@ exports.getAllGames = async (req, res) => {
     if (platform) filter.platform = platform;
     if (system) filter.system = system;
 
-    // ✅ Gestione filtro "Preordine"
+    // ✅ Filtro Preordine: match su campo "type" o "preorder"
     if (type && type !== 'Tutto') {
       if (type === 'Preordine') {
         filter.$or = [
@@ -39,7 +39,7 @@ exports.getAllGames = async (req, res) => {
     }
 
     if (inStock === 'true') {
-      filter.stock = { $ne: '0' };
+      filter.stock = { $gt: 0 }; // mostra solo stock disponibili
     }
 
     let sortOption = {};
@@ -122,7 +122,7 @@ exports.createGame = async (req, res) => {
       stock,
       platform,
       system,
-      type: preorder === 'true' || preorder === true ? 'Preordine' : type,
+      type, // NON forzato più
       preorder: preorder === 'true' || preorder === true,
       description,
       trailerUrl,
@@ -142,13 +142,8 @@ exports.updateGame = async (req, res) => {
   try {
     const updateData = { ...req.body };
 
-    // ✅ Forza il tipo Preordine se richiesto
-    if (updateData.preorder === 'true' || updateData.preorder === true) {
-      updateData.type = 'Preordine';
-      updateData.preorder = true;
-    } else {
-      updateData.preorder = false;
-    }
+    // ✅ Conversione booleana per sicurezza
+    updateData.preorder = updateData.preorder === 'true' || updateData.preorder === true;
 
     if (req.file) {
       const base64 = req.file.buffer.toString('base64');
@@ -169,6 +164,7 @@ exports.deleteGame = async (req, res) => {
   await Game.findByIdAndDelete(req.params.id);
   res.status(204).end();
 };
+
 
 
 

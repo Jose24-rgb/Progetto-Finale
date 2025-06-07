@@ -73,7 +73,10 @@ const AdminEditGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
-      data.append('preorder', stockValue === 0 ? form.preorder : false);
+
+      // Invio preorder indipendente da stock
+      data.append('preorder', form.preorder);
+
       if (image) data.append('image', image);
 
       await api.put(`/games/${id}`, data);
@@ -238,20 +241,28 @@ const AdminEditGame = () => {
             />
           </div>
 
-          {parseInt(form.stock, 10) === 0 && (
+          {/* Mostriamo sempre il checkbox preorder */}
+          <div className="col-12">
+            <div className="form-check my-2">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="preorder"
+                checked={form.preorder}
+                onChange={handleChange}
+                id="preorderCheck"
+              />
+              <label className="form-check-label" htmlFor="preorderCheck">
+                ✅ Abilita preordine per questo gioco
+              </label>
+            </div>
+          </div>
+
+          {/* Avviso se stock=0 e preorder attivo */}
+          {parseInt(form.stock, 10) === 0 && form.preorder && (
             <div className="col-12">
-              <div className="form-check my-2">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  name="preorder"
-                  checked={form.preorder}
-                  onChange={handleChange}
-                  id="preorderCheck"
-                />
-                <label className="form-check-label" htmlFor="preorderCheck">
-                  ✅ Abilita preordine per questo gioco
-                </label>
+              <div className="alert alert-warning">
+                ⚠️ Hai abilitato il preordine ma lo stock è 0. Il gioco risulterà non disponibile per l'utente.
               </div>
             </div>
           )}

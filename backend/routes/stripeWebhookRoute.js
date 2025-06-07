@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Order = require('../models/Order');
-const transporter = require('../utils/mailer');
+const Game = require('../models/Game');
 const mongoose = require('mongoose');
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -37,6 +37,7 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         return res.status(200).json({ received: true });
       }
 
+      // 1. Salva l’ordine
       await Order.create({
         _id: orderId,
         userId: new mongoose.Types.ObjectId(userId),
@@ -50,8 +51,20 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       });
 
       console.log('✅ Ordine salvato con successo');
+
+      // 2. Aggiorna lo stock di ogni gioco
+      for (const g of games) {
+        const game = await Game.findById(g._id);
+        if (game && typeof game.stock === 'number') {
+          const newStock = Math.max(game.stock - g.quantity, 0);
+          await Game.findByIdAndUpdate(g._id, { stock: newStock });
+        }
+      }
+
+      console.log('📉 Stock aggiornato con successo');
+
     } catch (err) {
-      console.error('❌ Errore salvataggio ordine:', err.message);
+      console.error('❌ Errore salvataggio ordine o aggiornamento stock:', err.message);
     }
   }
 
@@ -59,4 +72,5 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
 });
 
 module.exports = router;
+
 

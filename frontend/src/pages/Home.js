@@ -68,11 +68,6 @@ const Home = () => {
   const isMobile = window.innerWidth < 768;
   const hideFilters = isMobile && searchQuery.trim().length > 0;
 
-  const isComingSoon = (game) => {
-    const stockValue = typeof game.stock === 'number' ? game.stock : parseInt(game.stock, 10) || 0;
-    return stockValue === 0 && game.preorder === true;
-  };
-
   return (
     <div className="container mt-4 mb-5">
       <Filters
@@ -104,7 +99,13 @@ const Home = () => {
       ) : (
         <div className="row gx-3">
           {filteredGames.map((game) => {
-            const comingSoon = isComingSoon(game);
+            const rawStock = typeof game.stock === 'string'
+              ? (game.stock.toLowerCase() === 'prossimamente' ? 0 : parseInt(game.stock, 10) || 0)
+              : game.stock;
+
+            const isPreorder = game.preorder === true;
+            const isOutOfStock = rawStock === 0;
+
             return (
               <div className="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" key={game._id}>
                 <div className="card game-card p-2 border-0">
@@ -122,26 +123,26 @@ const Home = () => {
                       </Link>
                     </h5>
 
-                    {game.stock !== undefined && (
-                      <small className="text-muted">
-                        {comingSoon ? '🕒 Prossimamente' : `📦 Disponibilità: ${game.stock}`}
-                      </small>
-                    )}
+                    <small className="text-muted">
+                      {isOutOfStock
+                        ? '❌ Non disponibile'
+                        : isPreorder
+                          ? '🔔 Preordine'
+                          : `📦 Disponibilità: ${rawStock}`
+                      }
+                    </small>
 
                     <div className="d-grid gap-2 mt-2">
-                      {comingSoon ? (
-                        game.preorder ? (
-                          <button className="btn btn-warning btn-sm w-100" onClick={() => addToCart(game)}>
-                            🔔 Preordina
-                          </button>
-                        ) : (
-                          <button className="btn btn-secondary btn-sm w-100" disabled>
-                            🕒 Prossimamente
-                          </button>
-                        )
+                      {isOutOfStock ? (
+                        <button className="btn btn-secondary btn-sm w-100" disabled>
+                          ❌ Non disponibile
+                        </button>
                       ) : (
-                        <button className="btn btn-primary btn-sm w-100" onClick={() => addToCart(game)}>
-                          🛒 Aggiungi al carrello
+                        <button
+                          className={`btn btn-${isPreorder ? 'warning' : 'primary'} btn-sm w-100`}
+                          onClick={() => addToCart(game)}
+                        >
+                          {isPreorder ? '🔔 Preordina' : '🛒 Aggiungi al carrello'}
                         </button>
                       )}
                     </div>
@@ -174,6 +175,9 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
 
 
 
