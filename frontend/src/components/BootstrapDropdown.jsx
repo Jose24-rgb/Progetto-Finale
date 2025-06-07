@@ -28,7 +28,7 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
 
   return (
     <div className="position-relative select-wrapper">
-      {/* Fallback accessibile per screen reader */}
+      {/* Accessibile per screen reader */}
       <select
         name={name}
         value={value}
@@ -53,7 +53,8 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
           aria-expanded={!!value}
           aria-label={`${label} per ${name}`}
         >
-          {value || label}
+          <span className="toggle-text">{value || label}</span>
+          <span className="toggle-arrow">▾</span>
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="w-100" role="listbox" aria-labelledby={dropdownId}>
@@ -86,6 +87,7 @@ const BootstrapDropdown = ({ name, label = 'Seleziona', options = [], value, onC
 };
 
 export default BootstrapDropdown;
+
 
 
 

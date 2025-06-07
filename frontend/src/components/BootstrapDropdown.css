@@ -1,60 +1,101 @@
 .custom-toggle {
-    height: 48px;
-    background-color: white !important;
-    border: 1px solid #ced4da !important;
-    font-size: 1.1rem;
-    padding: 0 2.5rem 0 1rem;
-    text-align: left;
-    width: 100%;
-    color: #212529 !important;
-    border-radius: 0.375rem;
-    transition: border-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer !important; /* 👍 qui va bene */
-  }
-  
-  /* Freccia a destra */
-  .custom-toggle::after {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #212529;
-  }
-  
-  /* Bordo blu al passaggio */
-  .custom-toggle:hover {
-    border-color: #86b7fe !important;
-  }
-  
-  /* Dropdown Menu Items */
-  .dropdown-menu .dropdown-item {
-    text-align: left;
-    font-size: 1rem;
-  }
-  
-  /* Hover effetto blu */
-  .dropdown-menu .dropdown-item:hover {
-    background-color: #0d6efd;
-    color: white;
-  }
-  
-  /* Wrapper per font coerente */
-  .dropdown-wrapper {
-    font-family: inherit;
-  }
-  
-  .dropdown-toggle,
-  .dropdown-toggle *,
-  .custom-toggle,
-  .custom-toggle * {
-    cursor: pointer !important;
-  }
-  
+  height: 48px;
+  background-color: white !important;
+  border: 1px solid #ced4da !important;
+  font-size: 1.1rem;
+  padding: 0 1rem;
+  width: 100%;
+  color: #212529 !important;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  cursor: pointer !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Nasconde la freccia standard Bootstrap */
+.custom-toggle.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Freccia personalizzata */
+.toggle-arrow {
+  flex-shrink: 0;
+  font-size: 1.3rem; /* 👈 aumenta la dimensione della freccia */
+  color: #212529;
+  pointer-events: none;
+  transform: scaleX(1.4); /* 👈 allarga orizzontalmente */
+}
+
+
+.toggle-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  text-align: left; /* 👈 forza l’allineamento a sinistra */
+}
+
+
+/* Bordo blu al passaggio */
+.custom-toggle:hover {
+  border-color: #86b7fe !important;
+}
+
+/* Dropdown Menu Items */
+.dropdown-menu .dropdown-item {
+  text-align: left;
+  font-size: 1rem;
+}
+
+/* Hover effetto blu */
+.dropdown-menu .dropdown-item:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Wrapper per font coerente */
+.dropdown-wrapper {
+  font-family: inherit;
+}
+
+.dropdown-toggle,
+.dropdown-toggle *,
+.custom-toggle,
+.custom-toggle * {
+  cursor: pointer !important;
+}
+
+/* Pulsante di reset */
+.clear-btn {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 1rem;
+  line-height: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background-color: #bb2d3b;
+}
+
   
   
   
