@@ -36,6 +36,11 @@ function Cart() {
     }
   };
 
+  const isComingSoon = (game) => {
+    const stockValue = typeof game.stock === 'number' ? game.stock : parseInt(game.stock, 10) || 0;
+    return stockValue === 0 && game.preorder === true;
+  };
+
   return (
     <div className="container mt-5 mb-5">
       <h2 className="text-center text-md-start mb-4">🛒 Il tuo carrello</h2>
@@ -51,14 +56,18 @@ function Cart() {
                   ? game.price * (1 - game.discount / 100)
                   : game.price;
 
-                return (
-                  <li key={index} className="list-group-item cart-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-  <div className="w-100">
-  <strong>{game.title}</strong>
-{game.stock?.toLowerCase() === 'prossimamente' && (
-  <span className="badge bg-warning text-dark ms-2">Preordine</span>
-)}
+                const comingSoon = isComingSoon(game);
 
+                return (
+                  <li
+                    key={index}
+                    className="list-group-item cart-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2"
+                  >
+                    <div className="w-100">
+                      <strong>{game.title}</strong>
+                      {comingSoon && (
+                        <span className="badge bg-warning text-dark ms-2">Preordine</span>
+                      )}
                       <br />
                       {game.discount > 0 ? (
                         <>
@@ -75,12 +84,11 @@ function Cart() {
                       )}
                     </div>
                     <button
-    className="btn btn-danger btn-sm mt-2 mt-md-0 cart-remove-btn"
-    onClick={() => removeFromCart(game._id)}
-  >
-    Rimuovi
-  </button>
-
+                      className="btn btn-danger btn-sm mt-2 mt-md-0 cart-remove-btn"
+                      onClick={() => removeFromCart(game._id)}
+                    >
+                      Rimuovi
+                    </button>
                   </li>
                 );
               })}
@@ -98,6 +106,7 @@ function Cart() {
 }
 
 export default Cart;
+
 
 
 

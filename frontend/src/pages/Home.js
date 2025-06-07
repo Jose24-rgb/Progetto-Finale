@@ -69,7 +69,8 @@ const Home = () => {
   const hideFilters = isMobile && searchQuery.trim().length > 0;
 
   const isComingSoon = (game) => {
-    return game.stock?.toLowerCase() === 'prossimamente';
+    const stockValue = typeof game.stock === 'number' ? game.stock : parseInt(game.stock, 10) || 0;
+    return stockValue === 0 && game.preorder === true;
   };
 
   return (
@@ -121,7 +122,7 @@ const Home = () => {
                       </Link>
                     </h5>
 
-                    {game.stock && (
+                    {game.stock !== undefined && (
                       <small className="text-muted">
                         {comingSoon ? '🕒 Prossimamente' : `📦 Disponibilità: ${game.stock}`}
                       </small>

@@ -15,7 +15,16 @@ exports.createOrder = async (req, res) => {
 
     const gamesWithPreorderFlag = games.map(item => {
       const gameInfo = foundGames.find(g => g._id.toString() === item.gameId);
-      const isPreorder = gameInfo?.stock?.toLowerCase() === 'prossimamente' && gameInfo?.preorder === true;
+
+      let stockValue = 0;
+      if (typeof gameInfo?.stock === 'string') {
+        stockValue = gameInfo.stock.toLowerCase() === 'prossimamente' ? 0 : parseInt(gameInfo.stock, 10);
+      } else if (typeof gameInfo?.stock === 'number') {
+        stockValue = gameInfo.stock;
+      }
+
+      const isPreorder = stockValue === 0 && gameInfo?.preorder === true;
+
       return {
         ...item,
         isPreorder: isPreorder || false
@@ -48,6 +57,7 @@ exports.getUserOrders = async (req, res) => {
     res.status(500).json({ error: 'Errore durante il recupero degli ordini' });
   }
 };
+
 
 
 

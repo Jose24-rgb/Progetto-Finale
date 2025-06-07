@@ -57,15 +57,15 @@ const AdminEditGame = () => {
     try {
       const data = new FormData();
 
-      const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
-      const price = isComingSoon && !form.preorder ? 0 : parseFloat(form.price) || 0;
-      const discount = isComingSoon && !form.preorder ? 0 : parseFloat(form.discount) || 0;
+      const stockValue = parseInt(form.stock, 10) || 0;
+      const price = parseFloat(form.price) || 0;
+      const discount = parseFloat(form.discount) || 0;
 
       data.append('title', form.title);
       data.append('genre', form.genre);
       data.append('price', price);
       data.append('discount', discount);
-      data.append('stock', form.stock);
+      data.append('stock', stockValue);
       data.append('platform', form.platform);
       data.append('system', form.system);
       data.append('type', form.type);
@@ -73,7 +73,7 @@ const AdminEditGame = () => {
       data.append('trailerUrl', form.trailerUrl);
       data.append('dlcLink', form.dlcLink);
       data.append('baseGameLink', form.baseGameLink);
-      data.append('preorder', isComingSoon ? form.preorder : false);
+      data.append('preorder', stockValue === 0 ? form.preorder : false);
       if (image) data.append('image', image);
 
       await api.put(`/games/${id}`, data);
@@ -128,8 +128,7 @@ const AdminEditGame = () => {
     }
   };
 
-  const isComingSoon = form.stock.toLowerCase() === 'prossimamente';
-  const disablePriceFields = isComingSoon && !form.preorder;
+  const disablePriceFields = parseInt(form.stock, 10) === 0 && !form.preorder;
 
   return (
     <div className="container mt-5">
@@ -208,6 +207,8 @@ const AdminEditGame = () => {
               onChange={handleChange}
               required={!disablePriceFields}
               disabled={disablePriceFields}
+              min="0"
+              step="0.01"
             />
           </div>
 
@@ -220,6 +221,8 @@ const AdminEditGame = () => {
               value={form.discount}
               onChange={handleChange}
               disabled={disablePriceFields}
+              min="0"
+              max="100"
             />
           </div>
 
@@ -227,14 +230,15 @@ const AdminEditGame = () => {
             <input
               className="form-control my-2"
               name="stock"
-              type="text"
-              placeholder="Disponibilità (es. 'Prossimamente')"
+              type="number"
+              placeholder="Disponibilità (es. 5)"
               value={form.stock}
               onChange={handleChange}
+              min="0"
             />
           </div>
 
-          {isComingSoon && (
+          {parseInt(form.stock, 10) === 0 && (
             <div className="col-12">
               <div className="form-check my-2">
                 <input

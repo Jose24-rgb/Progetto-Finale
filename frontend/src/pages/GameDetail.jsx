@@ -72,17 +72,26 @@ const GameDetail = () => {
 
   if (!game) return <p>Caricamento...</p>;
 
+  // Gestione stock come numero
+  let stockValue = 0;
+  if (typeof game.stock === 'string') {
+    stockValue = game.stock.toLowerCase() === 'prossimamente' ? 0 : parseInt(game.stock, 10);
+  } else if (typeof game.stock === 'number') {
+    stockValue = game.stock;
+  }
+
   const finalPrice = game.discount > 0
     ? game.price * (1 - game.discount / 100)
     : game.price;
 
-  const shouldShowPrice =
-    game.stock?.toLowerCase() !== 'prossimamente' || game.preorder;
+  const shouldShowPrice = stockValue > 0 || game.preorder;
 
   const stockDisplay =
-    game.stock?.toLowerCase() === 'prossimamente' && game.preorder
+    stockValue === 0 && game.preorder
       ? 'Demo'
-      : game.stock ?? '—';
+      : stockValue > 0
+        ? stockValue
+        : game.stock ?? '—';
 
   return (
     <div className="container mt-5">
@@ -237,6 +246,7 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
 
 
 

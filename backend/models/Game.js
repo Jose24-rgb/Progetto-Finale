@@ -43,7 +43,7 @@ const gameSchema = new mongoose.Schema({
   trailerUrl:    { type: String },
   dlcLink:       { type: String, default: '' },
   baseGameLink:  { type: String, default: '' },
-  stock:         { type: String, default: '1' },
+  stock: { type: Number, default: 1 },
   preorder:      { type: Boolean, default: false }, // ✅ nuovo campo per abilitare il preordine
   reviewsAvg:    { type: Number, default: 0 },
   createdAt:     { type: Date, default: Date.now }
