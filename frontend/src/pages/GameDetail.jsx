@@ -1,4 +1,3 @@
-// ✅ FILE: GameDetail.jsx (aggiornato per nascondere prezzo se "Prossimamente")
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../services/apis';
