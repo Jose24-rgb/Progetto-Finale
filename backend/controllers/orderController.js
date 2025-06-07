@@ -10,7 +10,6 @@ exports.createOrder = async (req, res) => {
   }
 
   try {
-    // Carichiamo i giochi per verificare quali sono preordinabili
     const gameIds = games.map(g => g.gameId);
     const foundGames = await Game.find({ _id: { $in: gameIds } });
 
@@ -37,6 +36,19 @@ exports.createOrder = async (req, res) => {
     res.status(500).json({ error: 'Errore durante la creazione dell\'ordine' });
   }
 };
+
+exports.getUserOrders = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const orders = await Order.find({ userId }).populate('games.gameId');
+    res.json(orders);
+  } catch (err) {
+    console.error('❌ Errore nel recupero ordini:', err.message);
+    res.status(500).json({ error: 'Errore durante il recupero degli ordini' });
+  }
+};
+
 
 
 
